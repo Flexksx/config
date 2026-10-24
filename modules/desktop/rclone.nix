@@ -15,7 +15,7 @@
         Type = "notify";
         ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p %h/GoogleDrive";
         ExecStart = ''
-          ${pkgs.rclone}/bin/rclone mount remote: %h/GoogleDrive \
+          ${pkgs.rclone}/bin/rclone mount personal-google-drive: %h/GoogleDrive \
             --vfs-cache-mode full \
             --vfs-cache-max-age 24h \
             --vfs-read-chunk-size 128M \

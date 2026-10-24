@@ -3,7 +3,6 @@
     pkgs,
     inputs,
     config,
-    lib,
     ...
   }: let
     unstable = import inputs.nixpkgs-unstable {
@@ -18,16 +17,6 @@
       source = "ai_agents/${source}";
     };
   in {
-    options.aiAgents.pi.settingsFile = lib.mkOption {
-      type = lib.types.str;
-      default = "settings.json";
-      description = ''
-        Filename under dotfiles/ai_agents/pi/ to symlink as
-        ~/.pi/agent/settings.json. Override per host to diverge (e.g.
-        provider/model) without duplicating the whole pi config pipeline.
-      '';
-    };
-
     config = {
       home.packages = [
         unstable.codex
@@ -46,7 +35,7 @@
       ];
 
       dotfiles.homeFiles = [
-        (aiAgent "${piAgentDir}/settings.json" "pi/${config.aiAgents.pi.settingsFile}")
+        (aiAgent "${piAgentDir}/settings.json" "pi/settings.json")
         (aiAgent "${piAgentDir}/starline.json" "pi/starline.json")
         (aiAgent "${piAgentDir}/models.json" "pi/models.json")
         (aiAgent "${piAgentDir}/keybindings.json" "pi/keybindings.json")
