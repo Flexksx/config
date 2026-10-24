@@ -62,7 +62,7 @@
       lefthook
       just
       pandoc
-      gdrive
+      gdrive3
     ];
 
     dotfiles.configFiles = ["bat/config"];
