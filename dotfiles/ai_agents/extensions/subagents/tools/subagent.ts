@@ -12,7 +12,7 @@ export interface SubagentToolDeps {
 	onSpawn(ctx: ExtensionContext): void;
 }
 
-export function subagentTool({ manager, proxy, rows, onSpawn }: SubagentToolDeps) {
+export const subagentTool = ({ manager, proxy, rows, onSpawn }: SubagentToolDeps) => {
 	let agents = new Map<string, AgentDef>();
 	let agentsError: string | undefined;
 	try {
@@ -82,7 +82,7 @@ export function subagentTool({ manager, proxy, rows, onSpawn }: SubagentToolDeps
 			};
 		},
 	});
-}
+};
 
 function describeAgents(agents: Map<string, AgentDef>, error: string | undefined): string {
 	const intro = "Run a task in a subagent with its own context and system prompt. Only its final report comes back.";

@@ -3,7 +3,7 @@ import type { Component, TUI } from "@earendil-works/pi-tui";
 import type { Run } from "../run.ts";
 import { glimpseLines, TICK_MS } from "./glimpse.ts";
 
-export function createWidget(visibleRuns: () => Run[]) {
+export const createWidget = (visibleRuns: () => Run[]) => {
 	return (tui: TUI, theme: Theme): Component & { dispose(): void } => {
 		let frame = 0;
 		const timer = setInterval(() => {
@@ -17,4 +17,4 @@ export function createWidget(visibleRuns: () => Run[]) {
 			dispose: () => clearInterval(timer),
 		};
 	};
-}
+};

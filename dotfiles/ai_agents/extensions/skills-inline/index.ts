@@ -16,7 +16,7 @@ function readSkill(path: string): string | undefined {
 	}
 }
 
-export default function skillsInlineExtension(pi: ExtensionAPI) {
+export default (pi: ExtensionAPI) => {
 	pi.registerMessageRenderer<{ skills: string[] }>(CUSTOM_TYPE, (message, { expanded }, theme) => {
 		const names = message.details?.skills.join(", ") ?? "";
 		const header = `${theme.fg("accent", SKILL_GLYPH)} ${theme.fg("dim", names)}`;
@@ -88,4 +88,4 @@ export default function skillsInlineExtension(pi: ExtensionAPI) {
 			},
 		};
 	});
-}
+};

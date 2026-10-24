@@ -15,7 +15,7 @@ export interface ChildTools {
 
 export type ToolProxy = ReturnType<typeof createToolProxy>;
 
-export function createToolProxy(ownTools: ReadonlySet<string>) {
+export const createToolProxy = (ownTools: ReadonlySet<string>) => {
 	let loadout: ToolLoadout | undefined;
 	let bridge: ExtensionToolContext | undefined;
 
@@ -65,4 +65,4 @@ export function createToolProxy(ownTools: ReadonlySet<string>) {
 			return result;
 		},
 	};
-}
+};

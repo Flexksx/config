@@ -3,7 +3,7 @@ import { Type } from "typebox";
 import type { SubagentManager } from "../manager.ts";
 import { TOOL_NAMES } from "../protocol.ts";
 
-export function replyTool(manager: SubagentManager) {
+export const replyTool = (manager: SubagentManager) => {
 	return defineTool({
 		name: TOOL_NAMES.reply,
 		label: "Reply to subagent",
@@ -38,4 +38,4 @@ export function replyTool(manager: SubagentManager) {
 			return { content: [{ type: "text", text }], details: undefined };
 		},
 	});
-}
+};
