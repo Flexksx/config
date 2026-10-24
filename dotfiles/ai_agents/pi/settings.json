@@ -13,12 +13,12 @@
       ]
     },
     "npm:pi-web-search",
-    "npm:pi-fff@^0.1.12",
+    "npm:pi-fff",
     "npm:pi-cc-patch",
     "npm:pi-compact-tools",
     "npm:pi-starline",
     "npm:pi-mermaid",
-    "npm:pi-markdown-preview@^0.10.1",
+    "npm:pi-markdown-preview",
     "npm:pi-langfuse"
   ],
   "lastChangelogVersion": "1.3.0"
