@@ -1,7 +1,7 @@
 {
   "theme": "noctalia",
   "defaultProvider": "openrouter",
-  "defaultModel": "deepseek/deepseek-v4.1-pro",
+  "defaultModel": "deepseek/deepseek-v4.1-flash",
   "defaultThinkingLevel": "medium",
   "hideThinkingBlock": true,
   "packages": [
