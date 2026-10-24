@@ -30,7 +30,7 @@
           ]
           ++ mountCfg.extraArgs
         );
-        ExecStop = "${pkgs.fuse}/bin/fusermount -u ${mountCfg.path}";
+        ExecStop = "${pkgs.fuse}/bin/fusermount -u -z ${mountCfg.path}";
         Restart = "on-failure";
         RestartSec = "10s";
       };
