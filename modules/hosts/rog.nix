@@ -94,6 +94,17 @@
           };
           programs.home-manager.enable = true;
           programs.git-config.email = "cristian.cretu2808@gmail.com";
+
+          services.drivesync.mounts.gdrive = {
+            enable = true;
+            path = "%h/GoogleDrive";
+          };
+
+          services.drivesync.syncs.wallpapers = {
+            enable = true;
+            source = "%h/config/backgrounds";
+            destination = "backgrounds";
+          };
         }
       ];
   };

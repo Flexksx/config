@@ -34,8 +34,8 @@
           ++ mountCfg.extraArgs
         );
         ExecStop = "${pkgs.fuse}/bin/fusermount -u -z ${mountCfg.path}";
-        Restart = "on-failure";
-        RestartSec = "10s";
+        Restart = mountCfg.restart;
+        RestartSec = mountCfg.restartSec;
       };
       Install = {
         WantedBy = ["default.target"];
@@ -56,6 +56,8 @@
             "sync"
             syncCfg.source
             "${syncCfg.drive}:${syncCfg.destination}"
+            "--log-file"
+            "%h/.cache/rclone-sync-${name}.log"
           ]
           ++ syncCfg.extraArgs
         );
@@ -93,8 +95,27 @@
                 };
                 extraArgs = lib.mkOption {
                   type = lib.types.listOf lib.types.str;
-                  default = [];
+                  default = [
+                    "--vfs-cache-mode"
+                    "full"
+                    "--vfs-cache-max-age"
+                    "24h"
+                    "--vfs-read-chunk-size"
+                    "128M"
+                    "--dir-cache-time"
+                    "72h"
+                  ];
                   description = "Extra arguments passed to rclone mount";
+                };
+                restart = lib.mkOption {
+                  type = lib.types.str;
+                  default = "on-failure";
+                  description = "Systemd Restart policy";
+                };
+                restartSec = lib.mkOption {
+                  type = lib.types.str;
+                  default = "10s";
+                  description = "Systemd RestartSec interval";
                 };
               };
             }
