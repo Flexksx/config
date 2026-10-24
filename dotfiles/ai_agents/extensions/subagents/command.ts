@@ -27,7 +27,8 @@ export function registerSubagentsCommand(pi: ExtensionAPI, manager: SubagentMana
 }
 
 async function teleport(manager: SubagentManager, run: Run, ctx: ExtensionContext): Promise<void> {
-	const report = (action: string) => (error: unknown) => ctx.ui.notify(`Could not ${action} ${run.id}: ${errorText(error)}`, "error");
+	const report = (action: string) => (error: unknown) =>
+		ctx.ui.notify(`Could not ${action} ${run.id}: ${errorText(error)}`, "error");
 	await ctx.ui.custom<void>(
 		(tui, theme, _keybindings, done) =>
 			new TeleportView(

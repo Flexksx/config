@@ -25,10 +25,17 @@ export function loadAgents(): Map<string, AgentDef> {
 		};
 		const { description, tools, model, thinking } = frontmatter;
 		if (typeof description !== "string" || !description.trim()) fail("'description' must be a non-empty string");
-		const toolList = typeof tools === "string" ? tools.split(",") : Array.isArray(tools) ? tools : fail("'tools' must be a list or a comma-separated string");
+		const toolList =
+			typeof tools === "string"
+				? tools.split(",")
+				: Array.isArray(tools)
+					? tools
+					: fail("'tools' must be a list or a comma-separated string");
 		if (!toolList.every((t): t is string => typeof t === "string")) fail("every entry in 'tools' must be a string");
-		if (model !== undefined && (typeof model !== "string" || !model.includes("/"))) fail("'model' must be 'provider/model-id'");
-		if (thinking !== undefined && !THINKING_LEVELS.includes(thinking as string)) fail(`'thinking' must be one of ${THINKING_LEVELS.join(", ")}`);
+		if (model !== undefined && (typeof model !== "string" || !model.includes("/")))
+			fail("'model' must be 'provider/model-id'");
+		if (thinking !== undefined && !THINKING_LEVELS.includes(thinking as string))
+			fail(`'thinking' must be one of ${THINKING_LEVELS.join(", ")}`);
 		if (!body.trim()) fail("the body (system prompt) is empty");
 		agents.set(path.basename(file, ".md"), {
 			name: path.basename(file, ".md"),

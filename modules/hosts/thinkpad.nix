@@ -2,8 +2,7 @@
   inputs,
   config,
   ...
-}:
-{
+}: {
   flake.nixosConfigurations.ccretu-nixos = inputs.nixpkgs.lib.nixosSystem {
     specialArgs = {
       inherit inputs;
@@ -13,7 +12,7 @@
       (builtins.attrValues config.flake.modules.nixos)
       ++ (builtins.attrValues config.flake.modules.nixos-thinkpad)
       ++ [
-        ({ pkgs, ... }: {
+        ({pkgs, ...}: {
           nix.settings.trusted-users = [
             "root"
             "ccretu"
@@ -29,7 +28,7 @@
             xserver = {
               enable = true;
               xkb.layout = "us";
-              videoDrivers = [ "modesetting" ];
+              videoDrivers = ["modesetting"];
             };
             devmon.enable = true;
             udisks2.enable = true;
@@ -48,11 +47,11 @@
 
           system.autoUpgrade.enable = true;
 
-          services.udev.packages = [ pkgs.platformio ];
-          environment.systemPackages = [ pkgs.awscli ];
+          services.udev.packages = [pkgs.platformio];
+          environment.systemPackages = [pkgs.awscli];
 
           users = {
-            groups.ccretu = { };
+            groups.ccretu = {};
             users.ccretu = {
               isNormalUser = true;
               group = "ccretu";
@@ -88,7 +87,7 @@
       (builtins.attrValues config.flake.modules.homeManager)
       ++ (builtins.attrValues config.flake.modules.homeManager-thinkpad)
       ++ [
-        ({ lib, ... }: {
+        ({lib, ...}: {
           home = {
             username = "ccretu";
             homeDirectory = "/home/ccretu";
@@ -99,10 +98,10 @@
             enable = true;
             enableDefaultConfig = false;
             settings = {
-              "github.com" = lib.hm.dag.entryAfter [ "*" ] {
+              "github.com" = lib.hm.dag.entryAfter ["*"] {
                 HostName = "github.com";
                 User = "git";
-                IdentityFile = [ "~/.ssh/id_ed25519" ];
+                IdentityFile = ["~/.ssh/id_ed25519"];
                 IdentitiesOnly = true;
               };
             };

@@ -1,5 +1,13 @@
 import type { Theme } from "@earendil-works/pi-coding-agent";
-import { type Component, type Focusable, Input, matchesKey, type TUI, truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
+import {
+	type Component,
+	type Focusable,
+	Input,
+	matchesKey,
+	type TUI,
+	truncateToWidth,
+	visibleWidth,
+} from "@earendil-works/pi-tui";
 import type { Run } from "../run.ts";
 import { glimpseLines, TICK_MS } from "./glimpse.ts";
 import { Transcript } from "./transcript.ts";
@@ -87,7 +95,12 @@ export class TeleportView implements Component, Focusable {
 
 		const title = ` ${this.run.id} · ${this.run.agent.name} `;
 		const lines = [th.fg("border", `╭─${title}${"─".repeat(Math.max(0, width - 3 - visibleWidth(title)))}╮`)];
-		lines.push(row(glimpseLines(this.run, th, inner, this.frame)[0]! + th.fg("dim", this.scroll > 0 ? ` · scrolled ${this.scroll}` : "")));
+		lines.push(
+			row(
+				glimpseLines(this.run, th, inner, this.frame)[0]! +
+					th.fg("dim", this.scroll > 0 ? ` · scrolled ${this.scroll}` : ""),
+			),
+		);
 		lines.push(...body.map(row));
 		const ask = this.run.pendingAsk;
 		lines.push(row(ask ? th.fg("warning", `? ${ask.question.replace(/\s+/g, " ")}`) : ""));

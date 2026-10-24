@@ -65,7 +65,8 @@ export async function createChildSession(opts: ChildOptions): Promise<AgentSessi
 	}
 	const model = runtime.getModel(provider, id);
 	if (!model) throw new Error(`Model ${ref} is not available`);
-	if (model.api === "pi-virtual") throw new Error(`Model ${ref} is virtual. Pass a physical 'provider/model-id' for ${agent.name}.`);
+	if (model.api === "pi-virtual")
+		throw new Error(`Model ${ref} is virtual. Pass a physical 'provider/model-id' for ${agent.name}.`);
 
 	const cwd = ctx.cwd;
 	const agentDir = getAgentDir();

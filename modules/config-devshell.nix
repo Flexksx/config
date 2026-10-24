@@ -5,6 +5,7 @@
         just
         lefthook
         alejandra
+        biome
         stylua
         rumdl
         shfmt

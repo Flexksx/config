@@ -9,6 +9,10 @@ pre-commit:
       glob: "*.lua"
       run: stylua {staged_files}
       stage_fixed: true
+    biome:
+      glob: "*.{ts,js}"
+      run: biome check --write {staged_files}
+      stage_fixed: true
     rumdl:
       glob: "*.md"
       run: rumdl fmt {staged_files}

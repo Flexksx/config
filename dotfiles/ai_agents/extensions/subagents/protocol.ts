@@ -30,8 +30,17 @@ export interface SubagentDetails {
 export const SubagentParams = Type.Object({
 	agent: Type.String({ description: "Agent name" }),
 	task: Type.String({ description: "Complete, self-contained task" }),
-	background: Type.Optional(Type.Boolean({ description: "Return at once; the result arrives later as a message. Default false." })),
-	model: Type.Optional(Type.String({ description: "provider/model-id for this call, e.g. anthropic/claude-haiku-4-5. Default: the agent file's model, else yours." })),
+	background: Type.Optional(
+		Type.Boolean({
+			description: "Return at once; the result arrives later as a message. Default false.",
+		}),
+	),
+	model: Type.Optional(
+		Type.String({
+			description:
+				"provider/model-id for this call, e.g. anthropic/claude-haiku-4-5. Default: the agent file's model, else yours.",
+		}),
+	),
 });
 
 export type SubagentRows = Pick<ToolDefinition<typeof SubagentParams, SubagentDetails>, "renderCall" | "renderResult">;

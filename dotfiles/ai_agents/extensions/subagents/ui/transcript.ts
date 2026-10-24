@@ -36,14 +36,26 @@ export class Transcript {
 			this.container.addChild(new AssistantMessageComponent(message, true, this.markdown));
 			this.addToolCalls(message);
 		} else if (message.role === "toolResult") {
-			this.tools.get(message.toolCallId)?.updateResult({ content: message.content, details: message.details, isError: message.isError });
+			this.tools.get(message.toolCallId)?.updateResult({
+				content: message.content,
+				details: message.details,
+				isError: message.isError,
+			});
 		}
 	}
 
 	private addToolCalls(message: Extract<AgentSession["messages"][number], { role: "assistant" }>): void {
 		for (const block of message.content) {
 			if (block.type !== "toolCall" || this.tools.has(block.id)) continue;
-			const row = new ToolExecutionComponent(block.name, block.id, block.arguments, {}, rowRenderers(block.name, this.session.getToolDefinition(block.name)), this.tui, this.cwd);
+			const row = new ToolExecutionComponent(
+				block.name,
+				block.id,
+				block.arguments,
+				{},
+				rowRenderers(block.name, this.session.getToolDefinition(block.name)),
+				this.tui,
+				this.cwd,
+			);
 			row.setArgsComplete();
 			row.setExpanded(this.expanded);
 			this.tools.set(block.id, row);
@@ -72,7 +84,11 @@ export class Transcript {
 		} else if (event.type === "tool_execution_update") {
 			this.tools.get(event.toolCallId)?.updateResult({ ...event.partialResult, isError: false }, true);
 		} else if (event.type === "tool_execution_end") {
-			this.tools.get(event.toolCallId)?.updateResult({ ...event.result, isError: event.isError, durationMs: event.durationMs });
+			this.tools.get(event.toolCallId)?.updateResult({
+				...event.result,
+				isError: event.isError,
+				durationMs: event.durationMs,
+			});
 		}
 	}
 }

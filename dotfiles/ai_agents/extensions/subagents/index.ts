@@ -19,11 +19,21 @@ export default function (pi: ExtensionAPI) {
 	const showWidget = (ctx: ExtensionContext) => {
 		if (widgetShown || ctx.mode !== "tui") return;
 		widgetShown = true;
-		ctx.ui.setWidget("subagents", createWidget(() => manager.visible()));
+		ctx.ui.setWidget(
+			"subagents",
+			createWidget(() => manager.visible()),
+		);
 	};
 
 	registerMessageRenderers(pi);
-	pi.registerTool(subagentTool({ manager, proxy, rows: subagentRows((id) => manager.get(id)), onSpawn: showWidget }));
+	pi.registerTool(
+		subagentTool({
+			manager,
+			proxy,
+			rows: subagentRows((id) => manager.get(id)),
+			onSpawn: showWidget,
+		}),
+	);
 	pi.registerTool(replyTool(manager));
 	registerSubagentsCommand(pi, manager);
 

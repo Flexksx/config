@@ -1,12 +1,15 @@
 _root := justfile_directory()
 
-all: nix lua md sh toml yaml
+all: nix lua ts md sh toml yaml
 
 nix:
     alejandra {{_root}}
 
 lua:
     stylua {{_root}}
+
+ts:
+    biome check --write {{_root}}
 
 md:
     rumdl fmt {{_root}}

@@ -1,4 +1,9 @@
-import { defineTool, type ExtensionToolContext, type ToolDefinition, type ToolLoadout } from "@earendil-works/pi-coding-agent";
+import {
+	defineTool,
+	type ExtensionToolContext,
+	type ToolDefinition,
+	type ToolLoadout,
+} from "@earendil-works/pi-coding-agent";
 
 const BUILTINS = new Set(["read", "bash", "edit", "write", "grep", "find", "ls"]);
 const NEVER_PROXY = new Set(["codemode", "tool_search"]);
@@ -21,8 +26,12 @@ export function createToolProxy(ownTools: ReadonlySet<string>) {
 			description: tool.description,
 			parameters: tool.parameters,
 			async execute(_id, args, signal, onUpdate) {
-				if (!bridge) throw new Error(`${tool.name} is unavailable: the main session changed since this subagent started`);
-				const outcome = await bridge.executeTool(tool.name, args, { signal, onUpdate });
+				if (!bridge)
+					throw new Error(`${tool.name} is unavailable: the main session changed since this subagent started`);
+				const outcome = await bridge.executeTool(tool.name, args, {
+					signal,
+					onUpdate,
+				});
 				return { ...outcome.result, isError: outcome.isError };
 			},
 		});

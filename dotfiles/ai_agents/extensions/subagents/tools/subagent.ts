@@ -45,11 +45,27 @@ export function subagentTool({ manager, proxy, rows, onSpawn }: SubagentToolDeps
 			const details: SubagentDetails = { id: run.id };
 			if (params.background) {
 				manager.start(run, params.task);
-				return { content: [{ type: "text", text: `Started ${run.id} in the background. Its result arrives as a message.` }], details };
+				return {
+					content: [
+						{
+							type: "text",
+							text: `Started ${run.id} in the background. Its result arrives as a message.`,
+						},
+					],
+					details,
+				};
 			}
 
-			const stopUpdates = run.onChange(() => onUpdate?.({ content: [{ type: "text", text: run.lastTool ?? "" }], details }));
-			const abort = () => void manager.abort(run).catch((error) => ctx.ui.notify(`Could not abort ${run.id}: ${errorText(error)}`, "error"));
+			const stopUpdates = run.onChange(() =>
+				onUpdate?.({
+					content: [{ type: "text", text: run.lastTool ?? "" }],
+					details,
+				}),
+			);
+			const abort = () =>
+				void manager
+					.abort(run)
+					.catch((error) => ctx.ui.notify(`Could not abort ${run.id}: ${errorText(error)}`, "error"));
 			signal?.addEventListener("abort", abort, { once: true });
 			const outcome = await manager.foreground(run, params.task);
 			stopUpdates();
@@ -60,7 +76,10 @@ export function subagentTool({ manager, proxy, rows, onSpawn }: SubagentToolDeps
 				return { content: [{ type: "text", text }], details };
 			}
 			if (run.status !== "done") throw new Error(truncate(`${run.id} ${run.status}: ${run.error ?? run.result()}`));
-			return { content: [{ type: "text", text: truncate(run.result()) }], details };
+			return {
+				content: [{ type: "text", text: truncate(run.result()) }],
+				details,
+			};
 		},
 	});
 }
@@ -68,6 +87,8 @@ export function subagentTool({ manager, proxy, rows, onSpawn }: SubagentToolDeps
 function describeAgents(agents: Map<string, AgentDef>, error: string | undefined): string {
 	const intro = "Run a task in a subagent with its own context and system prompt. Only its final report comes back.";
 	if (error) return `${intro}\n\nUnavailable: ${error}`;
-	const list = [...agents.values()].map((a) => `- ${a.name}: ${a.description} (tools: ${a.tools.join(", ")})`).join("\n");
+	const list = [...agents.values()]
+		.map((a) => `- ${a.name}: ${a.description} (tools: ${a.tools.join(", ")})`)
+		.join("\n");
 	return `${intro}\n\nAgents:\n${list}`;
 }

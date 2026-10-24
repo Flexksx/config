@@ -18,7 +18,10 @@ export function replyTool(manager: SubagentManager) {
 			if (!run || !ask) throw new Error(`Subagent ${id} has no open question`);
 			let answer = message;
 			if (manager.replyGate) {
-				if (!ctx.hasUI) throw new Error("The reply gate is on, but there is no UI to review the reply. Turn it off with /subagents gate.");
+				if (!ctx.hasUI)
+					throw new Error(
+						"The reply gate is on, but there is no UI to review the reply. Turn it off with /subagents gate.",
+					);
 				const choice = await ctx.ui.select(`Reply to ${id}?\n\nQuestion: ${ask.question}\n\nDraft: ${message}`, [
 					"Send",
 					"Edit, then send",

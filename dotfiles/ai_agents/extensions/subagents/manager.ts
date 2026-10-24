@@ -42,7 +42,13 @@ export class SubagentManager {
 		return this.list().filter((r) => r.active || Date.now() - (r.endedAt ?? 0) < SHOW_ENDED_MS);
 	}
 
-	async spawn(ctx: ExtensionContext, agent: AgentDef, task: string, model: string | undefined, signal: AbortSignal | undefined): Promise<Run> {
+	async spawn(
+		ctx: ExtensionContext,
+		agent: AgentDef,
+		task: string,
+		model: string | undefined,
+		signal: AbortSignal | undefined,
+	): Promise<Run> {
 		const tools = this.proxy.split(agent.tools);
 		const run = new Run(`${agent.name}-${++this.counter}`, agent, task, ctx.cwd, this.generation);
 		this.runs.set(run.id, run);
@@ -58,7 +64,11 @@ export class SubagentManager {
 			});
 			if (signal?.aborted || this.stale(run)) {
 				session.dispose();
-				throw new Error(signal?.aborted ? "Aborted while the subagent was starting" : "The session closed while the subagent was starting");
+				throw new Error(
+					signal?.aborted
+						? "Aborted while the subagent was starting"
+						: "The session closed while the subagent was starting",
+				);
 			}
 			run.attach(session);
 			return run;
@@ -85,7 +95,9 @@ export class SubagentManager {
 	}
 
 	message(run: Run, text: string): void {
-		this.send(run, MESSAGE_TYPES.message, `${this.from(run)} says:`, text, { deliverAs: "steer" });
+		this.send(run, MESSAGE_TYPES.message, `${this.from(run)} says:`, text, {
+			deliverAs: "steer",
+		});
 	}
 
 	async ask(run: Run, question: string, signal: AbortSignal | undefined): Promise<string> {
@@ -103,7 +115,14 @@ export class SubagentManager {
 		run.status = "waiting";
 		run.changed();
 		if (run.foreground) run.foreground({ kind: "ask", question });
-		else this.send(run, MESSAGE_TYPES.ask, `${this.from(run)} asks (answer with ${TOOL_NAMES.reply} id="${run.id}"):`, question, { triggerTurn: true, deliverAs: "steer" });
+		else
+			this.send(
+				run,
+				MESSAGE_TYPES.ask,
+				`${this.from(run)} asks (answer with ${TOOL_NAMES.reply} id="${run.id}"):`,
+				question,
+				{ triggerTurn: true, deliverAs: "steer" },
+			);
 		try {
 			return await answer;
 		} finally {
@@ -115,7 +134,8 @@ export class SubagentManager {
 	}
 
 	reply(run: Run, ask: PendingAsk, answer: string, by: Interaction["by"]): void {
-		if (run.pendingAsk !== ask) throw new Error(`The question from ${run.id} was answered or withdrawn before the reply was sent`);
+		if (run.pendingAsk !== ask)
+			throw new Error(`The question from ${run.id} was answered or withdrawn before the reply was sent`);
 		run.record({ by, kind: by === "user" ? "answer" : "reply", text: answer });
 		ask.resolve(`${by === "user" ? "The user" : "Your parent agent"} answered: ${answer}`);
 	}
@@ -136,9 +156,15 @@ export class SubagentManager {
 	reportInteractions(run: Run): void {
 		if (!run.unreported().some((i) => i.by === "user")) return;
 		const brief = this.brief(run);
-		this.send(run, MESSAGE_TYPES.interaction, `The user worked with ${this.from(run)} directly. For your information; no reply needed:`, brief, {
-			triggerTurn: false,
-		});
+		this.send(
+			run,
+			MESSAGE_TYPES.interaction,
+			`The user worked with ${this.from(run)} directly. For your information; no reply needed:`,
+			brief,
+			{
+				triggerTurn: false,
+			},
+		);
 	}
 
 	async abort(run: Run): Promise<void> {
@@ -179,17 +205,29 @@ export class SubagentManager {
 		if (run.foreground) run.foreground({ kind: "settled" });
 		else if (origin === "parent") {
 			const interactions = run.unreported().length > 0 ? `\n\n${this.brief(run)}` : "";
-			this.send(run, MESSAGE_TYPES.result, `${this.from(run)} ${run.status}:`, truncate(run.error ?? run.result()) + interactions, {
-				triggerTurn: true,
-				deliverAs: "followUp",
-			});
+			this.send(
+				run,
+				MESSAGE_TYPES.result,
+				`${this.from(run)} ${run.status}:`,
+				truncate(run.error ?? run.result()) + interactions,
+				{
+					triggerTurn: true,
+					deliverAs: "followUp",
+				},
+			);
 		}
 	}
 
 	private brief(run: Run): string {
-		const lines = run.unreported().map((i) => `- ${i.by === "user" ? "The user" : "The main agent"} ${DID[i.kind]}: "${clip(i.text)}"`);
+		const lines = run
+			.unreported()
+			.map((i) => `- ${i.by === "user" ? "The user" : "The main agent"} ${DID[i.kind]}: "${clip(i.text)}"`);
 		run.markReported();
-		return [`Interactions with ${run.id}:`, ...lines, `Status: ${run.status}. Latest answer: "${clip(run.result())}"`].join("\n");
+		return [
+			`Interactions with ${run.id}:`,
+			...lines,
+			`Status: ${run.status}. Latest answer: "${clip(run.result())}"`,
+		].join("\n");
 	}
 
 	private stale(run: Run): boolean {
@@ -203,7 +241,12 @@ export class SubagentManager {
 	private send(run: Run, type: MessageType, header: string, text: string, options: SendOptions): void {
 		if (this.stale(run)) return;
 		this.host.sendMessage<BridgeDetails>(
-			{ customType: type, content: `${header}\n\n${text}`, display: true, details: { id: run.id, agent: run.agent.name, text } },
+			{
+				customType: type,
+				content: `${header}\n\n${text}`,
+				display: true,
+				details: { id: run.id, agent: run.agent.name, text },
+			},
 			options,
 		);
 	}

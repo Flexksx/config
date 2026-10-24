@@ -109,7 +109,11 @@ export class Run {
 
 	stats(): { tokens: number; cost: number; model?: string } {
 		const stats = this.session?.getSessionStats();
-		return { tokens: stats?.tokens.total ?? 0, cost: stats?.cost ?? 0, model: this.session?.model?.id };
+		return {
+			tokens: stats?.tokens.total ?? 0,
+			cost: stats?.cost ?? 0,
+			model: this.session?.model?.id,
+		};
 	}
 
 	result(): string {
