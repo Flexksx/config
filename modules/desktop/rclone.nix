@@ -2,6 +2,7 @@
   flake.modules.homeManager.noctalia = {
     inputs,
     lib,
+    pkgs,
     ...
   }: {
     systemd.user.services.rclone-google-drive = {
