@@ -1,8 +1,8 @@
 {
   "theme": "noctalia",
   "defaultProvider": "openrouter",
-  "defaultModel": "openai/gpt-5.6-terra",
-  "defaultThinkingLevel": "high",
+  "defaultModel": "deepseek/deepseek-v4.1-flash",
+  "defaultThinkingLevel": "medium",
   "hideThinkingBlock": true,
   "packages": [
     {
