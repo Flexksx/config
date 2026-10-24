@@ -1,0 +1,10 @@
+version: "1"
+git_protocol: ssh
+editor: nvim
+prompt: enabled
+aliases:
+  co: pr checkout
+  pv: pr view --web
+  pc: pr create --fill --web
+  mine: pr list --author "@me"
+  review: pr list --search "review-requested:@me state:open"

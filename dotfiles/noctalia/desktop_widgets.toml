@@ -1,0 +1,41 @@
+[desktop_widgets]
+enabled = true
+schema_version = 2
+widget_order = ["clock_main", "sysmon_cpu", "sysmon_net", "media_main"]
+
+[desktop_widgets.grid]
+cell_size = 16
+major_interval = 4
+visible = true
+
+[desktop_widgets.widget.clock_main]
+box_height = 192.0
+box_width = 208.0
+cx = 1312.0
+cy = 160.0
+output = "HDMI-A-1"
+type = "clock"
+settings = { background = true, background_radius = 12.0, center_text = false, clock_style = "digital" }
+
+[desktop_widgets.widget.media_main]
+box_height = 128.0
+box_width = 432.0
+cx = 248.0
+cy = 272.0
+output = "HDMI-A-1"
+type = "media_player"
+settings = { background = true, background_radius = 12.0, hide_when_no_media = false, layout = "horizontal" }
+
+[desktop_widgets.widget.sysmon_cpu]
+cx = 132.0
+cy = 128.0
+output = "HDMI-A-1"
+type = "sysmon"
+settings = { background = true, background_radius = 12.0, stat = "cpu_usage" }
+
+[desktop_widgets.widget.sysmon_net]
+cx = 364.0
+cy = 128.0
+output = "HDMI-A-1"
+type = "sysmon"
+settings = { background = true, background_radius = 12.0, stat = "net_rx", stat2 = "net_tx" }

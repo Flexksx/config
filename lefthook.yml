@@ -1,0 +1,30 @@
+pre-commit:
+  parallel: true
+  commands:
+    alejandra:
+      glob: "*.nix"
+      run: alejandra -q {staged_files}
+      stage_fixed: true
+    stylua:
+      glob: "*.lua"
+      run: stylua {staged_files}
+      stage_fixed: true
+    rumdl:
+      glob: "*.md"
+      run: rumdl fmt {staged_files}
+      stage_fixed: true
+    shfmt:
+      glob: "*.sh"
+      run: shfmt -w {staged_files}
+      stage_fixed: true
+    taplo:
+      glob: "*.toml"
+      run: taplo fmt {staged_files}
+      stage_fixed: true
+    yamlfmt:
+      glob: "*.{yml,yaml}"
+      run: yamlfmt {staged_files}
+      stage_fixed: true
+    ponte-sync:
+      glob: "dotfiles/ai_agents/**"
+      run: ponte sync

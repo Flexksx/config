@@ -1,0 +1,6 @@
+customCommands:
+  - key: "<c-x>"
+    context: global
+    description: Rebuild NixOS and Home Manager (cfg all)
+    command: cfg all
+    output: terminal

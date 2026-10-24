@@ -1,0 +1,26 @@
+engine = "whisper"
+
+[audio]
+max_duration_secs = 300
+
+[hotkey]
+enabled = false
+mode = "toggle"
+
+[output]
+mode = "type"
+fallback_to_clipboard = true
+pre_output_command = "hyprctl dispatch 'hl.dsp.submap(\"voxtype_suppress\")'"
+post_output_command = "hyprctl dispatch 'hl.dsp.submap(\"reset\")'"
+
+[streaming]
+partial_min_words = 2
+
+[whisper]
+model = "small.en"
+language = "en"
+streaming = true
+
+[text.replacements]
+"new paragraph" = "\n\n"
+"new line" = "\n"

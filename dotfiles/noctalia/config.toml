@@ -1,0 +1,115 @@
+[accessibility]
+high_contrast = false
+ui_scale = 1.0
+
+[audio]
+enable_overdrive = false
+enable_sounds = false
+sound_volume = 0.5
+
+[brightness]
+enable_ddcutil = true
+
+
+[dock]
+active_monitor_only = false
+auto_hide = true
+enabled = false
+pinned = ["Obsidian", "Telegram"]
+position = "bottom"
+reserve_space = false
+show_dots = true
+
+[hooks]
+theme_mode_changed = "theme \"$NOCTALIA_THEME_MODE\""
+wallpaper_changed = "theme \"$(darkman get)\""
+
+[idle.behavior.lock]
+action = "lock"
+enabled = false
+timeout = 600
+
+[idle.behavior.screen-off]
+action = "screen_off"
+enabled = false
+timeout = 660
+
+[idle.behavior.hibernate]
+action = "command"
+command = "systemctl hibernate"
+enabled = false
+timeout = 1800
+
+[include]
+files = ["~/config/dotfiles/noctalia/index.toml"]
+
+[location]
+address = "Chisinau, Moldova"
+
+[lockscreen]
+enabled = true
+
+[nightlight]
+enabled = false
+force = false
+temperature_day = 6500
+temperature_night = 4000
+
+[notification]
+background_opacity = 0.97
+enable_daemon = false
+layer = "top"
+offset_x = 20
+offset_y = 8
+scale = 1.0
+show_actions = true
+show_app_name = true
+
+[osd]
+background_opacity = 0.97
+offset_x = 20
+offset_y = 8
+orientation = "horizontal"
+position = "top_right"
+scale = 1.0
+
+[shell]
+corner_radius_scale = 2
+clipboard_auto_paste = "auto"
+clipboard_enabled = true
+clipboard_history_max_entries = 100
+date_format = "%A, %x"
+font_family = "IBM Plex Sans"
+polkit_agent = true
+settings_show_advanced = false
+time_format = "{:%H:%M}"
+
+[system.monitor]
+cpu_poll_seconds = 2.0
+disk_poll_seconds = 10.0
+enabled = true
+gpu_poll_seconds = 5.0
+memory_poll_seconds = 2.0
+network_poll_seconds = 3.0
+
+[theme]
+mode = "auto"
+source = "wallpaper"
+wallpaper_scheme = "m3-content"
+
+[theme.templates]
+builtin_ids = []
+community_ids = ["pi-agent", "papirus-icons"]
+enable_builtin_templates = false
+
+[wallpaper]
+directory = "~/config/backgrounds"
+enabled = true
+
+[wallpaper.automation]
+recursive = true
+
+[weather]
+effects = true
+enabled = true
+unit = "celsius"

@@ -1,0 +1,210 @@
+-- Reusable scratchpad factory.
+--
+-- show_mode = "window" (default)
+--   Pulls the app to the active workspace as a plain floating window.
+--   Auto-hide fires on window.active (any other window gets focus).
+--
+-- show_mode = "workspace"
+--   Toggles the named special workspace as an overlay (slidevert animation).
+--   Auto-hide fires on workspace.active / monitor.focused, and on window.active
+--   when keyboard focus moves to another window.
+--
+-- Windows are silently pre-assigned to the special workspace at open time, so
+-- toggling only animates an already-laid-out workspace. One scratchpad can own
+-- several apps; all of them share the one special workspace.
+--
+-- Usage:
+--   local scratchpad = dofile(path .. "scratchpad.lua")
+--   scratchpad.create({
+--       key_bind        = "SUPER + P",
+--       apps            = { { class = "spotify", command = "spotify" } },
+--       special_ws      = "spotify-scratchpad",
+--       show_mode       = "window",   -- "window" | "workspace"
+--       float           = true,       -- false: tiled (e.g. scroll layout)
+--       before_show     = function() ... end, -- workspace mode, runs while hidden
+--       enable_timer    = true,
+--       unfocus_timeout = 1000,
+--   })
+
+local M = {}
+
+function M.create(opts)
+	local apps = opts.apps
+	local ws_name = opts.special_ws or apps[1].class:lower()
+	local special = "special:" .. ws_name
+	local timeout = opts.unfocus_timeout or 1000
+	local do_timer = opts.enable_timer ~= false
+	local mode = opts.show_mode or "window"
+	local should_float = opts.float ~= false
+	local before_show = opts.before_show
+
+	for _, app in ipairs(apps) do
+		if should_float then
+			hl.window_rule({ match = { initial_class = "^" .. app.class .. "$" }, float = true })
+		end
+		hl.window_rule({ match = { initial_class = "^" .. app.class .. "$" }, workspace = special .. " silent" })
+	end
+
+	local hide_timer = nil
+	local launching = false
+
+	local function matches(w)
+		for _, app in ipairs(apps) do
+			if w.class == app.class or w.initial_class == app.class then
+				return true
+			end
+		end
+		return false
+	end
+
+	local function get_win()
+		for _, w in ipairs(hl.get_windows()) do
+			if matches(w) then
+				return hl.get_window("address:" .. w.address)
+			end
+		end
+		return nil
+	end
+
+	local function addr(win)
+		return "address:" .. win.address
+	end
+
+	local function cancel()
+		if hide_timer then
+			hide_timer:set_enabled(false)
+			hide_timer = nil
+		end
+	end
+
+	local function is_hidden(win)
+		if mode == "workspace" then
+			return not (win.workspace and win.workspace.visible)
+		end
+		return win.workspace ~= nil and win.workspace.special == true
+	end
+
+	local function show(win)
+		if mode == "workspace" then
+			if is_hidden(win) then
+				if before_show then
+					before_show()
+				end
+				hl.dispatch(hl.dsp.workspace.toggle_special(ws_name))
+			end
+		else
+			local ws = hl.get_active_workspace()
+			if not ws then
+				return
+			end
+			hl.dispatch(hl.dsp.window.move({ workspace = ws.id, window = addr(win), follow = false }))
+			hl.dispatch(hl.dsp.focus({ window = addr(win) }))
+			hl.dispatch(hl.dsp.window.center({ window = addr(win) }))
+		end
+	end
+
+	local function hide(win)
+		if mode == "workspace" then
+			if not is_hidden(win) then
+				local mon = win.workspace and win.workspace.monitor
+				if mon then
+					hl.dispatch(hl.dsp.focus({ monitor = mon.name }))
+				end
+				hl.dispatch(hl.dsp.workspace.toggle_special(ws_name))
+			end
+		else
+			hl.dispatch(hl.dsp.window.move({ workspace = special, window = addr(win), follow = false }))
+		end
+	end
+
+	local function start_hide_timer()
+		cancel()
+		hide_timer = hl.timer(function()
+			local w = get_win()
+			if w and not is_hidden(w) then
+				hide(w)
+			end
+			hide_timer = nil
+		end, { timeout = timeout, type = "oneshot" })
+	end
+
+	hl.on("window.active", function(active, _)
+		if active and matches(active) then
+			cancel()
+		elseif do_timer then
+			local win = get_win()
+			if win and not is_hidden(win) then
+				start_hide_timer()
+			end
+		end
+	end)
+
+	if mode == "workspace" then
+		hl.on("workspace.active", function(_, _)
+			local win = get_win()
+			if win and not is_hidden(win) then
+				cancel()
+				hide(win)
+			end
+		end)
+
+		hl.on("monitor.focused", function(mon, _)
+			local win = get_win()
+			if not win or is_hidden(win) then
+				return
+			end
+			local win_mon = win.workspace and win.workspace.monitor
+			if win_mon and win_mon.name ~= mon.name then
+				cancel()
+				hide(win)
+				hl.dispatch(hl.dsp.focus({ monitor = mon.name }))
+			end
+		end)
+	end
+
+	if opts.close_on_escape_key then
+		hl.bind("Escape", function()
+			local win = get_win()
+			if win and not is_hidden(win) then
+				cancel()
+				hide(win)
+			end
+		end, { non_consuming = true })
+	end
+
+	hl.on("window.open", function(win)
+		if not matches(win) then
+			return
+		end
+		launching = false
+		local w = hl.get_window("address:" .. win.address)
+		if w then
+			show(w)
+		end
+	end)
+
+	local function toggle()
+		local win = get_win()
+		if not win then
+			if not launching then
+				launching = true
+				for _, app in ipairs(apps) do
+					hl.exec_cmd(app.command)
+				end
+			end
+			return
+		end
+		cancel()
+		if is_hidden(win) then
+			show(win)
+		else
+			hide(win)
+		end
+	end
+
+	scratchpads = scratchpads or {}
+	scratchpads[ws_name] = toggle
+	hl.bind(opts.key_bind, toggle)
+end
+
+return M

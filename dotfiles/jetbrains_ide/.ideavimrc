@@ -1,0 +1,24 @@
+"" -- Settings --
+set timeoutlen=1000
+set scrolloff=5
+set incsearch
+set ideajoin
+
+"" -- Plugins --
+Plug 'machakann/vim-highlightedyank'
+Plug 'tpope/vim-commentary'
+
+"" -- Key Mappings --
+
+" Use literal <Space> to bypass mapleader issues
+" Home-row Rename
+nnoremap <Space>rn <Action>(RenameElement)
+
+" Home-row Reformat
+nnoremap <Space>rf <Action>(ReformatCode)
+
+" Disable default Space behavior (prevents cursor move)
+nnoremap <Space> <Nop>
+
+" Keep your Q mapping
+map Q gq

@@ -1,0 +1,28 @@
+gui:
+  theme:
+    activeBorderColor:
+      - "{{colors.primary.default.hex}}"
+      - bold
+    inactiveBorderColor:
+      - "{{colors.outline.default.hex}}"
+    searchingActiveBorderColor:
+      - "{{colors.tertiary.default.hex}}"
+      - bold
+    optionsTextColor:
+      - "{{colors.on_surface_variant.default.hex}}"
+    selectedLineBgColor:
+      - "{{colors.secondary_container.default.hex}}"
+    inactiveViewSelectedLineBgColor:
+      - "{{colors.surface_container.default.hex}}"
+    cherryPickedCommitFgColor:
+      - "{{colors.on_tertiary_container.default.hex}}"
+    cherryPickedCommitBgColor:
+      - "{{colors.tertiary_container.default.hex}}"
+    markedBaseCommitFgColor:
+      - "{{colors.on_secondary_container.default.hex}}"
+    markedBaseCommitBgColor:
+      - "{{colors.secondary_container.default.hex}}"
+    unstagedChangesColor:
+      - "{{colors.error.default.hex}}"
+    defaultFgColor:
+      - "{{colors.on_surface.default.hex}}"

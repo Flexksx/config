@@ -1,0 +1,93 @@
+system_prompt_file = "AGENTS.md"
+
+[vendors]
+[vendors.antigravity-cli]
+enabled = true
+[vendors.claude-code]
+enabled = true
+[vendors.codex]
+enabled = true
+[vendors.cursor-agent]
+enabled = true
+[vendors.opencode]
+enabled = true
+[vendors.pi-agent]
+enabled = true
+
+# Local skills
+[[skills]]
+source = "skills/ast-grep"
+[[skills]]
+source = "skills/brag-list"
+[[skills]]
+source = "skills/codecont"
+[[skills]]
+source = "skills/daily-status"
+[[skills]]
+source = "skills/design-taste-skill"
+[[skills]]
+source = "skills/fit"
+[[skills]]
+source = "skills/frontend-dev"
+[[skills]]
+source = "skills/java-dev"
+[[skills]]
+source = "skills/marketing-plan"
+[[skills]]
+source = "skills/nix-ops"
+[[skills]]
+source = "skills/plantuml"
+[[skills]]
+source = "skills/project-bootstrap"
+[[skills]]
+source = "skills/python-dev"
+[[skills]]
+source = "skills/software-engineering"
+[[skills]]
+source = "skills/summarize"
+[[skills]]
+source = "skills/svelte-dev"
+[[skills]]
+source = "skills/test-writing"
+[[skills]]
+source = "skills/ui-redesign-project"
+
+# Git skills
+[[skills]]
+source = "https://github.com/JuliusBrussee/caveman"
+ref = "main"
+subdir = "skills/caveman"
+
+[[skills]]
+source = "https://github.com/JamesPrial/github-skills"
+ref = "main"
+subdir = "skills/gh-cli"
+
+[[skills]]
+source = "https://github.com/blader/humanizer"
+ref = "main"
+
+[[skills]]
+source = "https://github.com/DrCatHicks/learning-opportunities"
+ref = "main"
+subdir = "learning-opportunities/skills/learning-opportunities"
+
+[[skills]]
+source = "https://github.com/kepano/obsidian-skills"
+ref = "main"
+subdir = "skills/obsidian-bases"
+
+[[skills]]
+source = "https://github.com/kepano/obsidian-skills"
+ref = "main"
+subdir = "skills/obsidian-cli"
+
+[[skills]]
+source = "https://github.com/DietrichGebert/ponytail"
+ref = "main"
+subdir = "skills/ponytail"
+
+[[skills]]
+source = "https://github.com/AminBlg/SimpleEnglish"
+ref = "main"
+subdir = "skills/simple-english"

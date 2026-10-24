@@ -1,0 +1,27 @@
+{
+  "features": {
+    "editor": true
+  },
+  "colorSources": {
+    "starship": "theme",
+    "editor": "theme",
+    "userMessages": "theme"
+  },
+  "contextStyle": "text",
+  "separator": "dot",
+  "pathDisplay": {
+    "mode": "basename",
+    "depth": 2
+  },
+  "gitBranch": {
+    "maxLength": "full"
+  },
+  "icons": {
+    "mode": "nerd"
+  },
+  "footerSegments": {
+    "time": false,
+    "os": true,
+    "packageVersion": false
+  }
+}

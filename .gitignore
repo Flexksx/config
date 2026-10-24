@@ -1,0 +1,9 @@
+/dotfiles/matugen/out/*
+/.direnv/
+.aider*
+/dotfiles/quickshell/libs/Theme.qml
+
+# nix build outputs
+result
+result-*
+

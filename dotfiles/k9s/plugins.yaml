@@ -1,0 +1,64 @@
+plugins:
+  lnav-pod:
+    shortCut: Ctrl-L
+    description: Logs (lnav)
+    scopes:
+      - pods
+    command: bash
+    background: false
+    args:
+      - -c
+      - kubectl logs --follow --all-containers --tail=5000 "$NAME" --namespace "$NAMESPACE" --context "$CONTEXT" 2>&1 | lnav
+  lnav-container:
+    shortCut: Ctrl-L
+    description: Logs (lnav)
+    scopes:
+      - containers
+    command: bash
+    background: false
+    args:
+      - -c
+      - kubectl logs --follow --tail=5000 "$POD" --container "$NAME" --namespace "$NAMESPACE" --context "$CONTEXT" 2>&1 | lnav
+  watch-events:
+    shortCut: Shift-E
+    description: Events
+    scopes:
+      - all
+    command: bash
+    background: false
+    args:
+      - -c
+      - kubectl events --watch --for "$RESOURCE_NAME/$NAME" --namespace "$NAMESPACE" --context "$CONTEXT"
+  spring-actuator:
+    shortCut: Shift-B
+    description: Spring actuator
+    scopes:
+      - pods
+    command: bash
+    background: false
+    inputs:
+      - name: endpoint
+        label: Endpoint
+        type: dropdown
+        required: true
+        default: health
+        options:
+          - health
+          - info
+          - env
+          - configprops
+          - loggers
+          - metrics
+          - mappings
+          - beans
+          - conditions
+          - scheduledtasks
+          - threaddump
+      - name: port
+        label: Management port
+        type: number
+        required: true
+        default: "8080"
+    args:
+      - -c
+      - body=$(kubectl get --raw "/api/v1/namespaces/$NAMESPACE/pods/$NAME:$INPUT_PORT/proxy/actuator/$INPUT_ENDPOINT" --context "$CONTEXT" 2>&1); { echo "$body" | jq -C . 2>/dev/null || echo "$body"; } | less -R

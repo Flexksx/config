@@ -1,0 +1,20 @@
+[bar.default]
+capsule = false
+center = ["active_window", "workspaces", "clock"]
+end = [
+  "tray",
+  "notifications",
+  "volume",
+  "brightness",
+  "bluetooth",
+  "battery",
+  "theme_mode",
+  "session",
+]
+margin_ends = 0
+position = "top"
+radius_bottom_left = 0
+radius_bottom_right = 0
+radius_top_left = 0
+radius_top_right = 0
+start = ["control-center", "sysmon", "wallpaper", "media"]

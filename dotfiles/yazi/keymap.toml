@@ -1,0 +1,29 @@
+[[mgr.prepend_keymap]]
+on = ["g", "r"]
+run = "cd ~/tech/code"
+desc = "Go to the repositories directory"
+
+[[mgr.prepend_keymap]]
+on = ["g", "w"]
+run = "cd ~/worktrees"
+desc = "Go to the worktrees directory"
+
+[[mgr.prepend_keymap]]
+on = ["g", "W"]
+run = "plugin git-worktrees"
+desc = "Switch to a worktree of this repository"
+
+[[mgr.prepend_keymap]]
+on = "H"
+run = "plugin duckdb -1"
+desc = "Scroll one column to the left"
+
+[[mgr.prepend_keymap]]
+on = "L"
+run = "plugin duckdb +1"
+desc = "Scroll one column to the right"
+
+[[mgr.prepend_keymap]]
+on = ["g", "o"]
+run = "plugin duckdb -open"
+desc = "Open the file with duckdb"

@@ -1,0 +1,94 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jesseduffield/lazygit/master/schema/config.json
+gui:
+  nerdFontsVersion: "3"
+  showFileIcons: true
+  showDivergenceFromBaseBranch: arrowAndNumber
+  filterMode: fuzzy
+  showRandomTip: false
+  animateExplosion: false
+git:
+  pagers:
+    - colorArg: always
+      pager: lazygit-pager
+  allBranchesLogCmds:
+    - git log --graph --all --color=always --abbrev-commit --decorate --date=relative --pretty=medium
+    - git log --graph --all --color=always --abbrev-commit --decorate --date=short --pretty=format:'%C(auto)%h %C(blue)%ad %C(green)%an%C(auto)%d %s'
+os:
+  editPreset: nvim
+update:
+  method: never
+disableStartupPopups: true
+promptToReturnFromSubprocess: false
+customCommands:
+  - key: "<c-f>"
+    context: localBranches
+    description: Fuzzy checkout a branch, local or remote
+    command: >-
+      git checkout "$(git branch -a --format='%(refname:short)' | sed 's|^origin/||' | sort -u | fzf --height 40% --reverse --prompt 'checkout ')"
+    output: terminal
+  - key: "<c-n>"
+    context: localBranches
+    description: Add a worktree for this branch
+    prompts:
+      - type: input
+        title: Worktree path
+        initialValue: "../{{ .SelectedLocalBranch.Name }}"
+    command: git worktree add "{{ index .PromptResponses 0 }}" "{{ .SelectedLocalBranch.Name }}"
+    output: terminal
+  - key: "<c-v>"
+    context: files
+    description: Show the full history of this file
+    command: >-
+      git log --follow --patch -- "{{ .SelectedFile.Name }}" | lazygit-pager | less -R
+    output: terminal
+  - key: "<c-g>"
+    context: global
+    description: Find commits that changed a piece of code
+    prompts:
+      - type: input
+        title: "Code to search for (git log -S)"
+    command: >-
+      git log -S"{{ index .PromptResponses 0 }}" --all --oneline --decorate --color=always | less -R
+    output: terminal
+  - key: "<c-a>"
+    description: GitHub pull requests
+    commandMenu:
+      - key: o
+        context: global
+        description: Check out an open pull request
+        prompts:
+          - type: menuFromCommand
+            title: "Open pull requests:"
+            key: PullRequest
+            command: gh pr list --limit 50
+            filter: "^(?P<number>\\d+)\t(?P<title>[^\t]+)\t(?P<branch>[^\t]+)\t.*"
+            valueFormat: "{{ .number }}"
+            labelFormat: "{{ .number | cyan }}  {{ .title }}  {{ .branch | green }}"
+        command: gh pr checkout {{ .Form.PullRequest }}
+        output: terminal
+      - key: r
+        context: global
+        description: Check out a pull request that waits for my review
+        prompts:
+          - type: menuFromCommand
+            title: "Waiting for my review:"
+            key: PullRequest
+            command: gh pr list --limit 50 --search "review-requested:@me state:open"
+            filter: "^(?P<number>\\d+)\t(?P<title>[^\t]+)\t(?P<branch>[^\t]+)\t.*"
+            valueFormat: "{{ .number }}"
+            labelFormat: "{{ .number | cyan }}  {{ .title }}  {{ .branch | green }}"
+        command: gh pr checkout {{ .Form.PullRequest }}
+        output: terminal
+      - key: m
+        context: global
+        description: Check out one of my pull requests
+        prompts:
+          - type: menuFromCommand
+            title: "My pull requests:"
+            key: PullRequest
+            command: gh pr list --limit 50 --author "@me"
+            filter: "^(?P<number>\\d+)\t(?P<title>[^\t]+)\t(?P<branch>[^\t]+)\t.*"
+            valueFormat: "{{ .number }}"
+            labelFormat: "{{ .number | cyan }}  {{ .title }}  {{ .branch | green }}"
+        command: gh pr checkout {{ .Form.PullRequest }}
+        output: terminal

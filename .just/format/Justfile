@@ -1,0 +1,21 @@
+_root := justfile_directory()
+
+all: nix lua md sh toml yaml
+
+nix:
+    alejandra {{_root}}
+
+lua:
+    stylua {{_root}}
+
+md:
+    rumdl fmt {{_root}}
+
+sh:
+    find {{_root}} -type f -name '*.sh' -not -path '*/.git/*' -not -path '*/.direnv/*' -print0 | xargs -0 -r shfmt -w
+
+toml:
+    find {{_root}} -type f -name '*.toml' -not -path '*/.git/*' -not -path '*/.direnv/*' -not -path '*/.rumdl_cache/*' -print0 | xargs -0 -r taplo fmt
+
+yaml:
+    yamlfmt {{_root}}

@@ -1,0 +1,61 @@
+{
+  "language_servers": ["!biome"],
+  "languages": {
+    "Markdown": {
+      "formatter": {
+        "external": {
+          "command": "rumdl",
+          "arguments": ["fmt", "-"],
+        },
+      },
+      "format_on_save": "on",
+    },
+    "Nix": {
+      "language_servers": ["nixd"],
+      "formatter": {
+        "external": {
+          "command": "alejandra",
+          "arguments": ["-"],
+        },
+      },
+      "format_on_save": "on",
+    },
+    "Lua": {
+      "language_servers": ["lua-language-server"],
+      "formatter": {
+        "external": {
+          "command": "stylua",
+          "arguments": ["-"],
+        },
+      },
+      "format_on_save": "on",
+    },
+    "Shell Script": {
+      "formatter": {
+        "external": {
+          "command": "shfmt",
+          "arguments": ["-"],
+        },
+      },
+      "format_on_save": "on",
+    },
+    "TOML": {
+      "formatter": {
+        "external": {
+          "command": "taplo",
+          "arguments": ["fmt", "-"],
+        },
+      },
+      "format_on_save": "on",
+    },
+    "YAML": {
+      "formatter": {
+        "external": {
+          "command": "yamlfmt",
+          "arguments": ["-"],
+        },
+      },
+      "format_on_save": "on",
+    },
+  },
+}
