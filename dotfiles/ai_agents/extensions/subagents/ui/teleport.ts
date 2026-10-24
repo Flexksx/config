@@ -97,7 +97,7 @@ export class TeleportView implements Component, Focusable {
 		const lines = [th.fg("border", `╭─${title}${"─".repeat(Math.max(0, width - 3 - visibleWidth(title)))}╮`)];
 		lines.push(
 			row(
-				glimpseLines(this.run, th, inner, this.frame)[0]! +
+				(glimpseLines(this.run, th, inner, this.frame)[0] ?? "") +
 					th.fg("dim", this.scroll > 0 ? ` · scrolled ${this.scroll}` : ""),
 			),
 		);

@@ -29,18 +29,20 @@ export function statsLine(run: Run): string {
 	return [`${tokens(total)} tok`, cost > 0 ? `$${cost.toFixed(3)}` : undefined, model].filter(Boolean).join(" · ");
 }
 
+const spinnerFrame = (frame: number): string => SPINNER[frame % SPINNER.length] ?? "";
+
 function shownActivity(run: Run): Activity {
-	const held = run.activity === "thinking" && run.lastToolActivity && Date.now() - run.lastToolEndedAt < HOLD_TOOL_MS;
-	return held ? run.lastToolActivity! : run.activity;
+	const holding = run.activity === "thinking" && Date.now() - run.lastToolEndedAt < HOLD_TOOL_MS;
+	return (holding ? run.lastToolActivity : undefined) ?? run.activity;
 }
 
 function icon(run: Run, theme: Theme, frame: number): string {
 	switch (run.status) {
 		case "starting":
-			return theme.fg("dim", `${SPINNER[frame % SPINNER.length]} …`);
+			return theme.fg("dim", `${spinnerFrame(frame)} …`);
 		case "running": {
 			const { glyph, color } = ACTIVITY[shownActivity(run)];
-			return `${theme.fg(color, SPINNER[frame % SPINNER.length]!)} ${theme.fg(color, glyph)}`;
+			return `${theme.fg(color, spinnerFrame(frame))} ${theme.fg(color, glyph)}`;
 		}
 		case "waiting":
 			return theme.fg("warning", frame % 8 < 4 ? "? ?" : "  ?");

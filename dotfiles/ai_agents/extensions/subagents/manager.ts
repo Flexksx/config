@@ -183,7 +183,15 @@ export class SubagentManager {
 	}
 
 	private async drive(run: Run, text: string, origin: Interaction["by"]): Promise<void> {
-		const session = run.session!;
+		const session = run.session;
+		if (!session) {
+			run.status = "failed";
+			run.error = `${run.id} has no session`;
+			run.endedAt = Date.now();
+			run.changed();
+			run.foreground?.({ kind: "settled" });
+			return;
+		}
 		run.status = "running";
 		run.error = undefined;
 		run.endedAt = undefined;
