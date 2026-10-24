@@ -7,6 +7,7 @@
     "editor": "theme",
     "userMessages": "theme"
   },
+  "editorModelLabel": "name",
   "contextStyle": "text",
   "separator": "dot",
   "pathDisplay": {
