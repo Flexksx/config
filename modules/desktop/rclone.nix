@@ -20,7 +20,10 @@
         // networkUnit;
       Service = {
         Type = "notify";
-        ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${mountCfg.path}";
+        ExecStartPre = [
+          "-${pkgs.fuse}/bin/fusermount -u -z ${mountCfg.path}"
+          "${pkgs.coreutils}/bin/mkdir -p ${mountCfg.path}"
+        ];
         ExecStart = lib.concatStringsSep " " (
           [
             "${pkgs.rclone}/bin/rclone"
