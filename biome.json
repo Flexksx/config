@@ -23,9 +23,13 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "complexity": {
+        "useArrowFunction": "error"
+      }
     }
   },
+  "plugins": ["./biome/use-arrow-functions.grit"],
   "assist": {
     "actions": {
       "source": {

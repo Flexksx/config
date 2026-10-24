@@ -1,0 +1,10 @@
+language js
+
+or {
+  `function $name($args) { $body }`,
+  `async function $name($args) { $body }`,
+  `export default function $name($args) { $body }`
+} as $decl where {
+  not $decl <: `function* $args2($params) { $anything }`,
+  register_diagnostic(span=$decl, message="Use an arrow function: `const name = ($args) => { ... }`.")
+}
