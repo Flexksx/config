@@ -1,7 +1,7 @@
 {...}: {
   flake.modules.nixos-rog.nvidia = {pkgs, ...}: {
     gpu.nvidia = {
-      mode = "sync";
+      mode = "offload";
       busId = "PCI:1:0:0";
       igpu = {
         vendor = "amdgpu";
