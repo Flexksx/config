@@ -8,15 +8,8 @@ description: >
 # Web Frontend Development
 
 This skill covers frontend development principles and reactivity patterns.
-Always combine with the framework-specific skill when working in Svelte or Vue.
-
-**Framework skills to load alongside this one:**
-
-* Svelte → load `svelte-dev` skill
 
 ## General Coding Standards
-
-Mandatorily read coding standards by loading the `software-engineering` skill.
 
 Avoid `index.ts` barrel export files.
 Those get out of sync really fast.

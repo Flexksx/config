@@ -17,6 +17,7 @@
     "npm:pi-cc-patch",
     "npm:pi-compact-tools",
     "npm:pi-starline",
+    "npm:pi-process",
     "npm:pi-mermaid",
     "npm:pi-markdown-preview",
     "npm:pi-langfuse"

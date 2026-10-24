@@ -28,6 +28,11 @@ Use this loop when a task changes code, config or infrastructure.
 
 Skip the loop when I name the exact change, ask a direct question, or say "just build it".
 
+### Skills
+
+Be proactive in using skills as they provide valuable guidance on how to achieve tasks.
+Do not ignore the contents of one and abide by it.
+
 ### Review questions
 
 A "yes" is a problem.

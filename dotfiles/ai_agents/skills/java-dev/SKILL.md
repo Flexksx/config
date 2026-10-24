@@ -7,9 +7,6 @@ description: >
 
 # Java Development
 
-Load `software-engineering` alongside this skill
-to get universal software engineering standards.
-
 ## Using Records
 
 Use `record` for immutable data: DTOs, API responses, projections.

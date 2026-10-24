@@ -32,7 +32,7 @@ Key characteristics:
 
 ### Reactivity patterns and common mistakes
 
-Covered in the `frontend-dev` skill references:
+Covered in `~/.agents/skills/frontend-dev/references/`:
 
 - `references/svelte-reactivity-examples.md` — runes decision matrix, `$state`, `$derived`, `$effect`, `$effect.pre`, `$state.raw` vs `$state`, `$state.snapshot`
 - `references/svelte-common-mistakes.md` — wrong/right examples for all common Svelte 5 anti-patterns

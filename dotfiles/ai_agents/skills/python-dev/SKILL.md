@@ -7,8 +7,6 @@ description: >
 
 # Python Development
 
-Also load the `software-engineering` skill for general coding principles.
-
 ## Tooling Defaults
 
 | Concern | Tool |

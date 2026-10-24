@@ -39,7 +39,6 @@ Before you design anything, read the reference of every architecture whose signa
 
 If no architecture matches, present two options with their trade-offs, recommend one, and wait for the user to choose, even after "just build it".
 Propose one line for the repo's `AGENTS.md` that records the choice, and let the user write it.
-For the layout of a new repo, follow the project-bootstrap skill.
 
 ## Naming
 
