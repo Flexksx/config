@@ -13,14 +13,11 @@
       ]
     },
     "npm:pi-web-access@^0.13.0",
-    "npm:@juicesharp/rpiv-ask-user-question@^1.20.0",
     "npm:pi-fff@^0.1.12",
-    "npm:@juicesharp/rpiv-todo@^1.20.0",
     "npm:pi-cc-patch",
     "npm:pi-compact-tools",
     "npm:pi-starline",
     "npm:pi-mermaid",
-    "npm:@dustydonkey/pi-spinner@^1.0.2",
     "npm:pi-markdown-preview@^0.10.1",
     "npm:pi-langfuse"
   ],
