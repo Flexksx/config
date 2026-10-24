@@ -51,8 +51,25 @@ local EDP_WORKSPACE = 10
 local HDMI_MIRROR_OUTPUT = "HDMI-A-1"
 local HDMI_MIRROR_MODE = "1920x1080@" .. REFRESH_RATE_60
 
-local lid_closed = false
 local edp_config = nil
+
+local LID_STATE_PATHS = {
+	"/proc/acpi/button/lid/LID0/state",
+	"/proc/acpi/button/lid/LID1/state",
+	"/proc/acpi/button/lid/LID2/state",
+}
+
+local function lid_is_closed()
+	for _, path in ipairs(LID_STATE_PATHS) do
+		local fh = io.open(path, "r")
+		if fh then
+			local line = fh:read("*l") or ""
+			fh:close()
+			return line:find("closed") ~= nil
+		end
+	end
+	return false
+end
 
 local function build_edp_config(x)
 	local spec = edp_specs[hostname]
@@ -131,7 +148,7 @@ local function sync_edp()
 			break
 		end
 	end
-	if lid_closed and has_external then
+	if lid_is_closed() and has_external then
 		hl.monitor({ output = EDP_OUTPUT, disabled = true })
 	else
 		hl.monitor(edp_config)
@@ -156,16 +173,11 @@ local function apply_unknown_mirror()
 end
 
 apply_profile()
+sync_edp()
 apply_unknown_mirror()
 
-hl.bind("switch:on:Lid Switch", function()
-	lid_closed = true
-	sync_edp()
-end, { locked = true })
-hl.bind("switch:off:Lid Switch", function()
-	lid_closed = false
-	sync_edp()
-end, { locked = true })
+hl.bind("switch:on:Lid Switch", sync_edp, { locked = true })
+hl.bind("switch:off:Lid Switch", sync_edp, { locked = true })
 
 hl.on("monitor.added", function()
 	apply_profile()
