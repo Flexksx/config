@@ -1,7 +1,7 @@
 {
   "theme": "noctalia",
   "defaultProvider": "openrouter",
-  "defaultModel": "deepseek/deepseek-v4.1-flash",
+  "defaultModel": "deepseek/deepseek-v4.1-pro",
   "defaultThinkingLevel": "medium",
   "hideThinkingBlock": true,
   "packages": [
@@ -20,7 +20,6 @@
     "npm:pi-compact-tools",
     "npm:pi-starline",
     "npm:pi-mermaid",
-    "npm:@quintinshaw/pi-dynamic-workflows@^2.9.0",
     "npm:@dustydonkey/pi-spinner@^1.0.2",
     "npm:pi-markdown-preview@^0.10.1",
     "npm:pi-lens@^3.8.65",
