@@ -78,8 +78,6 @@
       glib
       gsettings-desktop-schemas
       hunspell
-      rclone
-      rclone-browser
     ];
 
     themingPackages = with pkgs; [
