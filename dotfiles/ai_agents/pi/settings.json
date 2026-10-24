@@ -12,7 +12,7 @@
         "-extensions/todos/index.ts"
       ]
     },
-    "npm:pi-web-access@^0.13.0",
+    "npm:pi-web-search",
     "npm:pi-fff@^0.1.12",
     "npm:pi-cc-patch",
     "npm:pi-compact-tools",
