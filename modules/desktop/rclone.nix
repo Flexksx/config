@@ -13,7 +13,7 @@
       };
       Service = {
         Type = "notify";
-        ExecStartPre = "${/run/current-system/sw/bin/mkdir} -p %h/GoogleDrive";
+        ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p %h/GoogleDrive";
         ExecStart = ''
           ${pkgs.rclone}/bin/rclone mount remote: %h/GoogleDrive \
             --vfs-cache-mode full \
@@ -21,7 +21,7 @@
             --vfs-read-chunk-size 128M \
             --dir-cache-time 72h
         '';
-        ExecStop = "/run/current-system/sw/bin/fusermount -u %h/GoogleDrive";
+        ExecStop = "${pkgs.fuse}/bin/fusermount -u %h/GoogleDrive";
         Restart = "on-failure";
         RestartSec = "10s";
       };
