@@ -82,6 +82,20 @@
           };
         };
         load_direnv = "shell_hook";
+        tasks = [
+          {
+            label = "Docker: Oxker UI";
+            command = "oxker";
+            use_new_terminal = true;
+            allow_concurrent_runs = false;
+          }
+          {
+            label = "K8s: K9s UI";
+            command = "k9s";
+            use_new_terminal = true;
+            allow_concurrent_runs = false;
+          }
+        ];
       };
       userKeymaps = [
         {
