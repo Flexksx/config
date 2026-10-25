@@ -11,11 +11,11 @@
       "format_on_save": "on",
     },
     "Nix": {
-      "language_servers": ["nixd"],
+      "language_servers": ["nixd", "!nil"],
+      "experimental.semantic_tokens": "combined",
       "formatter": {
         "external": {
           "command": "alejandra",
-          "arguments": ["-"],
         },
       },
       "format_on_save": "on",
