@@ -102,6 +102,7 @@
 
           services.drivesync.syncs.wallpapers = {
             enable = true;
+            mode = "copy";
             source = "%h/config/backgrounds";
             destination = "backgrounds";
           };

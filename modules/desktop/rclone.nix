@@ -45,7 +45,7 @@
     mkSyncService = name: syncCfg: {
       Unit =
         {
-          Description = "Rclone sync ${name}";
+          Description = "Rclone ${syncCfg.mode} ${name}";
         }
         // networkUnit;
       Service = {
@@ -53,7 +53,7 @@
         ExecStart = lib.concatStringsSep " " (
           [
             "${pkgs.rclone}/bin/rclone"
-            "sync"
+            syncCfg.mode
             syncCfg.source
             "${syncCfg.drive}:${syncCfg.destination}"
             "--log-file"
@@ -131,6 +131,11 @@
             {...}: {
               options = {
                 enable = lib.mkEnableOption "rclone sync";
+                mode = lib.mkOption {
+                  type = lib.types.enum ["copy" "sync"];
+                  default = "sync";
+                  description = "Rclone subcommand. copy never deletes on the destination.";
+                };
                 drive = lib.mkOption {
                   type = lib.types.str;
                   default = "personal-google-drive";
