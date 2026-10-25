@@ -16,8 +16,9 @@
     environment.systemPackages = [pkgs.supergfxctl];
     services.supergfxd.enable = true;
 
+    hardware.nvidia.dynamicBoost.enable = true;
+
     environment.variables = {
-      WLR_NO_HARDWARE_CURSORS = "1";
       __GL_VRR_ALLOWED = "1";
       XDG_SESSION_TYPE = "wayland";
     };
