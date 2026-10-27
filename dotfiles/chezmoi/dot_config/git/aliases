@@ -1,9 +1,0 @@
-[alias]
-    a = add
-    acm = "!git add . && git commit -m"
-    cm = commit -m
-    co = checkout
-    cob = checkout -b
-    s = status
-    br = branch
-    nukepull = "!git clean -df && git reset --hard HEAD"
