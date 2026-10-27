@@ -1,0 +1,32 @@
+[
+  {
+    "bindings": {
+      "ctrl-`": "terminal_panel::ToggleFocus"
+    }
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      "ctrl-shift-b": "workspace::ToggleLeftDock",
+      "ctrl-shift-a": "agent::ToggleFocus",
+      "ctrl-shift-e": "workspace::FocusCenterPane",
+      "ctrl-shift-t": "project_panel::ToggleFocus"
+    }
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "ctrl-shift-a": "agent::ToggleFocus",
+      "ctrl-shift-e": "workspace::FocusCenterPane",
+      "ctrl-shift-t": "project_panel::ToggleFocus"
+    }
+  },
+  {
+    "context": "Editor && VimControl && !VimWaiting && !menu",
+    "bindings": {
+      "space": null,
+      "space r n": "editor::Rename",
+      "space r f": "editor::Format"
+    }
+  }
+]

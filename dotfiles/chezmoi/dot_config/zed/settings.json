@@ -1,0 +1,80 @@
+{
+  "vim_mode": true,
+  "buffer_font_family": ".ZedMono",
+  "buffer_font_weight": 500,
+  "theme": {
+    "mode": "system",
+    "light": "Gruvbox Material Light Mix",
+    "dark": "Gruvbox Material Dark Mix"
+  },
+  "assistant": {
+    "enabled": true
+  },
+  "lsp": {
+    "nix": {
+      "binary": {
+        "path_lookup": true
+      }
+    },
+    "lua-language-server": {
+      "binary": {
+        "path_lookup": true
+      }
+    },
+    "spring-boot": {
+      "binary": {
+        "path": "java",
+        "arguments": [
+          "-jar",
+          "/path/to/spring-boot-lsp.jar"
+        ]
+      }
+    }
+  },
+  "languages": {
+    "Lua": {
+      "language_servers": [
+        "lua-language-server"
+      ],
+      "formatter": {
+        "external": {
+          "command": "stylua",
+          "arguments": [
+            "-"
+          ]
+        }
+      },
+      "format_on_save": "on"
+    },
+    "Python": {
+      "language_servers": [
+        "ruff",
+        "ty"
+      ]
+    }
+  },
+  "load_direnv": "shell_hook",
+  "auto_install_extensions": {
+    "html": true,
+    "toml": true,
+    "rumdl": true,
+    "qml": true,
+    "tsgo": true,
+    "lua": true,
+    "git-firefly": true,
+    "dockerfile": true,
+    "sql": true,
+    "vue": true,
+    "svelte": true,
+    "scss": true,
+    "terraform": true,
+    "kotlin": true,
+    "xml": true,
+    "latex": true,
+    "nix": true,
+    "jinja2": true,
+    "gruvbox-material-mix": true,
+    "java": true,
+    "biome": true
+  }
+}
