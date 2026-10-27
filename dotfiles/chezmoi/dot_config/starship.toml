@@ -1,0 +1,4 @@
+format = "$all"
+
+[gcloud]
+disabled = true
