@@ -34,6 +34,7 @@
       alejandra
       fzf
       xh
+      chezmoi
       tree
       grim
       grimblast
