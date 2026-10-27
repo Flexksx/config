@@ -64,15 +64,16 @@
       neovim
     ];
 
-    dotfiles.configFiles = ["bat/config"];
-
     home.sessionVariables = {
       NH_FLAKE = "/home/${config.home.username}/config";
       OBSIDIAN_VAULT = lib.mkDefault "${config.home.homeDirectory}/Obsidian/obsidian-vault";
     };
 
     programs = {
-      bat.enable = true;
+      bat = {
+        enable = true;
+        config = lib.mkForce {};
+      };
 
       direnv = {
         enable = true;

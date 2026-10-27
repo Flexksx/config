@@ -29,8 +29,6 @@
       service.enable = true;
     };
 
-    dotfiles.configFiles = ["voxtype/config.toml"];
-
     home.file.".local/share/voxtype/models/ggml-small.en.bin".source = pkgs.fetchurl {inherit (models."small.en") url hash;};
   };
 }
