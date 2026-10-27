@@ -13,13 +13,6 @@
 
     home.packages = [pagerScript];
 
-    dotfiles.homeFiles = [
-      {
-        target = "${configDir}/config.yml";
-        source = "lazygit/config.yml";
-      }
-    ];
-
     home.sessionVariables.LG_CONFIG_FILE = "${configDir}/config.yml,${themeFile}";
 
     home.activation.lazygitTheme = lib.hm.dag.entryAfter ["writeBoundary"] ''

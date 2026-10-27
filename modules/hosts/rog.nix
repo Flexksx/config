@@ -93,7 +93,6 @@
             stateVersion = "24.11";
           };
           programs.home-manager.enable = true;
-          programs.git-config.email = "cristian.cretu2808@gmail.com";
 
           services.drivesync.mounts.gdrive = {
             enable = true;

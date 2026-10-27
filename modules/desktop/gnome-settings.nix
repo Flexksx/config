@@ -25,9 +25,5 @@
       seahorse
       libsecret
     ];
-
-    programs.zsh.shellAliases = {
-      gnome-accounts = "dbus-run-session -- env XDG_CURRENT_DESKTOP=GNOME gnome-control-center online-accounts";
-    };
   };
 }

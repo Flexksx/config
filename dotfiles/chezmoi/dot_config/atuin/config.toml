@@ -1,0 +1,4 @@
+auto_sync = false
+filter_mode = "global"
+search_mode = "fuzzy"
+style = "compact"

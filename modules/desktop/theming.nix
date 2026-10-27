@@ -40,8 +40,6 @@
       style.name = "kvantum";
     };
 
-    dotfiles.configFiles = ["matugen/config.toml"];
-
     xdg.configFile."qt5ct/qt5ct.conf".text = lib.generators.toINI {} {
       Appearance = {
         icon_theme = "Papirus-Dark";
