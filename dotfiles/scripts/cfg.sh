@@ -18,7 +18,7 @@ show_help() {
 	echo "  stg        - Stage changes (git add)"
 	echo "  upd        - Pull from GitHub, update flake.lock, commit"
 	echo "  rhm        - Rebuild Home Manager (nh)"
-	echo "  rflk       - Rebuild NixOS (nh)"
+	echo "  rflk       - Rebuild NixOS (nh); --boot-only stages for reboot"
 	echo "  uhm        - Update lock + Rebuild Home"
 	echo "  uflk       - Update lock + Rebuild NixOS"
 	echo "  all [-u]   - Rebuild both; -u syncs config first"
@@ -37,7 +37,11 @@ rhm)
 	nh home switch "$FLAKE_PATH"
 	;;
 rflk)
-	nh os switch "$FLAKE_PATH"
+	if [[ "${2:-}" == "--boot-only" ]]; then
+		nh os boot "$FLAKE_PATH"
+	else
+		nh os switch "$FLAKE_PATH"
+	fi
 	;;
 uhm)
 	sync_config && nh home switch "$FLAKE_PATH"
