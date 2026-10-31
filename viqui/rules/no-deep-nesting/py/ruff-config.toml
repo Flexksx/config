@@ -1,0 +1,6 @@
+[lint]
+select = ["PLR1702"]
+preview = true
+
+[lint.pylint]
+max-nested-blocks = 3

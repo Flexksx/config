@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "hooks": {
+    "postToolUse": [
+      {
+        "command": "node \"$HOME/.local/share/viqui/current/cursor/check.mjs\"",
+        "matcher": "Write|StrReplace",
+        "timeout": 15
+      }
+    ]
+  }
+}

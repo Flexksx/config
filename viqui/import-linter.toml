@@ -1,0 +1,27 @@
+[tool.importlinter]
+root_packages = [
+  "viqui.rules.no-boolean-parameter",
+  "viqui.rules.no-comments",
+  "viqui.rules.no-complex-if-condition",
+  "viqui.rules.no-deep-nesting",
+  "viqui.rules.no-empty-exception-handler",
+  "viqui.rules.no-long-boolean-chain",
+  "viqui.rules.no-nested-ternary",
+  "viqui.rules.no-stateless-class",
+  "viqui.rules.no-thin-wrapper",
+]
+
+[[tool.importlinter.contracts]]
+name = "Python rules are independent"
+type = "independence"
+modules = [
+  "viqui.rules.no-boolean-parameter",
+  "viqui.rules.no-comments",
+  "viqui.rules.no-complex-if-condition",
+  "viqui.rules.no-deep-nesting",
+  "viqui.rules.no-empty-exception-handler",
+  "viqui.rules.no-long-boolean-chain",
+  "viqui.rules.no-nested-ternary",
+  "viqui.rules.no-stateless-class",
+  "viqui.rules.no-thin-wrapper",
+]

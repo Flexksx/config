@@ -1,0 +1,1 @@
+const activate = () => setState("active");

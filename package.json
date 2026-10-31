@@ -1,0 +1,22 @@
+{
+  "name": "config-tooling",
+  "private": true,
+  "workspaces": [
+    "viqui",
+    "viqui/shared",
+    "viqui/rules/no-thin-wrapper",
+    "viqui/rules/no-stateless-class"
+  ],
+  "trustedDependencies": [],
+  "scripts": {
+    "install:viqui": "bun viqui/install.mjs",
+    "test": "node --test viqui/tests/*.test.mjs && bun run --filter 'viqui-*-typescript' test && uv run --package no-thin-wrapper-python pytest -c viqui/rules/no-thin-wrapper/pyproject.toml viqui/rules/no-thin-wrapper/py/test && uv run --package no-stateless-class-python pytest -c viqui/rules/no-stateless-class/pyproject.toml viqui/rules/no-stateless-class/py/test",
+    "lint": "biome check . && uv run ruff check viqui && bun run --filter 'viqui-*-typescript' typecheck && bun run --filter viqui-shared typecheck && bun run lint:dependencies",
+    "lint:dependencies": "depcruise --config viqui/dependency-cruiser.cjs viqui/rules viqui/shared && uv run lint-imports --config viqui/import-linter.toml --no-cache --no-logo",
+    "format": "biome check --write . && uv run ruff format viqui"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.6.4",
+    "dependency-cruiser": "^18.7.0"
+  }
+}

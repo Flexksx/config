@@ -1,0 +1,15 @@
+{
+  "name": "viqui",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=26"
+  },
+  "bin": {
+    "viqui": "./viqui.ts"
+  },
+  "dependencies": {
+    "@biomejs/biome": "2.6.4",
+    "commander": "^15.0.0"
+  }
+}

@@ -1,0 +1,5 @@
+[lint]
+select = ["S110"]
+
+[lint.flake8-bandit]
+check-typed-exception = true

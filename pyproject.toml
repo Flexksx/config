@@ -1,0 +1,14 @@
+[project]
+name = "config-tooling"
+version = "0.1.0"
+requires-python = ">=3.10"
+dependencies = []
+
+[dependency-groups]
+dev = ["import-linter>=2.15", "ruff==0.17.3"]
+
+[tool.uv.workspace]
+members = ["viqui/rules/no-thin-wrapper", "viqui/rules/no-stateless-class"]
+
+[tool.ruff]
+extend-exclude = ["viqui/rules/*/py/test/fixtures"]

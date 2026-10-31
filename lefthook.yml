@@ -10,7 +10,7 @@ pre-commit:
       run: stylua {staged_files}
       stage_fixed: true
     biome:
-      glob: "*.{ts,js}"
+      glob: "*.{ts,js,mjs}"
       run: biome check --write {staged_files}
       stage_fixed: true
     rumdl:
@@ -29,6 +29,3 @@ pre-commit:
       glob: "*.{yml,yaml}"
       run: yamlfmt {staged_files}
       stage_fixed: true
-    ponte-sync:
-      glob: "dotfiles/ai_agents/**"
-      run: ponte sync

@@ -1,0 +1,15 @@
+[project]
+name = "no-thin-wrapper-python"
+version = "0.1.0"
+requires-python = ">=3.10"
+dependencies = []
+
+[dependency-groups]
+dev = ["pytest>=8,<10"]
+
+[tool.pytest.ini_options]
+testpaths = ["py/test"]
+pythonpath = ["py", "../../.."]
+
+[tool.ruff]
+extend-exclude = ["py/test/fixtures"]

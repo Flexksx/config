@@ -2,15 +2,12 @@
   flake.modules.homeManager.ai-agents = {
     pkgs,
     inputs,
-    config,
     ...
   }: let
     unstable = import inputs.nixpkgs-unstable {
       system = pkgs.stdenv.hostPlatform.system;
       config.allowUnfree = true;
     };
-
-    piAgentDir = "${config.home.homeDirectory}/.pi/agent";
 
     aiAgent = target: source: {
       inherit target;
@@ -27,19 +24,10 @@
         inputs.ponte.packages.${pkgs.stdenv.hostPlatform.system}.default
         pkgs.nodejs
       ];
-
       dotfiles.configFiles = [
         (aiAgent "ponte/config.toml" "ponte.toml")
         (aiAgent "ponte/AGENTS.md" "AGENTS.md")
         (aiAgent "ponte/skills" "skills")
-      ];
-
-      dotfiles.homeFiles = [
-        (aiAgent "${piAgentDir}/settings.json" "pi/settings.json")
-        (aiAgent "${piAgentDir}/starline.json" "pi/starline.json")
-        (aiAgent "${piAgentDir}/models.json" "pi/models.json")
-        (aiAgent "${piAgentDir}/keybindings.json" "pi/keybindings.json")
-        (aiAgent "${piAgentDir}/extensions" "extensions")
       ];
     };
   };

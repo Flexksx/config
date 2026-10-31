@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "^(apply_patch|Bash)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$HOME/.local/share/viqui/current/codex/check.mjs\"",
+            "timeout": 15,
+            "statusMessage": "Running Viqui checks"
+          }
+        ]
+      }
+    ]
+  }
+}

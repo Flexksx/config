@@ -1,0 +1,6 @@
+[lint]
+select = ["PLR0916"]
+preview = true
+
+[lint.pylint]
+max-bool-expr = 2
