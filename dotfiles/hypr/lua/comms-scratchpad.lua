@@ -34,7 +34,6 @@ end
 scratchpad.create({
 	key_bind = "SUPER + bracketright",
 	apps = {
-		{ class = "slack", command = "slack" },
 		{ class = "org.telegram.desktop", command = "Telegram" },
 	},
 	special_ws = "comms",
