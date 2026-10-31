@@ -1,0 +1,11 @@
+{
+  "root": true,
+  "vcs": { "enabled": false },
+  "linter": {
+    "rules": {
+      "preset": "none",
+      "style": { "useThisInClassMethods": "warn" },
+      "complexity": { "noStaticOnlyClass": "warn" }
+    }
+  }
+}

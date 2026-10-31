@@ -1,0 +1,17 @@
+{
+  "name": "viqui-shared",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@typescript-eslint/parser": "^8.72.1",
+    "@typescript-eslint/types": "^8.72.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/utils": "^8.72.1",
+    "@types/node": "^26.6.6",
+    "typescript": "~6.0.3"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit --strict --skipLibCheck --module nodenext --target es2022 --types node --allowImportingTsExtensions scanner.ts ../rules/no-boolean-parameter/ts/scan.ts ../rules/no-comments/ts/scan.ts ../rules/no-complex-if-condition/ts/scan.ts ../rules/no-deep-nesting/ts/scan.ts ../rules/no-empty-exception-handler/ts/scan.ts ../rules/no-long-boolean-chain/ts/scan.ts ../rules/no-nested-ternary/ts/scan.ts"
+  }
+}

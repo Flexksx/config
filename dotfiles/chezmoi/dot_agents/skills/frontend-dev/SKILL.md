@@ -11,9 +11,9 @@ This skill covers frontend development principles and reactivity patterns.
 
 ## General Coding Standards
 
-Avoid `index.ts` barrel export files.
-Those get out of sync really fast.
-Prefer importing each function/class individually.
+Use `index.ts` as an explicit public entry point when a module needs a boundary.
+Export only the functions, types, and classes that consumers should use.
+Within the module, import from the defining files to avoid circular dependencies.
 
 ---
 

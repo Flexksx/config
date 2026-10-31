@@ -1,0 +1,33 @@
+{
+  "name": "viqui-no-thin-wrapper-typescript",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "typecheck": "tsc --noEmit --strict --skipLibCheck --module nodenext --target es2022 --types node --allowImportingTsExtensions ts/scan.ts"
+  },
+  "dependencies": {
+    "typescript": "~6.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@typescript-eslint/utils": "^8.72.1",
+    "jest": "^30.0.0"
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>/ts/test",
+      "<rootDir>/../../codex",
+      "<rootDir>/../../cursor"
+    ],
+    "testMatch": [
+      "**/*.test.mjs"
+    ],
+    "extensionsToTreatAsEsm": [
+      ".ts"
+    ],
+    "transform": {
+      "^.+\\.ts$": "<rootDir>/../../shared/jest-transform.cjs"
+    }
+  }
+}

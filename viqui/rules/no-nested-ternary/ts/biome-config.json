@@ -1,0 +1,10 @@
+{
+  "root": true,
+  "vcs": { "enabled": false },
+  "linter": {
+    "rules": {
+      "preset": "none",
+      "style": { "noNestedTernary": "warn" }
+    }
+  }
+}

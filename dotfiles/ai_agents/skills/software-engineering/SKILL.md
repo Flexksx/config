@@ -40,6 +40,14 @@ Before you design anything, read the reference of every architecture whose signa
 If no architecture matches, present two options with their trade-offs, recommend one, and wait for the user to choose, even after "just build it".
 Propose one line for the repo's `AGENTS.md` that records the choice, and let the user write it.
 
+## Module boundaries
+
+When a module or package needs a public boundary, expose a deliberate API through its entry point.
+In TypeScript, use explicit exports from `index.ts`.
+In Python packages, expose the intended names through `__init__.py` and `__all__`.
+Consumers should use that public API instead of reaching into implementation files.
+Inside the boundary, import from defining files to avoid circular dependencies.
+
 ## Naming
 
 - Things are named by their role in the design.
@@ -50,9 +58,10 @@ Propose one line for the repo's `AGENTS.md` that records the choice, and let the
 - No abbrevations, `userIdentifier`, not `usrId`. `connectionPool`, not `cp`.
 - No *magic values* - every meaningful literal must be a named constant.
 
-**No boolean parameters.**
+**Avoid boolean parameters that switch behavior.**
 
-They hide branching.
+In TypeScript, prefer separate operations over boolean parameters.
+In Python, keyword-only boolean arguments can make a call clear when a separate operation or command object would add unnecessary structure.
 
 ```java
 // Bad - the call site does not say what true does

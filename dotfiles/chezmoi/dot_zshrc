@@ -50,8 +50,9 @@ if [[ -n $GHOSTTY_RESOURCES_DIR ]]; then
 fi
 
 # Aliases.
-alias pls=sudo
-alias cat=bat
+alias ls='eza'
+alias lg='lazygit'
+alias y='yazi'
 
 # zsh-syntax-highlighting must be sourced last.
 if [[ -f "$HOME/.config/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]; then

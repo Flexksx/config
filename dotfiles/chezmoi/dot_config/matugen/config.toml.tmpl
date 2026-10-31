@@ -1,0 +1,62 @@
+[config]
+
+[templates.ghostty]
+input_path = "~/.config/matugen/templates/ghostty"
+output_path = "~/.config/ghostty/themes/matugen"
+{{- if ne .chezmoi.os "darwin" }}
+post_hook = "pkill -SIGUSR2 ghostty || true"
+{{ end }}
+{{- if ne .chezmoi.os "darwin" }}
+[templates.btop]
+input_path = "~/.config/matugen/templates/matugen.theme"
+output_path = "~/.config/btop/themes/matugen.theme"
+
+[templates.hyprland_colors_lua]
+input_path = "~/.config/matugen/templates/hyprland_colors.lua"
+output_path = "~/config/dotfiles/matugen/out/hyprland_colors.lua"
+
+[templates.walker]
+input_path = "~/.config/matugen/templates/walker.css"
+output_path = "~/.config/walker/themes/matugen/style.css"
+
+[templates.cava]
+input_path = "~/.config/matugen/templates/cava"
+output_path = "~/.config/cava/themes/matugen"
+post_hook = "pkill -USR1 cava || true"
+
+[templates.yazi]
+input_path = "~/.config/matugen/templates/yazi-theme.toml"
+output_path = "~/.config/yazi/theme.toml"
+
+[templates.kcolorscheme]
+input_path = "~/.config/matugen/templates/kcolorscheme.colors"
+output_path = "~/.local/share/color-schemes/Matugen.colors"
+
+[templates.gtk3]
+input_path = "~/.config/matugen/templates/gtk3.css"
+output_path = "~/.config/gtk-3.0/matugen.css"
+
+[templates.gtk4]
+input_path = "~/.config/matugen/templates/gtk4.css"
+output_path = "~/.config/gtk-4.0/matugen.css"
+
+[templates.qt5ct]
+input_path = "~/.config/matugen/templates/qt_matugen.conf"
+output_path = "~/.config/qt5ct/colors/qt_matugen.conf"
+
+[templates.qt6ct]
+input_path = "~/.config/matugen/templates/qt_matugen.conf"
+output_path = "~/.config/qt6ct/colors/qt_matugen.conf"
+
+[templates.lazygit]
+input_path = "~/.config/matugen/templates/lazygit-theme.yml"
+output_path = "~/.config/lazygit/theme.yml"
+
+[templates.k9s]
+input_path = "~/.config/matugen/templates/k9s-skin.yaml"
+output_path = "~/.config/k9s/skins/matugen.yaml"
+
+[templates.quickshell]
+input_path = "~/.config/matugen/templates/Theme.qml"
+output_path = "~/config/dotfiles/quickshell/libs/Theme.qml"
+{{- end }}

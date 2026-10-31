@@ -1,0 +1,8 @@
+{{- if eq .chezmoi.os "darwin" -}}
+#!/bin/sh
+set -eu
+agent="gui/$(id -u)/com.user.matugen-wallpaper"
+if ! launchctl print "$agent" >/dev/null 2>&1; then
+  launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/com.user.matugen-wallpaper.plist"
+fi
+{{- end }}

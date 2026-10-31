@@ -1,0 +1,24 @@
+{
+  "id": "no-empty-exception-handler",
+  "scanners": [
+    {
+      "extensions": [
+        ".ts",
+        ".tsx",
+        ".js",
+        ".jsx",
+        ".mjs",
+        ".cjs"
+      ],
+      "runtime": "node",
+      "entrypoint": "ts/scan.ts"
+    },
+    {
+      "extensions": [
+        ".py"
+      ],
+      "runtime": "python3",
+      "entrypoint": "py/scan.py"
+    }
+  ]
+}
