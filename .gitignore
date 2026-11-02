@@ -8,3 +8,17 @@ result
 result-*
 
 backgrounds/
+
+# Bun and Node.js
+node_modules/
+/.cache/bun/
+
+# Python and development tooling
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.grimp_cache/
+.rumdl_cache/
+/.cache/uv/
