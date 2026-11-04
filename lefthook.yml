@@ -11,7 +11,7 @@ pre-commit:
       stage_fixed: true
     biome:
       glob: "*.{ts,js,mjs}"
-      run: biome check --write {staged_files}
+      run: bun x biome check --write --no-errors-on-unmatched {staged_files}
       stage_fixed: true
     rumdl:
       glob: "*.md"

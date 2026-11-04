@@ -1,16 +1,25 @@
-{...}: {
-  perSystem = {pkgs, ...}: {
+{inputs, ...}: {
+  perSystem = {
+    pkgs,
+    system,
+    ...
+  }: let
+    unstable = import inputs.nixpkgs-unstable {
+      inherit system;
+      config.allowUnfree = true;
+    };
+  in {
     devShells.default = pkgs.mkShell {
       packages = with pkgs; [
         just
         lefthook
         alejandra
-        biome
         stylua
         rumdl
         shfmt
         taplo
         yamlfmt
+        unstable.bun
       ];
     };
   };
