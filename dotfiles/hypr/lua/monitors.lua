@@ -12,10 +12,7 @@ end
 -- Hardware specs keyed by monitor description ("make model serial").
 -- Find values with: hyprctl monitors -j | jq '.[].description'
 local monitor_specs = {
-	-- Office: HP E27q G4 (60 Hz)
-	["HP Inc. HP E27q G4 CNK1281ZDF"] = { mode = RESOLUTION_2K .. "@" .. REFRESH_RATE_60, scale = 1.0, transform = 1 },
-	["HP Inc. HP E27q G4 CNK1281ZF1"] = { mode = RESOLUTION_2K .. "@" .. REFRESH_RATE_60, scale = 1.0 },
-	-- Home: Dell G2724D (left) + AOC Q27G2SG4 (right)
+	-- Dell G2724D (left, portrait) + AOC Q27G2SG4 (right)
 	["Dell Inc. DELL G2724D GXJB4V3"] = { mode = RESOLUTION_2K .. "@" .. REFRESH_RATE_144, scale = 1.0, transform = 1 },
 	["AOC Q27G2SG4 XFXPAHA011559"] = { mode = RESOLUTION_2K .. "@" .. REFRESH_RATE_144, scale = 1.0 },
 }
@@ -23,20 +20,12 @@ local monitor_specs = {
 -- Built-in panel config per hostname.
 -- y_offset centers eDP vertically against a 1440px-tall adjacent horizontal monitor.
 local edp_specs = {
-	["ccretu-nixos"] = { mode = "3840x2400@60.0", scale = 2.0, y_offset = 120 },
 	nixos = { mode = "1920x1080@144.0", scale = 1.0, y_offset = 180 },
 }
 
 -- Profiles: sets of external monitors that define a physical setup.
 -- edp_x is the total logical width of all external monitors (eDP is placed right of them).
 local profiles = {
-	office = {
-		edp_x = 4000,
-		monitors = {
-			{ desc = "HP Inc. HP E27q G4 CNK1281ZDF", position = "0x0", workspaces = { 4, 5 } },
-			{ desc = "HP Inc. HP E27q G4 CNK1281ZF1", position = "1440x0", workspaces = { 1, 2, 3 } },
-		},
-	},
 	home = {
 		edp_x = 4000,
 		monitors = {

@@ -1,2 +1,0 @@
--- ThinkPad X1 Carbon 9th gen machine-specific config
--- Currently empty - add overrides here

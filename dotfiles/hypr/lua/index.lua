@@ -22,8 +22,6 @@ if f then
 	f:close()
 end
 
-if hostname == "ccretu-nixos" then
-	dofile(d .. "tpx1c9/index.lua")
-elseif hostname == "nixos" then
+if hostname == "nixos" then
 	dofile(d .. "rog/index.lua")
 end
