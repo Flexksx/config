@@ -1,16 +1,23 @@
-import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { afterEach, expect, test } from "bun:test";
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { test } from "node:test";
-import { fileURLToPath } from "node:url";
 
-const cli = fileURLToPath(new URL("../viqui.ts", import.meta.url));
+const cli = join(import.meta.dir, "../viqui.ts");
+const tempDirs = [];
+const tempDir = (prefix) => {
+  const directory = mkdtempSync(join(tmpdir(), prefix));
+  tempDirs.push(directory);
+  return directory;
+};
+afterEach(() => {
+  for (const directory of tempDirs.splice(0)) {
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
 
-test("tool-backed rules ignore project lint settings and do not modify files", (t) => {
-  const directory = mkdtempSync(join(tmpdir(), "viqui-backends-"));
-  t.after(() => rmSync(directory, { recursive: true, force: true }));
+test("tool-backed rules ignore project lint settings and do not modify files", async () => {
+  const directory = tempDir("viqui-backends-");
   writeFileSync(
     join(directory, "ruff.toml"),
     "fix = true\n[lint]\nignore = ['ALL']\n",
@@ -29,12 +36,14 @@ test("tool-backed rules ignore project lint settings and do not modify files", (
   ]) {
     const file = join(directory, name);
     writeFileSync(file, source);
-    const result = spawnSync("bun", [cli, "scan", "--rule", rule, file], {
+    const result = Bun.spawnSync({
+      cmd: [process.execPath, cli, "scan", "--rule", rule, file],
       cwd: directory,
-      encoding: "utf8",
+      stdout: "pipe",
+      stderr: "pipe",
     });
-    assert.equal(result.status, 0, result.stderr);
-    assert.equal(JSON.parse(result.stdout).length, 1);
-    assert.equal(readFileSync(file, "utf8"), source);
+    expect(result.exitCode).toBe(0);
+    expect(JSON.parse(result.stdout.toString()).length).toBe(1);
+    expect(await Bun.file(file).text()).toBe(source);
   }
 });

@@ -3,7 +3,7 @@
   "hooks": {
     "postToolUse": [
       {
-        "command": "node \"$HOME/.local/share/viqui/current/cursor/check.mjs\"",
+        "command": "bun \"$HOME/.local/share/viqui/current/cursor/check.mjs\"",
         "matcher": "Write|StrReplace",
         "timeout": 15
       }

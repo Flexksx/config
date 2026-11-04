@@ -1,29 +1,40 @@
-import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
+import { afterEach, expect, test } from "bun:test";
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { test } from "node:test";
-import { fileURLToPath } from "node:url";
 
-const cli = fileURLToPath(new URL("../viqui.ts", import.meta.url));
+const cli = join(import.meta.dir, "../viqui.ts");
+const tempDirs = [];
+const tempDir = (prefix) => {
+  const directory = mkdtempSync(join(tmpdir(), prefix));
+  tempDirs.push(directory);
+  return directory;
+};
+afterEach(() => {
+  for (const directory of tempDirs.splice(0)) {
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
 
-const scan = (t, rule, name, source) => {
-  const directory = mkdtempSync(join(tmpdir(), "viqui-preference-"));
-  t.after(() => rmSync(directory, { recursive: true, force: true }));
+const scan = (rule, name, source) => {
+  const directory = tempDir("viqui-preference-");
   const path = join(directory, name);
   writeFileSync(path, source);
-  const result = spawnSync("bun", [cli, "scan", "--rule", rule, path], {
-    encoding: "utf8",
+  const result = Bun.spawnSync({
+    cmd: [process.execPath, cli, "scan", "--rule", rule, path],
+    stdout: "pipe",
+    stderr: "pipe",
   });
-  assert.equal(result.status, 0, result.stderr);
-  return JSON.parse(result.stdout).map(({ line, column }) => [line, column]);
+  expect(result.exitCode).toBe(0);
+  return JSON.parse(result.stdout.toString()).map(({ line, column }) => [
+    line,
+    column,
+  ]);
 };
 
-test("reports boolean parameters but not boolean fields or returns", (t) => {
-  assert.deepEqual(
+test("reports boolean parameters but not boolean fields or returns", () => {
+  expect(
     scan(
-      t,
       "no-boolean-parameter",
       "file.ts",
       `
@@ -31,17 +42,15 @@ function f(enabled: boolean, flag = false, name: string): boolean { return enabl
 const value: boolean = true;
 `,
     ),
-    [
-      [2, 12],
-      [2, 30],
-    ],
-  );
+  ).toEqual([
+    [2, 12],
+    [2, 30],
+  ]);
 });
 
-test("reports comments but permits recognized directives and strings", (t) => {
-  assert.deepEqual(
+test("reports comments but permits recognized directives and strings", () => {
+  expect(
     scan(
-      t,
       "no-comments",
       "file.ts",
       `
@@ -50,14 +59,12 @@ const text = "// not a comment"; // explain
 /** documentation */
 `,
     ),
-    [
-      [3, 34],
-      [4, 1],
-    ],
-  );
-  assert.deepEqual(
+  ).toEqual([
+    [3, 34],
+    [4, 1],
+  ]);
+  expect(
     scan(
-      t,
       "no-comments",
       "file.py",
       `#!/usr/bin/env python3
@@ -67,14 +74,12 @@ value = "# text"  # explain
 value = 1  # type: ignore  # reason
 `,
     ),
-    [[4, 19]],
-  );
+  ).toEqual([[4, 19]]);
 });
 
-test("reports empty handlers while allowing handling and propagation", (t) => {
-  assert.deepEqual(
+test("reports empty handlers while allowing handling and propagation", () => {
+  expect(
     scan(
-      t,
       "no-empty-exception-handler",
       "file.ts",
       `
@@ -82,11 +87,9 @@ try { run(); } catch (error) {}
 try { run(); } catch (error) { throw error; }
 `,
     ),
-    [[2, 30]],
-  );
-  assert.deepEqual(
+  ).toEqual([[2, 30]]);
+  expect(
     scan(
-      t,
       "no-empty-exception-handler",
       "file.py",
       `
@@ -100,26 +103,22 @@ except ValueError:
     raise
 `,
     ),
-    [[4, 1]],
-  );
+  ).toEqual([[4, 1]]);
 });
 
-test("reports empty TypeScript blocks and permits comment-only catches", (t) => {
-  assert.deepEqual(
+test("reports empty TypeScript blocks and permits comment-only catches", () => {
+  expect(
     scan(
-      t,
       "no-empty-exception-handler",
       "blocks.ts",
       "if (ready) {}\ntry { run(); } catch { /* ignored */ }\n",
     ),
-    [[1, 12]],
-  );
+  ).toEqual([[1, 12]]);
 });
 
-test("reports the fourth control-flow level, but resets inside functions and keeps else-if at the same level", (t) => {
-  assert.deepEqual(
+test("reports the fourth control-flow level, but resets inside functions and keeps else-if at the same level", () => {
+  expect(
     scan(
-      t,
       "no-deep-nesting",
       "nesting.ts",
       `
@@ -133,11 +132,9 @@ if (a) {
 }
 `,
     ),
-    [[5, 7]],
-  );
-  assert.deepEqual(
+  ).toEqual([[5, 7]]);
+  expect(
     scan(
-      t,
       "no-deep-nesting",
       "nesting.py",
       `
@@ -153,14 +150,12 @@ if a:
             run()
 `,
     ),
-    [[2, 1]],
-  );
+  ).toEqual([[2, 1]]);
 });
 
-test("reports more than two boolean conditions, including nested and negated expressions", (t) => {
-  assert.deepEqual(
+test("reports more than two boolean conditions, including nested and negated expressions", () => {
+  expect(
     scan(
-      t,
       "no-complex-if-condition",
       "conditions.ts",
       `
@@ -169,14 +164,12 @@ if (a || b || (c && d)) run();
 if (!(a && b && c)) run();
 `,
     ),
-    [
-      [3, 1],
-      [4, 1],
-    ],
-  );
-  assert.deepEqual(
+  ).toEqual([
+    [3, 1],
+    [4, 1],
+  ]);
+  expect(
     scan(
-      t,
       "no-complex-if-condition",
       "conditions.py",
       `
@@ -187,50 +180,38 @@ if a < b < c: run()
 if a < b < c < d: run()
 `,
     ),
-    [[3, 4]],
-  );
+  ).toEqual([[3, 4]]);
 });
 
-test("scans JavaScript modules for complex conditions", (t) => {
-  assert.deepEqual(
-    scan(
-      t,
-      "no-complex-if-condition",
-      "module.mjs",
-      "if (a && b && c) run();\n",
-    ),
-    [[1, 1]],
-  );
+test("scans JavaScript modules for complex conditions", () => {
+  expect(
+    scan("no-complex-if-condition", "module.mjs", "if (a && b && c) run();\n"),
+  ).toEqual([[1, 1]]);
 });
 
-test("reports Python boolean parameters", (t) => {
-  assert.deepEqual(
+test("reports Python boolean parameters", () => {
+  expect(
     scan(
-      t,
       "no-boolean-parameter",
       "file.py",
       "def f(enabled: bool, count: int = 1, *, active=False):\n    pass\n",
     ),
-    [[1, 7]],
-  );
+  ).toEqual([[1, 7]]);
 });
 
-test("reports a positional boolean parameter once when both Ruff checks apply", (t) => {
-  assert.deepEqual(
+test("reports a positional boolean parameter once when both Ruff checks apply", () => {
+  expect(
     scan(
-      t,
       "no-boolean-parameter",
       "file.py",
       "def f(enabled: bool = True, *, active=False):\n    pass\n",
     ),
-    [[1, 7]],
-  );
+  ).toEqual([[1, 7]]);
 });
 
-test("reports boolean chains longer than three checks in any expression", (t) => {
-  assert.deepEqual(
+test("reports boolean chains longer than three checks in any expression", () => {
+  expect(
     scan(
-      t,
       "no-long-boolean-chain",
       "chain.ts",
       `
@@ -239,14 +220,12 @@ const long = a && (b || c) && d;
 function f() { return !(a || b || c || d); }
 `,
     ),
-    [
-      [3, 14],
-      [4, 25],
-    ],
-  );
-  assert.deepEqual(
+  ).toEqual([
+    [3, 14],
+    [4, 25],
+  ]);
+  expect(
     scan(
-      t,
       "no-long-boolean-chain",
       "chain.py",
       `
@@ -256,17 +235,15 @@ def f():
     return not (a or b or c or d)
 `,
     ),
-    [
-      [3, 8],
-      [5, 17],
-    ],
-  );
+  ).toEqual([
+    [3, 8],
+    [5, 17],
+  ]);
 });
 
-test("reports nested ternaries while allowing single conditional expressions", (t) => {
-  assert.deepEqual(
+test("reports nested ternaries while allowing single conditional expressions", () => {
+  expect(
     scan(
-      t,
       "no-nested-ternary",
       "ternary.ts",
       `
@@ -275,14 +252,12 @@ const chain = a ? b : c ? d : e;
 const nested = a ? (b ? c : d) : e;
 `,
     ),
-    [
-      [3, 23],
-      [4, 21],
-    ],
-  );
-  assert.deepEqual(
+  ).toEqual([
+    [3, 23],
+    [4, 21],
+  ]);
+  expect(
     scan(
-      t,
       "no-nested-ternary",
       "ternary.py",
       `
@@ -291,9 +266,8 @@ chain = b if a else d if c else e
 nested = (c if b else d) if a else e
 `,
     ),
-    [
-      [3, 9],
-      [4, 10],
-    ],
-  );
+  ).toEqual([
+    [3, 9],
+    [4, 10],
+  ]);
 });

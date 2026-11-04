@@ -23,6 +23,7 @@
         inputs.claude-code.packages.${pkgs.stdenv.hostPlatform.system}.default
         inputs.ponte.packages.${pkgs.stdenv.hostPlatform.system}.default
         pkgs.nodejs
+        unstable.bun
       ];
       dotfiles.configFiles = [
         (aiAgent "ponte/config.toml" "ponte.toml")

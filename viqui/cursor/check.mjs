@@ -1,9 +1,6 @@
-import { spawnSync } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { resolve } from "node:path";
 
-const input = JSON.parse(readFileSync(0, "utf8"));
+const input = JSON.parse(await Bun.stdin.text());
 const path = input.tool_input?.file_path ?? input.tool_input?.path;
 const cwd = input.cwd ?? input.workspace_roots?.[0];
 if (typeof path !== "string" || typeof cwd !== "string") {
@@ -11,21 +8,23 @@ if (typeof path !== "string" || typeof cwd !== "string") {
 }
 
 const resolved = resolve(cwd, path);
-if (existsSync(resolved)) {
-  const cli = resolve(dirname(fileURLToPath(import.meta.url)), "../viqui.ts");
-  const result = spawnSync("bun", [cli, "scan", resolved], {
-    encoding: "utf8",
+if (await Bun.file(resolved).exists()) {
+  const cli = resolve(import.meta.dir, "../viqui.ts");
+  const result = Bun.spawnSync({
+    cmd: [process.execPath, cli, "scan", resolved],
     cwd,
+    stdout: "pipe",
+    stderr: "pipe",
   });
-  if (result.error || result.status !== 0) {
-    throw new Error(`Viqui failed: ${result.error?.message ?? result.stderr}`);
+  if (!result.success) {
+    throw new Error(`Viqui failed: ${result.stderr.toString()}`);
   }
-  const findings = JSON.parse(result.stdout);
+  const findings = JSON.parse(result.stdout.toString());
   if (findings.length > 0) {
     const diagnostics = findings.map(
       (finding) => `${finding.file}:${finding.line}: ${finding.message}`,
     );
-    process.stdout.write(
+    await Bun.stdout.write(
       JSON.stringify({
         additional_context: `Review harness findings:\n${diagnostics.join("\n")}`,
       }),

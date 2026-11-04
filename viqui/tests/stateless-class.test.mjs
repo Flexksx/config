@@ -1,16 +1,24 @@
-import assert from "node:assert/strict";
+import { afterEach, expect, test } from "bun:test";
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, join } from "node:path";
-import { test } from "node:test";
-import { fileURLToPath } from "node:url";
+import { join } from "node:path";
 import { scanRules } from "../core/registry.mjs";
 
-const rules = join(dirname(fileURLToPath(import.meta.url)), "../rules");
+const rules = join(import.meta.dir, "../rules");
+const tempDirs = [];
+const tempDir = (prefix) => {
+  const directory = mkdtempSync(join(tmpdir(), prefix));
+  tempDirs.push(directory);
+  return directory;
+};
+afterEach(() => {
+  for (const directory of tempDirs.splice(0)) {
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
 
-test("reports stateless Python classes and TypeScript members without instance state", (t) => {
-  const root = mkdtempSync(join(tmpdir(), "stateless-class-"));
-  t.after(() => rmSync(root, { recursive: true, force: true }));
+test("reports stateless Python classes and TypeScript members without instance state", async () => {
+  const root = tempDir("stateless-class-");
   const python = join(root, "layers.py");
   const typescript = join(root, "layers.ts");
   writeFileSync(
@@ -58,18 +66,15 @@ class Adapter implements Port { get() { return query(); } }
 class Record { name: string; }
 `,
   );
-  const findings = scanRules(rules, [python, typescript]).filter(
+  const findings = (await scanRules(rules, [python, typescript])).filter(
     (finding) => finding.rule === "no-stateless-class",
   );
-  assert.deepEqual(
-    findings.map(({ file, line }) => [file, line]),
-    [
-      [python, 1],
-      [python, 7],
-      [typescript, 3],
-      [typescript, 5],
-      [typescript, 10],
-      [typescript, 11],
-    ],
-  );
+  expect(findings.map(({ file, line }) => [file, line])).toEqual([
+    [python, 1],
+    [python, 7],
+    [typescript, 3],
+    [typescript, 5],
+    [typescript, 10],
+    [typescript, 11],
+  ]);
 });

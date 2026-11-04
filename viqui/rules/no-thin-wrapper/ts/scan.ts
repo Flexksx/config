@@ -50,7 +50,7 @@ const delegation = (fn: FunctionNode) => {
 	return body;
 };
 
-scanFiles(RULE_ID, MESSAGE, (tree, report, _file, analysis) => {
+await scanFiles(RULE_ID, MESSAGE, (tree, report, _file, analysis) => {
 	visit(tree, (node) => {
 		let declaration: TSESTree.VariableDeclarator | TSESTree.FunctionDeclaration;
 		let name: TSESTree.BindingName | null;

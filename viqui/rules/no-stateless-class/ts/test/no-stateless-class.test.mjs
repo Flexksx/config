@@ -1,10 +1,9 @@
-import { spawnSync } from "node:child_process";
+import { afterAll, expect, test } from "bun:test";
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { fileURLToPath } from "node:url";
 
-const scanner = fileURLToPath(new URL("../scan.ts", import.meta.url));
+const scanner = join(import.meta.dir, "../scan.ts");
 const directory = mkdtempSync(join(tmpdir(), "viqui-stateless-"));
 afterAll(() => rmSync(directory, { recursive: true, force: true }));
 
@@ -18,9 +17,11 @@ test.each([
 ])("classifies class correctly: %s", (source, count) => {
   const path = join(directory, "class.ts");
   writeFileSync(path, source);
-  const result = spawnSync(process.execPath, [scanner, path], {
-    encoding: "utf8",
+  const result = Bun.spawnSync({
+    cmd: [process.execPath, scanner, path],
+    stdout: "pipe",
+    stderr: "pipe",
   });
-  expect(result.status).toBe(0);
-  expect(JSON.parse(result.stdout)).toHaveLength(count);
+  expect(result.exitCode).toBe(0);
+  expect(JSON.parse(result.stdout.toString())).toHaveLength(count);
 });

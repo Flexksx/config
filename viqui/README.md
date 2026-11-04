@@ -44,9 +44,12 @@ This can include pre-existing changes, and excludes ignored files and non-Git di
 Its configuration is managed by chezmoi at `~/.codex/hooks.json`.
 The Cursor hook runs matching rules on files edited through `Write` and `StrReplace`.
 Its configuration is managed by chezmoi at `~/.cursor/hooks.json`.
+The pi extension runs matching rules on files changed through `edit` and `write`, and on changed and untracked Git files after `bash`.
+It lives at `~/.pi/agent/extensions/viqui` and reports findings in the tool result.
 Install a release with `bun run install:viqui` from the repository root.
 Installation requires uv to create Viqui's isolated Ruff environment.
-The CLI requires Bun, and its scanners require Node.js 26 or later and Python 3.
+The CLI runs on Bun, and it runs the TypeScript scanners with the same Bun binary.
+The Python scanners require Python 3.
 Add `~/.local/share/viqui/current` to your `PATH` to invoke `viqui` directly.
 The hooks run the installed release at `~/.local/share/viqui/current`.
 Run the install command again after changing the harness to create and activate a new release.

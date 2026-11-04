@@ -57,4 +57,4 @@ const walk = (value: unknown, depth: number, report: Report): void => {
 	}
 };
 
-scanFiles(RULE_ID, MESSAGE, (tree, report) => walk(tree, ROOT_DEPTH, report));
+await scanFiles(RULE_ID, MESSAGE, (tree, report) => walk(tree, ROOT_DEPTH, report));

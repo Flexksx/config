@@ -1,24 +1,27 @@
-import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
+import { afterEach, expect, test } from "bun:test";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { test } from "node:test";
-import { fileURLToPath } from "node:url";
 
-const config = fileURLToPath(
-  new URL("../dependency-cruiser.cjs", import.meta.url),
+const config = join(import.meta.dir, "../dependency-cruiser.cjs");
+const cruiser = join(
+  import.meta.dir,
+  "../../node_modules/dependency-cruiser/bin/dependency-cruiser.mjs",
 );
-const cruiser = fileURLToPath(
-  new URL(
-    "../../node_modules/dependency-cruiser/bin/dependency-cruiser.mjs",
-    import.meta.url,
-  ),
-);
+const tempDirs = [];
+const tempDir = (prefix) => {
+  const directory = mkdtempSync(join(tmpdir(), prefix));
+  tempDirs.push(directory);
+  return directory;
+};
+afterEach(() => {
+  for (const directory of tempDirs.splice(0)) {
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
 
-test("rejects imports between rules while permitting own and shared modules", (t) => {
-  const root = mkdtempSync(join(tmpdir(), "viqui-dependencies-"));
-  t.after(() => rmSync(root, { recursive: true, force: true }));
+test("rejects imports between rules while permitting own and shared modules", () => {
+  const root = tempDir("viqui-dependencies-");
   for (const name of ["alpha", "beta"]) {
     mkdirSync(join(root, "viqui", "rules", name), { recursive: true });
   }
@@ -41,13 +44,15 @@ test("rejects imports between rules while permitting own and shared modules", (t
     'import "./own.mjs";\nimport "../../shared/common.mjs";\n',
   );
   const run = () =>
-    spawnSync(process.execPath, [cruiser, "--config", config, "viqui/rules"], {
+    Bun.spawnSync({
+      cmd: [process.execPath, cruiser, "--config", config, "viqui/rules"],
       cwd: root,
-      encoding: "utf8",
+      stdout: "pipe",
+      stderr: "pipe",
     });
-  assert.equal(run().status, 0);
+  expect(run().exitCode).toBe(0);
   writeFileSync(source, 'import "../beta/other.mjs";\n');
   const violation = run();
-  assert.equal(violation.status, 1);
-  assert.match(violation.stdout, /no-cross-rule-imports/);
+  expect(violation.exitCode).toBe(1);
+  expect(violation.stdout.toString()).toMatch(/no-cross-rule-imports/);
 });

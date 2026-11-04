@@ -1,5 +1,4 @@
-import { readdirSync, statSync } from "node:fs";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 
 const ignoredDirectories = new Set([
   ".git",
@@ -8,18 +7,24 @@ const ignoredDirectories = new Set([
   "__pycache__",
 ]);
 
-export const collectFiles = (path: string): string[] => {
-  const stat = statSync(path);
-  if (stat.isFile()) {
-    return [path];
+const isIgnored = (path: string): boolean =>
+  path.split("/").some((segment) => ignoredDirectories.has(segment));
+
+export const collectFiles = async (path: string): Promise<string[]> => {
+  const absolute = resolve(path);
+  if (await Bun.file(absolute).exists()) {
+    return [absolute];
   }
-  if (!stat.isDirectory()) {
-    return [];
+  const files: string[] = [];
+  const glob = new Bun.Glob("**/*");
+  for await (const relativePath of glob.scan({
+    cwd: absolute,
+    dot: true,
+    onlyFiles: true,
+  })) {
+    if (!isIgnored(relativePath)) {
+      files.push(join(absolute, relativePath));
+    }
   }
-  return readdirSync(path, { withFileTypes: true })
-    .filter((entry) => !entry.isSymbolicLink())
-    .filter(
-      (entry) => !entry.isDirectory() || !ignoredDirectories.has(entry.name),
-    )
-    .flatMap((entry) => collectFiles(join(path, entry.name)));
+  return files;
 };

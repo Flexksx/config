@@ -37,7 +37,7 @@ const booleanParameter = (parameter: SyntaxNode): boolean => {
 	return hasBooleanAnnotation || hasBooleanDefault;
 };
 
-scanFiles(RULE_ID, MESSAGE, (tree, report) => {
+await scanFiles(RULE_ID, MESSAGE, (tree, report) => {
 	visit(tree, (node) => {
 		if (isFunctionNode(node)) {
 			for (const parameter of node.params) {

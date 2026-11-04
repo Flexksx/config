@@ -18,7 +18,7 @@ const countConditions = (node: SyntaxNode): number => {
 	return 1;
 };
 
-scanFiles(RULE_ID, MESSAGE, (tree, report) => {
+await scanFiles(RULE_ID, MESSAGE, (tree, report) => {
 	visit(tree, (node) => {
 		if (node.type === AST_NODE_TYPES.IfStatement && countConditions(node.test) > MAX_CONDITIONS) {
 			report(node);

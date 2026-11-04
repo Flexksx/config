@@ -1,16 +1,16 @@
-import { spawnSync } from "node:child_process";
-import { fileURLToPath } from "node:url";
+import { expect, test } from "bun:test";
+import { join } from "node:path";
 
-const scanner = fileURLToPath(new URL("../scan.ts", import.meta.url));
+const scanner = join(import.meta.dir, "../scan.ts");
 const scan = (filename) => {
-  const path = fileURLToPath(
-    new URL(`./fixtures/${filename}`, import.meta.url),
-  );
-  const result = spawnSync(process.execPath, [scanner, path], {
-    encoding: "utf8",
+  const path = join(import.meta.dir, `./fixtures/${filename}`);
+  const result = Bun.spawnSync({
+    cmd: [process.execPath, scanner, path],
+    stdout: "pipe",
+    stderr: "pipe",
   });
-  expect(result.status).toBe(0);
-  return JSON.parse(result.stdout);
+  expect(result.exitCode).toBe(0);
+  return JSON.parse(result.stdout.toString());
 };
 
 test.each([

@@ -1,21 +1,21 @@
 #!/usr/bin/env bun
 import { realpathSync } from "node:fs";
-import { dirname, join, relative, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { join, relative, resolve } from "node:path";
 import { Command, CommanderError } from "commander";
 import { collectFiles } from "./core/files.ts";
 import { listRules, scanRules } from "./core/registry.mjs";
 
-const rulesDirectory = join(dirname(fileURLToPath(import.meta.url)), "rules");
+const rulesDirectory = join(import.meta.dir, "rules");
 const cli = new Command();
 cli.name("viqui").description("Run independent code checks").exitOverride();
 
 cli
   .command("list")
   .description("List installed rules as JSON")
-  .action(() => {
-    process.stdout.write(
-      `${JSON.stringify(listRules(rulesDirectory).map(({ manifest }) => manifest.id))}\n`,
+  .action(async () => {
+    const rules = await listRules(rulesDirectory);
+    await Bun.stdout.write(
+      `${JSON.stringify(rules.map(({ manifest }) => manifest.id))}\n`,
     );
   });
 
@@ -26,9 +26,14 @@ cli
   .option("--rule <name>", "run one rule")
   .option("--fail-on-findings", "exit with status 1 when findings are present")
   .action(
-    (paths: string[], options: { rule?: string; failOnFindings?: boolean }) => {
-      const files = paths.flatMap((path) => collectFiles(resolve(path)));
-      const findings = scanRules(rulesDirectory, files, options.rule);
+    async (
+      paths: string[],
+      options: { rule?: string; failOnFindings?: boolean },
+    ) => {
+      const files = (
+        await Promise.all(paths.map((path) => collectFiles(resolve(path))))
+      ).flat();
+      const findings = await scanRules(rulesDirectory, files, options.rule);
       const output = findings.map((finding) => {
         const path = relative(
           realpathSync(process.cwd()),
@@ -36,7 +41,7 @@ cli
         );
         return { ...finding, file: path.startsWith("..") ? path : `./${path}` };
       });
-      process.stdout.write(`${JSON.stringify(output)}\n`);
+      await Bun.stdout.write(`${JSON.stringify(output)}\n`);
       if (options.failOnFindings && findings.length) {
         process.exitCode = 1;
       }
@@ -44,12 +49,12 @@ cli
   );
 
 try {
-  cli.parse();
+  await cli.parseAsync(Bun.argv);
 } catch (error) {
   if (error instanceof CommanderError) {
     process.exitCode = error.exitCode === 0 ? 0 : 2;
   } else {
-    process.stderr.write(
+    await Bun.stderr.write(
       `${error instanceof Error ? error.message : String(error)}\n`,
     );
     process.exitCode = 2;

@@ -1,4 +1,3 @@
-import { readFileSync } from "node:fs";
 import parser from "@typescript-eslint/parser";
 import type { TSESTree } from "@typescript-eslint/utils";
 import type { Finding } from "../core/finding.ts";
@@ -6,7 +5,6 @@ import type { Finding } from "../core/finding.ts";
 export { AST_NODE_TYPES } from "@typescript-eslint/types";
 
 const NON_NODE_PROPERTIES = new Set(["loc", "range", "comments", "tokens"]);
-const FILE_ENCODING = "utf8";
 const TSX_EXTENSION = ".tsx";
 
 export type SyntaxNode = TSESTree.Node;
@@ -56,14 +54,14 @@ export const visit = (node: unknown, callback: (node: SyntaxNode) => void): void
 	}
 };
 
-export const scanFiles = (
+export const scanFiles = async (
 	rule: string,
 	message: string,
 	inspect: (tree: TSESTree.Program, report: Report, file: string, analysis: Analysis) => void,
-): void => {
+): Promise<void> => {
 	const findings: Finding[] = [];
-	for (const file of process.argv.slice(2)) {
-		const parsed = parser.parseForESLint(readFileSync(file, FILE_ENCODING), {
+	for (const file of Bun.argv.slice(2)) {
+		const parsed = parser.parseForESLint(await Bun.file(file).text(), {
 			loc: true,
 			range: true,
 			comment: true,
@@ -89,5 +87,5 @@ export const scanFiles = (
 			scopeManager: parsed.scopeManager,
 		});
 	}
-	process.stdout.write(JSON.stringify(findings));
+	await Bun.stdout.write(JSON.stringify(findings));
 };

@@ -1,18 +1,18 @@
-import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import { test } from "node:test";
-import { fileURLToPath } from "node:url";
+import { expect, test } from "bun:test";
+import { join } from "node:path";
 
-const directory = fileURLToPath(new URL("..", import.meta.url));
-const cli = fileURLToPath(new URL("../viqui.ts", import.meta.url));
+const directory = join(import.meta.dir, "..");
+const cli = join(import.meta.dir, "../viqui.ts");
 
 test("Viqui follows its rules outside intentional violation fixtures", () => {
-  const result = spawnSync("bun", [cli, "scan", directory], {
-    encoding: "utf8",
+  const result = Bun.spawnSync({
+    cmd: [process.execPath, cli, "scan", directory],
+    stdout: "pipe",
+    stderr: "pipe",
   });
-  assert.equal(result.status, 0, result.stderr);
-  const findings = JSON.parse(result.stdout).filter(
+  expect(result.exitCode).toBe(0);
+  const findings = JSON.parse(result.stdout.toString()).filter(
     ({ file }) => !file.includes("/test/fixtures/"),
   );
-  assert.deepEqual(findings, []);
-});
+  expect(findings).toEqual([]);
+}, 60000);

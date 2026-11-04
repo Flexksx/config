@@ -1,4 +1,3 @@
-import { spawnSync } from "node:child_process";
 import {
   cpSync,
   mkdirSync,
@@ -7,13 +6,12 @@ import {
   symlinkSync,
 } from "node:fs";
 import { homedir } from "node:os";
-import { basename, dirname, join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { basename, join, resolve } from "node:path";
 
-const source = dirname(fileURLToPath(import.meta.url));
+const source = import.meta.dir;
 const repository = resolve(source, "..");
 const destination = resolve(
-  process.argv[2] ?? join(homedir(), ".local/share/viqui"),
+  Bun.argv[2] ?? join(homedir(), ".local/share/viqui"),
 );
 const releases = join(destination, "releases");
 mkdirSync(releases, { recursive: true });
@@ -33,24 +31,22 @@ cpSync(source, join(release, "viqui"), {
     ].includes(basename(path)),
 });
 symlinkSync("viqui.ts", join(release, "viqui/viqui"));
-const install = spawnSync(
-  "bun",
-  [
+const install = Bun.spawnSync({
+  cmd: [
+    process.execPath,
     "install",
     "--production",
     "--frozen-lockfile",
     "--cache-dir",
     join(repository, ".cache", "bun"),
   ],
-  {
-    cwd: release,
-    stdio: "inherit",
-  },
-);
-if (install.error || install.status !== 0) {
-  throw new Error(
-    `Viqui installation failed: ${install.error?.message ?? install.status}`,
-  );
+  cwd: release,
+  stdin: "inherit",
+  stdout: "inherit",
+  stderr: "inherit",
+});
+if (!install.success) {
+  throw new Error(`Viqui installation failed: ${install.exitCode}`);
 }
 for (const arguments_ of [
   ["venv", join(release, ".venv")],
@@ -62,14 +58,17 @@ for (const arguments_ of [
     "ruff==0.17.3",
   ],
 ]) {
-  const result = spawnSync("uv", arguments_, { stdio: "inherit" });
-  if (result.error || result.status !== 0) {
-    throw new Error(
-      `Viqui Ruff installation failed: ${result.error?.message ?? result.status}`,
-    );
+  const result = Bun.spawnSync({
+    cmd: ["uv", ...arguments_],
+    stdin: "inherit",
+    stdout: "inherit",
+    stderr: "inherit",
+  });
+  if (!result.success) {
+    throw new Error(`Viqui Ruff installation failed: ${result.exitCode}`);
   }
 }
 const link = join(destination, `current-${basename(release)}`);
 symlinkSync(join("releases", basename(release), "viqui"), link);
 renameSync(link, join(destination, "current"));
-process.stdout.write(`Installed Viqui at ${join(destination, "current")}\n`);
+await Bun.stdout.write(`Installed Viqui at ${join(destination, "current")}\n`);

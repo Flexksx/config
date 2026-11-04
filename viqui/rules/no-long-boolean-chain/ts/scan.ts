@@ -26,7 +26,7 @@ const countChecks = (value: SyntaxNode): number => {
 	return 1;
 };
 
-scanFiles(RULE_ID, MESSAGE, (tree, report) => {
+await scanFiles(RULE_ID, MESSAGE, (tree, report) => {
 	const chains: Logical[] = [];
 	const nested = new Set<SyntaxNode>();
 	visit(tree, (node) => {

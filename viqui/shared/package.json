@@ -7,11 +7,12 @@
     "@typescript-eslint/types": "^8.72.1"
   },
   "devDependencies": {
-    "@typescript-eslint/utils": "^8.72.1",
+    "@types/bun": "^1.4.4",
     "@types/node": "^26.6.6",
+    "@typescript-eslint/utils": "^8.72.1",
     "typescript": "~6.0.3"
   },
   "scripts": {
-    "typecheck": "tsc --noEmit --strict --skipLibCheck --module nodenext --target es2022 --types node --allowImportingTsExtensions scanner.ts ../rules/no-boolean-parameter/ts/scan.ts ../rules/no-comments/ts/scan.ts ../rules/no-complex-if-condition/ts/scan.ts ../rules/no-deep-nesting/ts/scan.ts ../rules/no-empty-exception-handler/ts/scan.ts ../rules/no-long-boolean-chain/ts/scan.ts ../rules/no-nested-ternary/ts/scan.ts"
+    "typecheck": "tsc --noEmit --strict --skipLibCheck --module nodenext --target es2022 --types node,bun --allowImportingTsExtensions scanner.ts ../rules/no-boolean-parameter/ts/scan.ts ../rules/no-comments/ts/scan.ts ../rules/no-complex-if-condition/ts/scan.ts ../rules/no-deep-nesting/ts/scan.ts ../rules/no-empty-exception-handler/ts/scan.ts ../rules/no-long-boolean-chain/ts/scan.ts ../rules/no-nested-ternary/ts/scan.ts"
   }
 }

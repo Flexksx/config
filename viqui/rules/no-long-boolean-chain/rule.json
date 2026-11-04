@@ -10,7 +10,7 @@
         ".mjs",
         ".cjs"
       ],
-      "runtime": "node",
+      "runtime": "bun",
       "entrypoint": "ts/scan.ts"
     },
     {

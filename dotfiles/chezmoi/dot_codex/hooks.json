@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"$HOME/.local/share/viqui/current/codex/check.mjs\"",
+            "command": "bun \"$HOME/.local/share/viqui/current/codex/check.mjs\"",
             "timeout": 15,
             "statusMessage": "Running Viqui checks"
           }

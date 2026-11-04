@@ -1,19 +1,37 @@
-import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
+import { afterEach, expect, test } from "bun:test";
 import { mkdtempSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, relative } from "node:path";
-import { test } from "node:test";
-import { fileURLToPath } from "node:url";
 
-const cli = fileURLToPath(new URL("../viqui.ts", import.meta.url));
-const run = (...arguments_) =>
-  spawnSync("bun", [cli, ...arguments_], { encoding: "utf8" });
+const cli = join(import.meta.dir, "../viqui.ts");
+const tempDirs = [];
+const tempDir = (prefix) => {
+  const directory = mkdtempSync(join(tmpdir(), prefix));
+  tempDirs.push(directory);
+  return directory;
+};
+afterEach(() => {
+  for (const directory of tempDirs.splice(0)) {
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
+const run = (...arguments_) => {
+  const result = Bun.spawnSync({
+    cmd: [process.execPath, cli, ...arguments_],
+    stdout: "pipe",
+    stderr: "pipe",
+  });
+  return {
+    status: result.exitCode,
+    stdout: result.stdout.toString(),
+    stderr: result.stderr.toString(),
+  };
+};
 
 test("lists installed rules", () => {
   const result = run("list");
-  assert.equal(result.status, 0);
-  assert.deepEqual(JSON.parse(result.stdout).sort(), [
+  expect(result.status).toBe(0);
+  expect(JSON.parse(result.stdout).sort()).toEqual([
     "no-boolean-parameter",
     "no-comments",
     "no-complex-if-condition",
@@ -26,9 +44,8 @@ test("lists installed rules", () => {
   ]);
 });
 
-test("selects a rule and can fail on findings", (t) => {
-  const directory = mkdtempSync(join(tmpdir(), "viqui-test-"));
-  t.after(() => rmSync(directory, { recursive: true, force: true }));
+test("selects a rule and can fail on findings", () => {
+  const directory = tempDir("viqui-test-");
   const path = join(directory, "service.py");
   writeFileSync(
     path,
@@ -41,51 +58,46 @@ test("selects a rule and can fail on findings", (t) => {
     "--fail-on-findings",
     path,
   );
-  assert.equal(selected.status, 1);
-  assert.deepEqual(
-    JSON.parse(selected.stdout).map(({ rule }) => rule),
-    ["no-stateless-class"],
-  );
+  expect(selected.status).toBe(1);
+  expect(JSON.parse(selected.stdout).map(({ rule }) => rule)).toEqual([
+    "no-stateless-class",
+  ]);
   const other = run("scan", "--rule", "no-thin-wrapper", path);
-  assert.equal(other.status, 0);
-  assert.deepEqual(JSON.parse(other.stdout), []);
+  expect(other.status).toBe(0);
+  expect(JSON.parse(other.stdout)).toEqual([]);
 });
 
 test("rejects unknown rules and missing paths", () => {
   const unknown = run("scan", "--rule", "missing", ".");
-  assert.equal(unknown.status, 2);
-  assert.match(unknown.stderr, /Unknown rule/);
+  expect(unknown.status).toBe(2);
+  expect(unknown.stderr).toMatch(/Unknown rule/);
   const missing = run("scan");
-  assert.equal(missing.status, 2);
-  assert.match(missing.stderr, /missing required argument/);
+  expect(missing.status).toBe(2);
+  expect(missing.stderr).toMatch(/missing required argument/);
 });
 
 test("shows help without affecting JSON output", () => {
   const result = run("scan", "--help");
-  assert.equal(result.status, 0);
-  assert.match(result.stdout, /--fail-on-findings/);
-  assert.equal(result.stderr, "");
+  expect(result.status).toBe(0);
+  expect(result.stdout).toMatch(/--fail-on-findings/);
+  expect(result.stderr).toBe("");
 });
 
-test("reports paths relative to the scan working directory", (t) => {
-  const directory = mkdtempSync(join(tmpdir(), "viqui-paths-"));
-  t.after(() => rmSync(directory, { recursive: true, force: true }));
+test("reports paths relative to the scan working directory", () => {
+  const directory = tempDir("viqui-paths-");
   const file = join(directory, "example.py");
   writeFileSync(file, "# comment\n");
-  const result = spawnSync(
-    "bun",
-    [cli, "scan", "--rule", "no-comments", file],
-    {
-      cwd: directory,
-      encoding: "utf8",
-    },
-  );
-  assert.equal(result.status, 0, result.stderr);
-  assert.equal(JSON.parse(result.stdout)[0].file, "./example.py");
+  const result = Bun.spawnSync({
+    cmd: [process.execPath, cli, "scan", "--rule", "no-comments", file],
+    cwd: directory,
+    stdout: "pipe",
+    stderr: "pipe",
+  });
+  expect(result.exitCode).toBe(0);
+  expect(JSON.parse(result.stdout.toString())[0].file).toBe("./example.py");
   const outside = run("scan", "--rule", "no-comments", file);
-  assert.equal(outside.status, 0, outside.stderr);
-  assert.equal(
-    JSON.parse(outside.stdout)[0].file,
+  expect(outside.status).toBe(0);
+  expect(JSON.parse(outside.stdout)[0].file).toBe(
     relative(realpathSync(process.cwd()), realpathSync(file)),
   );
 });

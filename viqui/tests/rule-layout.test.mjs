@@ -1,12 +1,9 @@
-import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import { readdirSync, readFileSync, statSync } from "node:fs";
+import { expect, test } from "bun:test";
+import { readdirSync } from "node:fs";
 import { join } from "node:path";
-import { test } from "node:test";
-import { fileURLToPath } from "node:url";
 
-const root = fileURLToPath(new URL("../rules", import.meta.url));
-const repository = fileURLToPath(new URL("../..", import.meta.url));
+const root = join(import.meta.dir, "../rules");
+const repository = join(import.meta.dir, "../..");
 const extensions = {
   ts: new Set([".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".json"]),
   py: new Set([".py", ".toml", ".txt", ".json"]),
@@ -16,45 +13,43 @@ for (const rule of readdirSync(root, { withFileTypes: true }).filter((entry) =>
   entry.isDirectory(),
 )) {
   const directory = join(root, rule.name);
-  const manifest = JSON.parse(
-    readFileSync(join(directory, "rule.json"), "utf8"),
-  );
+  const manifest = await Bun.file(join(directory, "rule.json")).json();
   test(`${rule.name} keeps scanners in language directories`, () => {
-    assert.equal(manifest.scanners.length, 2);
+    expect(manifest.scanners.length).toBe(2);
     for (const entry of readdirSync(directory, { withFileTypes: true })) {
       if (entry.isFile()) {
-        assert.ok(
-          ["rule.json", "README.md", "package.json", "pyproject.toml"].includes(
-            entry.name,
-          ),
-          entry.name,
-        );
+        expect([
+          "rule.json",
+          "README.md",
+          "package.json",
+          "pyproject.toml",
+        ]).toContain(entry.name);
       }
     }
   });
   for (const language of ["ts", "py"]) {
-    test(`${rule.name}/${language} has an isolated, tested scanner`, () => {
+    test(`${rule.name}/${language} has an isolated, tested scanner`, async () => {
       const base = join(directory, language);
       for (const path of [
         `scan.${language}`,
         `test/fixtures/valid.${language}`,
         `test/fixtures/invalid.${language}`,
       ]) {
-        assert.ok(statSync(join(base, path)).isFile(), path);
+        expect(await Bun.file(join(base, path)).exists()).toBe(true);
       }
       const scanner = manifest.scanners.find(
         (entry) => entry.entrypoint === `${language}/scan.${language}`,
       );
-      assert.ok(scanner, `missing ${language} scanner`);
-      assert.equal(scanner.runtime, language === "ts" ? "node" : "python3");
+      expect(scanner).toBeDefined();
+      expect(scanner.runtime).toBe(language === "ts" ? "bun" : "python3");
       const allowed =
         language === "ts"
           ? [".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"]
           : [".py"];
-      assert.ok(scanner.extensions.length > 0);
-      assert.ok(
+      expect(scanner.extensions.length).toBeGreaterThan(0);
+      expect(
         scanner.extensions.every((extension) => allowed.includes(extension)),
-      );
+      ).toBe(true);
       const walk = (path) => {
         for (const entry of readdirSync(path, { withFileTypes: true })) {
           if (
@@ -73,10 +68,9 @@ for (const rule of readdirSync(root, { withFileTypes: true }).filter((entry) =>
           if (entry.isDirectory()) {
             walk(child);
           } else {
-            assert.ok(
+            expect(
               extensions[language].has(child.slice(child.lastIndexOf("."))),
-              child,
-            );
+            ).toBe(true);
           }
         }
       };
@@ -87,22 +81,21 @@ for (const rule of readdirSync(root, { withFileTypes: true }).filter((entry) =>
       ]) {
         const fixture = join(base, `test/fixtures/${name}.${language}`);
         const runner = language === "ts" ? process.execPath : "python3";
-        const result = spawnSync(
-          runner,
-          [join(base, `scan.${language}`), fixture],
-          {
-            cwd: repository,
-            encoding: "utf8",
-            env: { ...process.env, PYTHONPATH: repository },
-          },
-        );
-        assert.equal(result.status, 0, result.stderr);
-        const findings = JSON.parse(result.stdout);
-        assert.equal(findings.length, expected, fixture);
+        const result = Bun.spawnSync({
+          cmd: [runner, join(base, `scan.${language}`), fixture],
+          cwd: repository,
+          env: { ...Bun.env, PYTHONPATH: repository },
+          stdout: "pipe",
+          stderr: "pipe",
+        });
+        expect(result.exitCode).toBe(0);
+        const findings = JSON.parse(result.stdout.toString());
+        expect(findings.length).toBe(expected);
         if (expected) {
-          assert.equal(findings[0].rule, manifest.id);
-          assert.equal(findings[0].file, fixture);
-          assert.ok(findings[0].line > 0 && findings[0].column > 0);
+          expect(findings[0].rule).toBe(manifest.id);
+          expect(findings[0].file).toBe(fixture);
+          expect(findings[0].line).toBeGreaterThan(0);
+          expect(findings[0].column).toBeGreaterThan(0);
         }
       }
     });

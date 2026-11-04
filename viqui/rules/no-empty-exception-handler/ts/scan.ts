@@ -1,17 +1,17 @@
-import { fileURLToPath } from "node:url";
+import { join } from "node:path";
 import { scanBiome } from "../../../shared/biome.ts";
 
 const RULE_ID = "no-empty-exception-handler";
 const MESSAGE = "Empty block; consider removing it or handling the case explicitly.";
-const config = fileURLToPath(new URL("./biome-config.json", import.meta.url));
-process.stdout.write(
+const config = join(import.meta.dir, "biome-config.json");
+await Bun.stdout.write(
 	JSON.stringify(
 		scanBiome(
 			config,
 			["lint/suspicious/noEmptyBlockStatements"],
 			RULE_ID,
 			MESSAGE,
-			process.argv.slice(2),
+			Bun.argv.slice(2),
 		),
 	),
 );

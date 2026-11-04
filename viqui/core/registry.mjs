@@ -1,5 +1,3 @@
-import { spawnSync } from "node:child_process";
-import { readdirSync, readFileSync } from "node:fs";
 import {
   delimiter,
   dirname,
@@ -24,17 +22,44 @@ const validFinding = (finding, rule, paths) => {
   return validLine && validColumn && validMessage;
 };
 
-export const listRules = (rulesDirectory) => {
+const runScanner = (rule, runtime, script, paths, env) => {
+  const command = runtime === "bun" ? process.execPath : runtime;
+  let result;
+  try {
+    result = Bun.spawnSync({
+      cmd: [command, script, ...paths],
+      env,
+      stdout: "pipe",
+      stderr: "pipe",
+    });
+  } catch (error) {
+    throw new Error(
+      `Rule ${rule} failed: ${error instanceof Error ? error.message : String(error)}`,
+    );
+  }
+  if (!result.success) {
+    throw new Error(`Rule ${rule} failed: ${result.stderr.toString()}`);
+  }
+  return result;
+};
+
+export const listRules = async (rulesDirectory) => {
   const rules = [];
   const identifiers = new Set();
-  for (const entry of readdirSync(rulesDirectory, { withFileTypes: true })) {
-    if (!entry.isDirectory()) {
+  const glob = new Bun.Glob("*");
+  for await (const entry of glob.scan({
+    cwd: rulesDirectory,
+    onlyFiles: false,
+  })) {
+    const directory = resolve(rulesDirectory, entry);
+    if (await Bun.file(directory).exists()) {
       continue;
     }
-    const directory = resolve(rulesDirectory, entry.name);
-    const manifest = JSON.parse(
-      readFileSync(join(directory, "rule.json"), "utf8"),
-    );
+    const manifestPath = join(directory, "rule.json");
+    if (!(await Bun.file(manifestPath).exists())) {
+      throw new Error(`Invalid rule manifest: ${directory}`);
+    }
+    const manifest = await Bun.file(manifestPath).json();
     const invalidIdentifier =
       typeof manifest.id !== "string" ||
       !manifest.id ||
@@ -50,9 +75,9 @@ export const listRules = (rulesDirectory) => {
   return rules;
 };
 
-export const scanRules = (rulesDirectory, files, selectedRule) => {
+export const scanRules = async (rulesDirectory, files, selectedRule) => {
   const findings = [];
-  const rules = listRules(rulesDirectory);
+  const rules = await listRules(rulesDirectory);
   if (
     selectedRule &&
     !rules.some(({ manifest }) => manifest.id === selectedRule)
@@ -71,7 +96,7 @@ export const scanRules = (rulesDirectory, files, selectedRule) => {
           (extension) =>
             typeof extension === "string" && /^\.[a-z0-9]+$/.test(extension),
         );
-      const invalidRuntime = !["node", "python3"].includes(scanner.runtime);
+      const invalidRuntime = !["bun", "python3"].includes(scanner.runtime);
       const invalidEntrypoint =
         typeof scanner.entrypoint !== "string" ||
         isAbsolute(scanner.entrypoint);
@@ -93,27 +118,23 @@ export const scanRules = (rulesDirectory, files, selectedRule) => {
       if (!paths.length) {
         continue;
       }
-      const result = spawnSync(scanner.runtime, [script, ...paths], {
-        encoding: "utf8",
-        env:
-          scanner.runtime === "python3"
-            ? {
-                ...process.env,
-                PYTHONPATH: [
-                  dirname(dirname(rulesDirectory)),
-                  process.env.PYTHONPATH,
-                ]
-                  .filter(Boolean)
-                  .join(delimiter),
-              }
-            : process.env,
-      });
-      if (result.error || result.status !== 0) {
-        throw new Error(
-          `Rule ${manifest.id} failed: ${result.error?.message ?? result.stderr}`,
-        );
-      }
-      const output = JSON.parse(result.stdout);
+      const env =
+        scanner.runtime === "python3"
+          ? {
+              ...Bun.env,
+              PYTHONPATH: [dirname(dirname(rulesDirectory)), Bun.env.PYTHONPATH]
+                .filter(Boolean)
+                .join(delimiter),
+            }
+          : Bun.env;
+      const result = runScanner(
+        manifest.id,
+        scanner.runtime,
+        script,
+        paths,
+        env,
+      );
+      const output = JSON.parse(result.stdout.toString());
       if (!Array.isArray(output)) {
         throw new Error(`Invalid findings from rule: ${manifest.id}`);
       }
