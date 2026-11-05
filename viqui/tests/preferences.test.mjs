@@ -2,8 +2,13 @@ import { afterEach, expect, test } from "bun:test";
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import {
+  checkstyleCachePath,
+  ensureCheckstyleJar,
+} from "../shared/checkstyle.ts";
 
 const cli = join(import.meta.dir, "../viqui.ts");
+await ensureCheckstyleJar(checkstyleCachePath());
 const tempDirs = [];
 const tempDir = (prefix) => {
   const directory = mkdtempSync(join(tmpdir(), prefix));
@@ -269,5 +274,86 @@ nested = (c if b else d) if a else e
   ).toEqual([
     [3, 9],
     [4, 10],
+  ]);
+});
+
+test("reports the inner nested ternary in Java", () => {
+  expect(
+    scan(
+      "no-nested-ternary",
+      "Ternary.java",
+      `final class Example {
+    int choose(boolean a, boolean b) {
+        return a ? 1 : b ? 2 : 3;
+    }
+}
+`,
+    ),
+  ).toEqual([[3, 26]]);
+});
+
+test("reports Java boolean parameters", () => {
+  expect(
+    scan(
+      "no-boolean-parameter",
+      "Parameters.java",
+      `final class Example {
+    int find(String identifier, boolean active) {
+        return active ? 1 : 0;
+    }
+}
+`,
+    ),
+  ).toEqual([[2, 33]]);
+});
+
+test("reports Java methods that alias another method but not preset calls", () => {
+  expect(
+    scan(
+      "no-thin-wrapper",
+      "Wrapper.java",
+      `final class Example {
+    int calculate(int value) {
+        return combine(value);
+    }
+
+    int scaled(int value) {
+        return combine(value, 2);
+    }
+
+    int combine(int value, int factor) {
+        return value * factor;
+    }
+}
+`,
+    ),
+  ).toEqual([[2, 5]]);
+});
+
+test("reports the fourth Java nesting level and keeps else-if at the same level", () => {
+  expect(
+    scan(
+      "no-deep-nesting",
+      "Nesting.java",
+      `final class Example {
+    void run(int a) {
+        if (a == 1) {
+            for (int i = 0; i < a; i++) {
+                while (a > 0) {
+                    if (a == 2) {
+                        a--;
+                    } else if (a == 3) {
+                        a = 0;
+                    }
+                }
+            }
+        }
+    }
+}
+`,
+    ),
+  ).toEqual([
+    [6, 21],
+    [8, 28],
   ]);
 });

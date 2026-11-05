@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN" "https://checkstyle.org/dtds/configuration_1_3.dtd">
+<module name="Checker">
+  <module name="TreeWalker">
+    <module name="MatchXpath">
+      <property name="id" value="booleanParameter"/>
+      <property name="query" value="//PARAMETER_DEF[TYPE/LITERAL_BOOLEAN or TYPE/IDENT[@text='Boolean']]"/>
+      <message key="matchxpath.match" value="Boolean parameter switches behavior."/>
+    </module>
+  </module>
+</module>

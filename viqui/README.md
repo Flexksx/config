@@ -3,6 +3,7 @@
 Viqui runs checks independently of an agent using a Bun TypeScript CLI.
 The [thin-wrapper rule](rules/no-thin-wrapper/README.md) and [stateless-class rule](rules/no-stateless-class/README.md) have TypeScript and Python implementations.
 Viqui also reports boolean parameters, comments, empty exception handlers, deeply nested control flow, and complex `if` conditions.
+Eight rules also have a Java implementation backed by Checkstyle; the stateless-class rule has no Java implementation because a class without instance state is idiomatic in Java.
 Findings are review prompts, not automatic fixes.
 Rule implementations may share code through `viqui/shared`.
 Dependency-cruiser and import-linter check JavaScript, TypeScript, and Python rule imports as part of `bun run lint`.
@@ -11,16 +12,20 @@ Static import checks cannot detect dynamic loading or runtime changes to Python 
 
 The boolean parameter rule checks explicit `boolean` annotations and boolean literal defaults in TypeScript declarations.
 In Python it checks boolean-typed positional arguments and boolean positional defaults, allowing keyword-only arguments.
-The comment rule checks Python, TypeScript, and JavaScript, allowing shebangs, Python encoding declarations, and recognized tool directives.
-Python docstrings are not comments; TypeScript documentation comments are reported.
+In Java it checks boolean parameters, both primitive and boxed.
+The comment rule checks Python, TypeScript, JavaScript, and Java, allowing shebangs, Python encoding declarations, and recognized tool directives.
+Python docstrings are not comments; TypeScript and Java documentation comments are reported.
 The empty exception handler rule reports Python handlers containing only `pass`.
 In TypeScript it reports empty blocks, including catches, and allows blocks containing a comment.
+In Java it reports empty blocks and empty catch blocks, and allows blocks containing a comment.
 The nesting rule reports control flow beyond three levels.
 The TypeScript scanner counts `if`, loops, `try`, and `switch`, and resets depth in functions and classes.
 The Python scanner uses Ruff's nested-block count.
+The Java scanner counts `if`, loops, `switch`, `try`, and `catch`, and resets depth in methods, constructors, lambdas, and type declarations.
 The boolean-chain rule reports expressions with more than three checks in any context.
 The nested-ternary rule reports conditional expressions nested directly inside another conditional expression.
 The condition rule reports more than two boolean expressions in a Python `if` or checks joined by `&&` or `||` in TypeScript.
+In Java it counts `&&` and `||` inside an `if` condition.
 The Python rule does not count chained comparisons or all expressions behind negation as separate checks.
 Neither rule reports conditional expressions or comprehensions as control-flow blocks.
 
@@ -53,7 +58,7 @@ The pi extension inlines the same match and blocks the call in a `tool_call` han
 The guard checks path and command fields only, so file contents may mention `.env`.
 Run the install command again and apply the hook configuration after changing the guard.
 Install a release with `bun run install:viqui` from the repository root.
-Installation requires uv to create Viqui's isolated Ruff environment.
+Installation requires uv to create Viqui's isolated Ruff environment, and downloads the pinned Checkstyle jar into the release.
 The CLI runs on Bun, and it runs the TypeScript scanners with the same Bun binary.
 The Python scanners require Python 3.
 Add `~/.local/share/viqui/current` to your `PATH` to invoke `viqui` directly.
@@ -75,8 +80,12 @@ The test suite scans Viqui itself and excludes intentional violation fixtures.
 Python uses Ruff `S110`, `FBT001`, `FBT002`, `PLR1702`, and `PLR0916` for the corresponding rules.
 The `PLR1702` and `PLR0916` checks use Ruff's preview mode.
 TypeScript uses Biome `noNestedTernary`, `noEmptyBlockStatements`, `useThisInClassMethods`, and `noStaticOnlyClass`.
-Viqui installs pinned copies of both tools and runs them with its own configuration without applying fixes.
+Java uses Checkstyle check modules and `MatchXpath` queries for the corresponding rules.
+Viqui installs pinned copies of all tools and runs them with its own configuration without applying fixes.
 Ruff ignores `noqa` suppressions for these rules, while Biome honors its inline suppressions.
+Checkstyle needs a Java 11 or newer runtime on `PATH`; set `VIQUI_JAVA` or `JAVA_HOME` to point at one.
+Set `VIQUI_CHECKSTYLE_JAR` to reuse a Checkstyle jar, such as the one from nixpkgs.
+The jar is cached under `.cache/checkstyle` when tests run from the repository root.
 
 `viqui scan --rule no-stateless-class path/to/files` runs one rule.
 Use `viqui --help` or `viqui scan --help` to see available commands and options.

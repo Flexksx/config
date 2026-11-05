@@ -13,6 +13,6 @@
     "typescript": "~6.0.3"
   },
   "scripts": {
-    "typecheck": "tsc --noEmit --strict --skipLibCheck --module nodenext --target es2022 --types node,bun --allowImportingTsExtensions scanner.ts ../rules/no-boolean-parameter/ts/scan.ts ../rules/no-comments/ts/scan.ts ../rules/no-complex-if-condition/ts/scan.ts ../rules/no-deep-nesting/ts/scan.ts ../rules/no-empty-exception-handler/ts/scan.ts ../rules/no-long-boolean-chain/ts/scan.ts ../rules/no-nested-ternary/ts/scan.ts"
+    "typecheck": "tsc --noEmit --strict --skipLibCheck --module nodenext --target es2022 --types node,bun --allowImportingTsExtensions scanner.ts checkstyle.ts ../rules/no-boolean-parameter/ts/scan.ts ../rules/no-comments/ts/scan.ts ../rules/no-complex-if-condition/ts/scan.ts ../rules/no-deep-nesting/ts/scan.ts ../rules/no-empty-exception-handler/ts/scan.ts ../rules/no-long-boolean-chain/ts/scan.ts ../rules/no-nested-ternary/ts/scan.ts ../rules/no-boolean-parameter/java/scan.ts ../rules/no-comments/java/scan.ts ../rules/no-complex-if-condition/java/scan.ts ../rules/no-deep-nesting/java/scan.ts ../rules/no-empty-exception-handler/java/scan.ts ../rules/no-long-boolean-chain/java/scan.ts ../rules/no-nested-ternary/java/scan.ts ../rules/no-thin-wrapper/java/scan.ts"
   }
 }

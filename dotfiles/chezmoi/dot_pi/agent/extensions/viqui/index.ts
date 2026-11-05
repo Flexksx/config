@@ -14,6 +14,7 @@ const supported = new Set([
 	".cjs",
 	".ts",
 	".tsx",
+	".java",
 ]);
 const gitTimeout = 15000;
 const scanTimeout = 60000;

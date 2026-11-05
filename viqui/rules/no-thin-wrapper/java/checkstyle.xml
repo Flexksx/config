@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN" "https://checkstyle.org/dtds/configuration_1_3.dtd">
+<module name="Checker">
+  <module name="TreeWalker">
+    <module name="MatchXpath">
+      <property name="id" value="thinWrapper"/>
+      <property name="query" value="//METHOD_DEF[count(SLIST/LITERAL_RETURN) = 1 and count(SLIST/*[not(self::LITERAL_RETURN) and not(self::RCURLY)]) = 0 and not(MODIFIERS/ANNOTATION/IDENT[@text='Override']) and count(SLIST/LITERAL_RETURN/EXPR/METHOD_CALL/ELIST/EXPR) &gt; 0 and count(PARAMETERS/PARAMETER_DEF) = count(SLIST/LITERAL_RETURN/EXPR/METHOD_CALL/ELIST/EXPR) and count(SLIST/LITERAL_RETURN/EXPR/METHOD_CALL/ELIST/EXPR[count(IDENT) = 1 and not(DOT)]) = count(PARAMETERS/PARAMETER_DEF) and (every $p in PARAMETERS/PARAMETER_DEF/IDENT satisfies count(SLIST/LITERAL_RETURN/EXPR/METHOD_CALL/ELIST/EXPR/IDENT[@text = $p/@text]) = 1) and (every $a in SLIST/LITERAL_RETURN/EXPR/METHOD_CALL/ELIST/EXPR/IDENT satisfies (some $p in PARAMETERS/PARAMETER_DEF/IDENT satisfies $p/@text = $a/@text)) and (some $c in (SLIST/LITERAL_RETURN/EXPR/METHOD_CALL/IDENT, SLIST/LITERAL_RETURN/EXPR/METHOD_CALL/DOT/IDENT[last()]) satisfies (not(some $n in IDENT satisfies $n/@text = $c/@text)))]"/>
+      <message key="matchxpath.match" value="This method only delegates to a differently named method."/>
+    </module>
+  </module>
+</module>

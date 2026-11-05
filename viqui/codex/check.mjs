@@ -36,6 +36,7 @@ const supported = new Set([
   ".cjs",
   ".ts",
   ".tsx",
+  ".java",
 ]);
 let paths;
 let cachePath;

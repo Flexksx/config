@@ -19,6 +19,13 @@
       ],
       "runtime": "python3",
       "entrypoint": "py/scan.py"
+    },
+    {
+      "extensions": [
+        ".java"
+      ],
+      "runtime": "bun",
+      "entrypoint": "java/scan.ts"
     }
   ]
 }

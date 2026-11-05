@@ -7,6 +7,7 @@ import {
 } from "node:fs";
 import { homedir } from "node:os";
 import { basename, join, resolve } from "node:path";
+import { ensureCheckstyleJar } from "./shared/checkstyle.ts";
 
 const source = import.meta.dir;
 const repository = resolve(source, "..");
@@ -68,6 +69,7 @@ for (const arguments_ of [
     throw new Error(`Viqui Ruff installation failed: ${result.exitCode}`);
   }
 }
+await ensureCheckstyleJar(join(release, "checkstyle.jar"));
 const link = join(destination, `current-${basename(release)}`);
 symlinkSync(join("releases", basename(release), "viqui"), link);
 renameSync(link, join(destination, "current"));

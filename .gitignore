@@ -12,6 +12,7 @@ backgrounds/
 # Bun and Node.js
 node_modules/
 /.cache/bun/
+/.cache/checkstyle/
 
 # Python and development tooling
 .venv/
