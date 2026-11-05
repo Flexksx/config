@@ -6,7 +6,7 @@ const MESSAGE = "Boolean expression has more than three checks; extract named co
 
 await Bun.stdout.write(
 	JSON.stringify(
-		scanCheckstyle(
+		await scanCheckstyle(
 			join(import.meta.dir, "checkstyle.xml"),
 			["BooleanExpressionComplexityCheck"],
 			RULE_ID,

@@ -6,7 +6,7 @@ const MESSAGE = "Boolean parameter switches behavior; consider separate operatio
 
 await Bun.stdout.write(
 	JSON.stringify(
-		scanCheckstyle(
+		await scanCheckstyle(
 			join(import.meta.dir, "checkstyle.xml"),
 			["booleanParameter"],
 			RULE_ID,

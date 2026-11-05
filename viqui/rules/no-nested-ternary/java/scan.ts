@@ -6,7 +6,7 @@ const MESSAGE = "Nested conditional expressions are hard to follow; use separate
 
 await Bun.stdout.write(
 	JSON.stringify(
-		scanCheckstyle(
+		await scanCheckstyle(
 			join(import.meta.dir, "checkstyle.xml"),
 			["nestedTernary"],
 			RULE_ID,

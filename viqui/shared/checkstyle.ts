@@ -1,5 +1,4 @@
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
+import { join, resolve } from "node:path";
 import type { Finding } from "../core/finding.ts";
 
 export const CHECKSTYLE_VERSION = "10.26.1";
@@ -28,12 +27,11 @@ export const ensureCheckstyleJar = async (target: string): Promise<string> => {
 	if (actual !== CHECKSTYLE_SHA256) {
 		throw new Error(`Checkstyle checksum mismatch: ${actual}`);
 	}
-	mkdirSync(dirname(target), { recursive: true });
-	writeFileSync(target, new Uint8Array(bytes));
+	await Bun.write(target, bytes);
 	return target;
 };
 
-export const checkstyleJar = (): string => {
+const checkstyleJar = async (): Promise<string> => {
 	const root = resolve(import.meta.dir, "..", "..");
 	const candidates = [
 		Bun.env.VIQUI_CHECKSTYLE_JAR,
@@ -41,7 +39,7 @@ export const checkstyleJar = (): string => {
 		join(root, ".cache", "checkstyle", CHECKSTYLE_FILE),
 	].filter((candidate): candidate is string => Boolean(candidate));
 	for (const candidate of candidates) {
-		if (existsSync(candidate)) {
+		if (await Bun.file(candidate).exists()) {
 			return candidate;
 		}
 	}
@@ -93,17 +91,18 @@ const parseDiagnostics = (xml: string): Diagnostic[] => {
 	return diagnostics;
 };
 
-export const scanCheckstyle = (
+export const scanCheckstyle = async (
 	config: string,
 	categories: string[],
 	rule: string,
 	message: string,
 	paths: string[],
-): Finding[] => {
+): Promise<Finding[]> => {
+	const jar = await checkstyleJar();
 	let result: { stdout: Buffer; stderr: Buffer };
 	try {
 		result = Bun.spawnSync({
-			cmd: [javaCommand(), "-jar", checkstyleJar(), "-c", config, "-f", "xml", ...paths],
+			cmd: [javaCommand(), "-jar", jar, "-c", config, "-f", "xml", ...paths],
 			stdout: "pipe",
 			stderr: "pipe",
 		});

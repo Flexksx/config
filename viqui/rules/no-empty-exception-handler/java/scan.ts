@@ -6,7 +6,7 @@ const MESSAGE = "Empty block; consider removing it or handling the case explicit
 
 await Bun.stdout.write(
 	JSON.stringify(
-		scanCheckstyle(
+		await scanCheckstyle(
 			join(import.meta.dir, "checkstyle.xml"),
 			["EmptyBlockCheck", "EmptyCatchBlockCheck"],
 			RULE_ID,

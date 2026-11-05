@@ -7,7 +7,7 @@ const MESSAGE =
 
 await Bun.stdout.write(
 	JSON.stringify(
-		scanCheckstyle(
+		await scanCheckstyle(
 			join(import.meta.dir, "checkstyle.xml"),
 			["thinWrapper"],
 			RULE_ID,

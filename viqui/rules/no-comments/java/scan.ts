@@ -6,7 +6,7 @@ const MESSAGE = "Comment found; consider expressing the intent in code.";
 const DIRECTIVE =
 	/^(?:\/\/\s*(?:noinspection\b|NOSONAR\b|CHECKSTYLE:|SUPPRESS\s+CHECKSTYLE|spotless:|region\b|endregion\b|@formatter:)|(?:\/\*\*?)\s*(?:@license\b|Copyright\b))/;
 
-const findings = scanCheckstyle(
+const findings = await scanCheckstyle(
 	join(import.meta.dir, "checkstyle.xml"),
 	["IllegalTokenCheck"],
 	RULE_ID,
