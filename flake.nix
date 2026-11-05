@@ -12,6 +12,7 @@
       url = "github:flexksx/turb";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sonora.url = "github:sonorahq/sonora";
     slackcli.url = "github:Flexksx/slackcli";
     moldsign = {
       url = "github:Flexksx/moldsign";

@@ -21,12 +21,7 @@
     musicPackages = with pkgs; [
       mpd
       mpc
-      ncmpcpp
-      ncspot
-      spotify-player
-      spotify
-      resonance
-      easyeffects
+
       cava
       playerctl
     ];

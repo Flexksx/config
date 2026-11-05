@@ -26,7 +26,23 @@
       pciutils
       pipewire
       pipewire.jack
+    ];
+  };
+
+  flake.modules.homeManager.sound = {
+    inputs,
+    pkgs,
+    ...
+  }: {
+    home.packages = with pkgs; [
+      ncmpcpp
+      ncspot
+      spotify-player
+      spotify
+      resonance
+      easyeffects
       guitarix
+      inputs.sonora.packages.${system}.sonora
     ];
   };
 }
