@@ -42,7 +42,6 @@
       resonance
       easyeffects
       guitarix
-      inputs.nixpkgs-unstable.tidal-hifi
       inputs.sonora.packages.${system}.sonora
     ];
   };
