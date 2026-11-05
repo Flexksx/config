@@ -46,6 +46,12 @@ The Cursor hook runs matching rules on files edited through `Write` and `StrRepl
 Its configuration is managed by chezmoi at `~/.cursor/hooks.json`.
 The pi extension runs matching rules on files changed through `edit` and `write`, and on changed and untracked Git files after `bash`.
 It lives at `~/.pi/agent/extensions/viqui` and reports findings in the tool result.
+A guard blocks any tool call that operates on a path or command containing `.env`.
+The shared match lives in `viqui/core/protect.mjs`.
+The Codex `PreToolUse` hook and the Cursor `preToolUse` and `beforeReadFile` hooks deny the call before it runs.
+The pi extension inlines the same match and blocks the call in a `tool_call` handler.
+The guard checks path and command fields only, so file contents may mention `.env`.
+Run the install command again and apply the hook configuration after changing the guard.
 Install a release with `bun run install:viqui` from the repository root.
 Installation requires uv to create Viqui's isolated Ruff environment.
 The CLI runs on Bun, and it runs the TypeScript scanners with the same Bun binary.

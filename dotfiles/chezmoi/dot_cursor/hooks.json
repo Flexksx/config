@@ -1,6 +1,20 @@
 {
   "version": 1,
   "hooks": {
+    "preToolUse": [
+      {
+        "command": "bun \"$HOME/.local/share/viqui/current/cursor/protect.mjs\"",
+        "matcher": ".*",
+        "timeout": 15
+      }
+    ],
+    "beforeReadFile": [
+      {
+        "command": "bun \"$HOME/.local/share/viqui/current/cursor/protect.mjs\"",
+        "matcher": ".*",
+        "timeout": 15
+      }
+    ],
     "postToolUse": [
       {
         "command": "bun \"$HOME/.local/share/viqui/current/cursor/check.mjs\"",

@@ -19,6 +19,52 @@ const gitTimeout = 15000;
 const scanTimeout = 60000;
 const nullByte = "\0";
 
+const protectedText = ".env";
+const operatedKeys = new Set([
+	"command",
+	"commands",
+	"cmd",
+	"dir",
+	"directory",
+	"file",
+	"files",
+	"file_path",
+	"filepath",
+	"filename",
+	"glob",
+	"patch",
+	"path",
+	"paths",
+]);
+
+const operatedStrings = (value: unknown): string[] => {
+	const strings: string[] = [];
+	const visit = (key: string, node: unknown): void => {
+		if (typeof node === "string") {
+			if (operatedKeys.has(key)) {
+				strings.push(node);
+			}
+			return;
+		}
+		if (Array.isArray(node)) {
+			for (const item of node) {
+				visit(key, item);
+			}
+			return;
+		}
+		if (node !== null && typeof node === "object") {
+			for (const [childKey, child] of Object.entries(node)) {
+				visit(childKey.toLowerCase(), child);
+			}
+		}
+	};
+	visit("", value);
+	return strings;
+};
+
+export const protectedOperand = (input: unknown): string | undefined =>
+	operatedStrings(input).find((value) => value.includes(protectedText));
+
 export const supportedPath = (path: string): boolean =>
 	supported.has(extname(path));
 
@@ -87,6 +133,17 @@ const viquiExtension = (pi: ExtensionAPI) => {
 		}
 		return toolName === "bash" ? changedFiles(cwd, signal) : [];
 	};
+
+	pi.on("tool_call", (event) => {
+		const operand = protectedOperand(event.input);
+		if (operand === undefined) {
+			return;
+		}
+		return {
+			block: true,
+			reason: `Blocked: "${operand}" contains ".env".`,
+		};
+	});
 
 	pi.on("tool_result", async (event, ctx) => {
 		if (event.parentToolCallId || !existsSync(cli)) {

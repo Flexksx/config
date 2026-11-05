@@ -1,5 +1,18 @@
 {
   "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun \"$HOME/.local/share/viqui/current/codex/protect.mjs\"",
+            "timeout": 15,
+            "statusMessage": "Checking protected paths"
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "^(apply_patch|Bash)$",
