@@ -28,18 +28,14 @@ local function bind_mod_exec(key, cmd)
 end
 
 local key_commands = {
-	-- Media
 	{ "XF86AudioNext", "playerctl next" },
 	{ "XF86AudioPrev", "playerctl previous" },
 	{ "XF86AudioPlay", "playerctl play-pause" },
-	-- Volume
 	{ "XF86AudioLowerVolume", "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-" },
 	{ "XF86AudioRaiseVolume", "wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+" },
 	{ "XF86AudioMute", "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle" },
-	-- Brightness
 	{ "XF86MonBrightnessUp", "brightnessctl set 5%+" },
 	{ "XF86MonBrightnessDown", "brightnessctl set 5%-" },
-	-- Screenshots
 	{ "Print", screenshot },
 }
 for _, bind in ipairs(key_commands) do
@@ -47,14 +43,12 @@ for _, bind in ipairs(key_commands) do
 end
 
 local mod_key_commands = {
-	-- Apps
 	{ "RETURN", terminal },
 	{ "E", fileManager },
 	{ "B", browser },
 	{ "F", editor },
 	{ "Z", editor .. " " .. home .. "/config/" },
 	{ "N", "pkill java" },
-	-- Screenshots
 	{ "S", screenshot },
 	{ "SHIFT + S", screenshotEdit },
 	{ "W", wallpaperPicker },
@@ -64,18 +58,14 @@ for _, bind in ipairs(mod_key_commands) do
 	bind_mod_exec(bind[1], bind[2])
 end
 
--- Volume keys as mouse scroll (repeat so holding keeps scrolling)
 hl.bind(mod .. " + XF86AudioRaiseVolume", hl.dsp.exec_cmd("wlrctl pointer scroll 0 -3"), { ["repeat"] = true })
 hl.bind(mod .. " + XF86AudioLowerVolume", hl.dsp.exec_cmd("wlrctl pointer scroll 0 3"), { ["repeat"] = true })
 
--- Mouse binds
 hl.bind(mod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
 
--- Window management
 bind_mod("C", hl.dsp.window.close())
 bind_mod("V", hl.dsp.window.float({ action = "toggle" }))
 
--- Scrolling layout
 bind_mod("comma", hl.dsp.layout("move -col"))
 bind_mod("period", hl.dsp.layout("move +col"))
 bind_mod("SHIFT + comma", hl.dsp.layout("colresize -conf"))
@@ -84,7 +74,6 @@ hl.bind("CTRL + " .. mod .. " + comma", hl.dsp.layout("swapcol l"))
 hl.bind("CTRL + " .. mod .. " + period", hl.dsp.layout("swapcol r"))
 bind_mod("slash", hl.dsp.layout("center"))
 
--- Focus by direction: vim keys + arrow keys + mouse scroll
 local directions = {
 	{ vim = "H", arrow = "left", mouse = "mouse_left", dir = "l" },
 	{ vim = "J", arrow = "down", mouse = "mouse_down", dir = "d" },
@@ -98,7 +87,6 @@ for _, k in ipairs(directions) do
 	bind_mod(k.mouse, focus)
 end
 
--- Workspaces 1–9
 for i = 1, 9 do
 	bind_mod(i, hl.dsp.focus({ workspace = i }))
 	bind_mod("SHIFT + " .. i, hl.dsp.window.move({ workspace = i }))
@@ -106,6 +94,5 @@ end
 bind_mod("0", hl.dsp.focus({ workspace = 10 }))
 bind_mod("SHIFT + 0", hl.dsp.window.move({ workspace = 10 }))
 
--- Workspace navigation by mouse buttons
 bind_mod("mouse:276", hl.dsp.focus({ workspace = "e-1" }))
 bind_mod("mouse:273", hl.dsp.focus({ workspace = "e+1" }))

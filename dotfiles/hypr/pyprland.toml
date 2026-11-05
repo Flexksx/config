@@ -1,10 +1,10 @@
 [pyprland]
 plugins = ["scratchpads"]
 
-[scratchpads.spotify]
+[scratchpads.sonora]
 animation = "fromBottom"
-command = "spotify"
-class = "spotify"
+command = "sonora"
+class = "sonora"
 size = "50% 50%"
 unfocus = "hide"
 process_tracking = false

@@ -27,7 +27,6 @@ register_bezier_family(standard)
 
 hl.config({ animations = { enabled = true } })
 
--- Window animations
 hl.animation({
 	leaf = "windows",
 	enabled = true,
@@ -36,7 +35,6 @@ hl.animation({
 	style = "popin 60%",
 })
 
--- Border animations
 hl.animation({
 	leaf = "border",
 	enabled = true,
@@ -44,7 +42,6 @@ hl.animation({
 	bezier = expressive.slow_effects.name,
 })
 
--- Fade animations
 hl.animation({
 	leaf = "fade",
 	enabled = true,
@@ -52,7 +49,6 @@ hl.animation({
 	bezier = expressive.fast_effects.name,
 })
 
--- Layer animations
 hl.animation({
 	leaf = "layers",
 	enabled = true,

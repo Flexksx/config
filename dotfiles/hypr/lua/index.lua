@@ -10,12 +10,10 @@ dofile(d .. "rules.lua")
 dofile(d .. "startup.lua")
 dofile(d .. "binds.lua")
 dofile(d .. "binds_noctalia.lua")
-dofile(d .. "spotify-scratchpad.lua")
-dofile(d .. "comms-scratchpad.lua")
+dofile(d .. "scratchpads.lua")
 
 dofile(d .. "monitors.lua")
 
--- Machine-specific overrides
 local f = io.open("/etc/hostname", "r")
 local hostname = f and f:read("*l") or ""
 if f then

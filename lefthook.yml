@@ -9,6 +9,9 @@ pre-commit:
       glob: "*.lua"
       run: stylua {staged_files}
       stage_fixed: true
+    lua-comments:
+      glob: "*.lua"
+      run: scripts/check-lua-comments.sh {staged_files}
     biome:
       glob: "*.{ts,js,mjs}"
       run: bun x biome check --write --no-errors-on-unmatched {staged_files}

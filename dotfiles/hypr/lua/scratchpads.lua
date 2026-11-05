@@ -1,17 +1,24 @@
--- Communication slideout scratchpad.
---
--- SUPER + ] toggles a special workspace holding the comms apps (Slack,
--- Telegram) and slides it out over the focused monitor. The apps are silently
--- assigned to the workspace at open time, so toggling only animates an
--- already-laid-out workspace -- the slide is smooth, like the spotify scratchpad.
---
--- The scroll layout adapts to the focused monitor's orientation, applied while
--- the workspace is still hidden so it never reflows mid-slide:
---   vertical monitor (transform odd) -> scroll down, normal gaps
---   horizontal monitor               -> scroll right, larger gaps
-
 local d = os.getenv("HOME") .. "/config/dotfiles/hypr/lua/"
 local scratchpad = dofile(d .. "scratchpad.lua")
+
+hl.animation({
+	leaf = "specialWorkspace",
+	enabled = true,
+	speed = 5,
+	bezier = "expressive_default_spatial",
+	style = "slidevert",
+})
+
+scratchpad.create({
+	key_bind = "SUPER + P",
+	apps = { { class = "sonora", command = "sonora" } },
+	special_ws = "sonora-scratchpad",
+	show_mode = "workspace",
+	launch_at_startup = false,
+	enable_timer = true,
+	unfocus_timeout = 1000,
+	close_on_escape_key = true,
+})
 
 local SPECIAL = "special:comms"
 local GAPS_VERTICAL = 12
@@ -40,6 +47,7 @@ scratchpad.create({
 	show_mode = "workspace",
 	float = false,
 	before_show = apply_layout,
+	launch_at_startup = true,
 	enable_timer = false,
 	close_on_escape_key = true,
 })

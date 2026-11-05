@@ -1,7 +1,3 @@
---- Noctalia shell IPC binds.
---- v4 (noctalia-shell) and v5 (noctalia) are separate binaries with separate
---- IPC sockets, so each bind fires both calls: the running shell handles it and
---- the inactive one fails fast and is silenced.
 local mod = "SUPER"
 
 local function ipc(v4, v5)

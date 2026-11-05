@@ -1,31 +1,3 @@
--- Reusable scratchpad factory.
---
--- show_mode = "window" (default)
---   Pulls the app to the active workspace as a plain floating window.
---   Auto-hide fires on window.active (any other window gets focus).
---
--- show_mode = "workspace"
---   Toggles the named special workspace as an overlay (slidevert animation).
---   Auto-hide fires on workspace.active / monitor.focused, and on window.active
---   when keyboard focus moves to another window.
---
--- Windows are silently pre-assigned to the special workspace at open time, so
--- toggling only animates an already-laid-out workspace. One scratchpad can own
--- several apps; all of them share the one special workspace.
---
--- Usage:
---   local scratchpad = dofile(path .. "scratchpad.lua")
---   scratchpad.create({
---       key_bind        = "SUPER + P",
---       apps            = { { class = "spotify", command = "spotify" } },
---       special_ws      = "spotify-scratchpad",
---       show_mode       = "window",   -- "window" | "workspace"
---       float           = true,       -- false: tiled (e.g. scroll layout)
---       before_show     = function() ... end, -- workspace mode, runs while hidden
---       enable_timer    = true,
---       unfocus_timeout = 1000,
---   })
-
 local M = {}
 
 function M.create(opts)
@@ -47,6 +19,7 @@ function M.create(opts)
 
 	local hide_timer = nil
 	local launching = false
+	local silent_launches = 0
 
 	local function matches(w)
 		for _, app in ipairs(apps) do
@@ -172,8 +145,21 @@ function M.create(opts)
 		end, { non_consuming = true })
 	end
 
+	if opts.launch_at_startup then
+		hl.on("hyprland.start", function()
+			for _, app in ipairs(apps) do
+				silent_launches = silent_launches + 1
+				hl.exec_cmd(app.command, { workspace = special .. " silent" })
+			end
+		end)
+	end
+
 	hl.on("window.open", function(win)
 		if not matches(win) then
+			return
+		end
+		if silent_launches > 0 then
+			silent_launches = silent_launches - 1
 			return
 		end
 		launching = false
@@ -188,6 +174,7 @@ function M.create(opts)
 		if not win then
 			if not launching then
 				launching = true
+				silent_launches = 0
 				for _, app in ipairs(apps) do
 					hl.exec_cmd(app.command)
 				end

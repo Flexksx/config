@@ -15,9 +15,9 @@ Singleton {
             classes: ["slack", "org.telegram.desktop"]
         },
         {
-            name: "spotify-scratchpad",
+            name: "sonora-scratchpad",
             label: "music",
-            classes: ["spotify"],
+            classes: ["sonora"],
             media: true
         }
     ]
