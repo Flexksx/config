@@ -4,6 +4,7 @@ local hostname = f and f:read("*l") or ""
 local REFRESH_RATE_60 = "60.0"
 local REFRESH_RATE_144 = "144.0"
 local RESOLUTION_2K = "2560x1440"
+local RESOLUTION_FULLHD = "1920x1080"
 local SCALE_FULL = 1.0
 local TRANSFORM_90 = 1
 
@@ -11,26 +12,23 @@ if f then
 	f:close()
 end
 
--- Hardware specs keyed by monitor description ("make model serial").
--- Find values with: hyprctl monitors -j | jq '.[].description'
+local function build_mode(resolution, refresh_rate)
+	return resolution .. "@" .. refresh_rate
+end
+
 local monitor_specs = {
-	-- Dell G2724D (left, portrait) + AOC Q27G2SG4 (right)
 	["Dell Inc. DELL G2724D GXJB4V3"] = {
-		mode = RESOLUTION_2K .. "@" .. REFRESH_RATE_144,
+		mode = build_mode(RESOLUTION_2K, REFRESH_RATE_144),
 		scale = SCALE_FULL,
 		transform = TRANSFORM_90,
 	},
-	["AOC Q27G2SG4 XFXPAHA011559"] = { mode = RESOLUTION_2K .. "@" .. REFRESH_RATE_144, scale = SCALE_FULL },
+	["AOC Q27G2SG4 XFXPAHA011559"] = { mode = build_mode(RESOLUTION_2K, REFRESH_RATE_144), scale = SCALE_FULL },
 }
 
--- Built-in panel config per hostname.
--- y_offset centers eDP vertically against a 1440px-tall adjacent horizontal monitor.
 local edp_specs = {
-	nixos = { mode = "1920x1080@144.0", scale = 1.0, y_offset = 180 },
+	nixos = { mode = build_mode(RESOLUTION_FULLHD, REFRESH_RATE_144), scale = 1.0, y_offset = 180 },
 }
 
--- Profiles: sets of external monitors that define a physical setup.
--- edp_x is the total logical width of all external monitors (eDP is placed right of them).
 local profiles = {
 	home = {
 		edp_x = 4000,
@@ -44,7 +42,7 @@ local profiles = {
 local EDP_OUTPUT = "eDP-1"
 local EDP_WORKSPACE = 10
 local HDMI_MIRROR_OUTPUT = "HDMI-A-1"
-local HDMI_MIRROR_MODE = "1920x1080@" .. REFRESH_RATE_60
+local HDMI_MIRROR_MODE = build_mode(RESOLUTION_FULLHD, REFRESH_RATE_60)
 
 local edp_config = nil
 
@@ -123,7 +121,6 @@ local function apply_profile()
 		end
 	end
 
-	-- Always configure eDP. Falls back to x=0 (standalone) when no profile matches.
 	local edp_x = (profile and profile.edp_x) or 0
 	edp_config = build_edp_config(edp_x)
 	if edp_config then
