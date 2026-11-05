@@ -8,6 +8,7 @@ result
 result-*
 
 backgrounds/
+modules/hosts/rog/openrgb/*.AppImage
 
 # Bun and Node.js
 node_modules/
