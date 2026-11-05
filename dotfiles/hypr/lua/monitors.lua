@@ -4,6 +4,8 @@ local hostname = f and f:read("*l") or ""
 local REFRESH_RATE_60 = "60.0"
 local REFRESH_RATE_144 = "144.0"
 local RESOLUTION_2K = "2560x1440"
+local SCALE_FULL = 1.0
+local TRANSFORM_90 = 1
 
 if f then
 	f:close()
@@ -13,8 +15,12 @@ end
 -- Find values with: hyprctl monitors -j | jq '.[].description'
 local monitor_specs = {
 	-- Dell G2724D (left, portrait) + AOC Q27G2SG4 (right)
-	["Dell Inc. DELL G2724D GXJB4V3"] = { mode = RESOLUTION_2K .. "@" .. REFRESH_RATE_144, scale = 1.0, transform = 1 },
-	["AOC Q27G2SG4 XFXPAHA011559"] = { mode = RESOLUTION_2K .. "@" .. REFRESH_RATE_144, scale = 1.0 },
+	["Dell Inc. DELL G2724D GXJB4V3"] = {
+		mode = RESOLUTION_2K .. "@" .. REFRESH_RATE_144,
+		scale = SCALE_FULL,
+		transform = TRANSFORM_90,
+	},
+	["AOC Q27G2SG4 XFXPAHA011559"] = { mode = RESOLUTION_2K .. "@" .. REFRESH_RATE_144, scale = SCALE_FULL },
 }
 
 -- Built-in panel config per hostname.
