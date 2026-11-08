@@ -1,10 +1,4 @@
 {...}: {
-  flake.modules.nixos.nix-settings = {...}: {
-    nix.extraOptions = ''
-      !include /etc/nix/access-tokens.conf
-    '';
-  };
-
   flake.modules.nixos.nix-ld = {...}: {
     programs.nix-ld.enable = true;
   };
