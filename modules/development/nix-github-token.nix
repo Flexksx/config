@@ -13,10 +13,10 @@
     systemd.user.services.nix-github-token = {
       Unit = {
         Description = "Write the GitHub token that nix uses to fetch flake inputs";
-        Environment = "DBUS_SESSION_BUS_ADDRESS=unix:path=%t/bus";
       };
       Service = {
         Type = "oneshot";
+        Environment = "DBUS_SESSION_BUS_ADDRESS=unix:path=%t/bus";
         ExecStart = "${pkgs.writeShellApplication {
           name = "nix-github-token";
           runtimeInputs = [pkgs.gh pkgs.coreutils];
