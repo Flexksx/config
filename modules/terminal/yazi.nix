@@ -2,12 +2,14 @@
   flake.modules.homeManager.yazi = {
     config,
     pkgs,
+    inputs,
     ...
   }: let
     localPlugin = name: config.lib.dotfiles.link "yazi/plugins/${name}.yazi";
   in {
     programs.yazi = {
       enable = true;
+      package = inputs.yazi.packages.${pkgs.stdenv.hostPlatform.system}.default;
       shellWrapperName = "y";
 
       plugins = {

@@ -40,6 +40,9 @@
           "https://ponte.cachix.org"
           "https://codex-cli.cachix.org"
           "https://claude-code.cachix.org"
+          "https://zed.cachix.org"
+          "https://yazi.cachix.org"
+          "https://hyprland-community.cachix.org"
         ];
         trusted-public-keys = [
           "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
@@ -53,6 +56,9 @@
           "ponte.cachix.org-1:REQfejqCR1XgRu8BkS1LYEq/jTyjUpY4UZX37svuStk="
           "codex-cli.cachix.org-1:1Br3H1hHoRYG22n//cGKJOk3cQXgYobUel6O8DgSing="
           "claude-code.cachix.org-1:YeXf2aNu7UTX8Vwrze0za1WEDS+4DuI2kVeWEE4fsRk="
+          "zed.cachix.org-1:/pHQ6dpMsAZk2DiP4WCL0p9YDNKWj2Q5FL20bNmw1cU="
+          "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
+          "hyprland-community.cachix.org-1:5dTHY+TjAJjnQs23X+vwMQG4va7j+zmvkTKoYuSXnmE="
         ];
       };
       gc = {

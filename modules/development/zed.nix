@@ -1,8 +1,12 @@
 {...}: {
-  flake.modules.homeManager.zed = {pkgs, ...}: {
+  flake.modules.homeManager.zed = {
+    pkgs,
+    inputs,
+    ...
+  }: {
     programs.zed-editor = {
       enable = true;
-      package = pkgs.zed-editor;
+      package = inputs.zed.packages.${pkgs.stdenv.hostPlatform.system}.default;
     };
   };
 }
