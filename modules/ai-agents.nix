@@ -16,7 +16,7 @@
   in {
     config = {
       home.packages = [
-        unstable.codex
+        inputs.codex-cli-nix.packages.${pkgs.stdenv.hostPlatform.system}.default
         unstable.github-copilot-cli
         inputs.opencode.packages.${pkgs.stdenv.hostPlatform.system}.opencode
         unstable.pi-coding-agent
