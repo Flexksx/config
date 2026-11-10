@@ -42,7 +42,7 @@
       resonance
       easyeffects
       guitarix
-      inputs.sonora.packages.${system}.sonora
+      inputs.sonora.packages.${pkgs.stdenv.hostPlatform.system}.sonora
     ];
   };
 }
