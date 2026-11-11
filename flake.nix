@@ -50,7 +50,10 @@
     };
 
     treefmt-nix.url = "github:numtide/treefmt-nix";
-    zed.url = "github:zed-industries/zed";
+    zed = {
+      url = "github:zed-industries/zed";
+      follows = "nixpkgs";
+    };
 
     noctaliav5.url = "github:noctalia-dev/noctalia";
     mcmojave-hyprcursor.url = "github:libadoxon/mcmojave-hyprcursor";
