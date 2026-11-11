@@ -52,7 +52,7 @@
     treefmt-nix.url = "github:numtide/treefmt-nix";
     zed = {
       url = "github:zed-industries/zed";
-      follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     noctaliav5.url = "github:noctalia-dev/noctalia";
