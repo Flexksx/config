@@ -1325,6 +1325,22 @@
     },
     "nixpkgs_18": {
       "locked": {
+        "lastModified": 1791048980,
+        "narHash": "sha256-KgItSKML8Xvte0B7/uGnBDsYzSnnKHcOaiUbgWBXLXw=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "a7868a727837f3c09cee2ce0ca671c76b1589fed",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_19": {
+      "locked": {
         "lastModified": 1793341285,
         "narHash": "sha256-Y1CiZ4SoBUjLQyQM/pY+rS2dXD3CHLPstF0lmOc73D4=",
         "owner": "nixos",
@@ -1469,11 +1485,11 @@
         "nixpkgs": "nixpkgs_9"
       },
       "locked": {
-        "lastModified": 1794393270,
-        "narHash": "sha256-AKad9WukJFm6IxR1rPC6RpxrVn1SKUd1e3gUDxkhEaY=",
+        "lastModified": 1794409293,
+        "narHash": "sha256-89+3lPbTBTVZoVycNmI/ik0Nh2irIHadqv9zSQu8qAU=",
         "owner": "noctalia-dev",
         "repo": "noctalia",
-        "rev": "b8a9f517393908c3a66ff124e465ec03ff09a416",
+        "rev": "b096daa50f842c22332a04dbafd7d561d15825be",
         "type": "github"
       },
       "original": {
@@ -1827,11 +1843,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1794391475,
-        "narHash": "sha256-jo8bYOgxeGk7FBKioMw0d8uqiCZ/qxnnTMQUr8RpJ14=",
+        "lastModified": 1794412751,
+        "narHash": "sha256-/Bz/RU75aWzBqFwCpOuOoIzWyrSgmPHgqpQURryw77E=",
         "owner": "sonorahq",
         "repo": "sonora",
-        "rev": "af238060d0eb2e089c504c23485ea895b67e8052",
+        "rev": "6c1fb890598094b93f6a5c06aa3100ac75f45d17",
         "type": "github"
       },
       "original": {
@@ -2243,17 +2259,15 @@
       "inputs": {
         "crane": "crane",
         "flake-parts": "flake-parts_6",
-        "nixpkgs": [
-          "nixpkgs"
-        ],
+        "nixpkgs": "nixpkgs_18",
         "rust-overlay": "rust-overlay_3"
       },
       "locked": {
-        "lastModified": 1794395780,
-        "narHash": "sha256-frswAcchNvMPtrVr6A9m2Ft7t8XZk1Ew4yfghE7FoA4=",
+        "lastModified": 1794419000,
+        "narHash": "sha256-q7CYwbNExKx9GmJ/8eVwp1CYjd07FVHERC+FbZH1HYU=",
         "owner": "zed-industries",
         "repo": "zed",
-        "rev": "912159c7ad77ce6296a93be77efc298b0b00fd50",
+        "rev": "fdb60b80035f40ff715c268b53e0f17ceb48607f",
         "type": "github"
       },
       "original": {
@@ -2265,7 +2279,7 @@
     "zen-browser": {
       "inputs": {
         "home-manager": "home-manager_2",
-        "nixpkgs": "nixpkgs_18"
+        "nixpkgs": "nixpkgs_19"
       },
       "locked": {
         "lastModified": 1794387353,
