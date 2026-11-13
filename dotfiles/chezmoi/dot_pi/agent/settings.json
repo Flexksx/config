@@ -22,5 +22,9 @@
     "npm:pi-langfuse",
     "npm:@aliou/pi-processes"
   ],
-  "lastChangelogVersion": "1.5.0"
+  "lastChangelogVersion": "1.5.0",
+  "extensionChangelogVersions": {
+    "{\"source\":\"npm:pi-compact-tools\",\"scope\":\"user\"}": "0.17.0",
+    "{\"source\":\"npm:@aliou/pi-processes\",\"scope\":\"user\"}": "0.13.6"
+  }
 }
