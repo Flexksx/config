@@ -1,11 +1,13 @@
 {...}: {
   flake.modules.nixos.hardware = {
+    inputs,
     pkgs,
     lib,
     config,
     ...
   }: let
     plymouthThemeName = "hexagon_dots";
+    pkgsUnstable = inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system};
   in {
     boot = {
       loader = {
@@ -23,14 +25,11 @@
       };
       kernelPackages = pkgs.linuxPackages_latest.extend (
         _: prev: {
-          ddcci-driver = prev.ddcci-driver.overrideAttrs (old: {
-            postPatch =
-              (old.postPatch or "")
-              + ''
-                sed -i 's/strncpy(buf, device->\([a-z]*\), PAGE_SIZE);/memcpy(buf, device->\1, len);/' ddcci/ddcci.c
-                ! grep -q strncpy ddcci/ddcci.c
-              '';
-          });
+          # Stable nixpkgs ships nvidia 595.71.05, whose open module calls strncpy
+          # in kernel-open/nvidia/os-interface.c. Linux 7.3 removed strncpy, so the
+          # stable driver does not compile against linuxPackages_latest. Take the
+          # driver from unstable instead.
+          nvidiaPackages = (pkgsUnstable.linuxPackagesFor prev.kernel).nvidiaPackages;
         }
       );
       extraModulePackages = with config.boot.kernelPackages; [ddcci-driver];

@@ -1,12 +1,5 @@
-{inputs, ...}: {
-  additions = final: prev: import ../pkgs {pkgs = prev;};
-
+{...}: {
   modifications = final: prev: {
-    openblas =
-      if prev.stdenv.hostPlatform.is32bit
-      then prev.openblas.overrideAttrs (_: {doCheck = false;})
-      else prev.openblas;
-
     guitarix = prev.guitarix.overrideAttrs (old: {
       patches =
         old.patches
@@ -28,13 +21,5 @@
     python3Packages = prev.python3Packages.overrideScope (pyfinal: pyprev: {
       imageio = pyprev.imageio.overrideAttrs (_: {doInstallCheck = false;});
     });
-  };
-
-  # Define the overlay to include openrazer-daemon directly from unstable
-  unstable-packages = final: prev: {
-    unstable = import inputs.nixpkgs-unstable {
-      system = final.stdenv.hostPlatform.system;
-      config.allowUnfree = true;
-    };
   };
 }

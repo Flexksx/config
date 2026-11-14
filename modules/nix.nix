@@ -8,11 +8,10 @@
   ];
 
   perSystem = {pkgs, ...}: {
-    packages = import ../pkgs {inherit pkgs;};
     formatter = pkgs.alejandra;
   };
 
-  flake.overlays = import ../overlays {inherit inputs;};
+  flake.overlays = import ../overlays {};
 
   flake.modules.nixos.nix = {
     lib,
@@ -42,6 +41,7 @@
           "https://zed.cachix.org"
           "https://yazi.cachix.org"
           "https://hyprland-community.cachix.org"
+          "https://sonora.cachix.org"
         ];
         trusted-public-keys = [
           "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
@@ -57,6 +57,7 @@
           "zed.cachix.org-1:/pHQ6dpMsAZk2DiP4WCL0p9YDNKWj2Q5FL20bNmw1cU="
           "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
           "hyprland-community.cachix.org-1:5dTHY+TjAJjnQs23X+vwMQG4va7j+zmvkTKoYuSXnmE="
+          "sonora.cachix.org-1:qbPeDsvZPbwUWHpQS5Oe0bjz5oHAVscHem+MCzwrc9Q="
         ];
       };
       gc = {
@@ -71,22 +72,14 @@
 
   flake.modules.nixos.nixpkgs = {outputs, ...}: {
     nixpkgs = {
-      overlays = [
-        outputs.overlays.additions
-        outputs.overlays.modifications
-        outputs.overlays.unstable-packages
-      ];
+      overlays = [outputs.overlays.modifications];
       config.allowUnfree = true;
     };
   };
 
   flake.modules.homeManager.nixpkgs = {outputs, ...}: {
     nixpkgs = {
-      overlays = [
-        outputs.overlays.additions
-        outputs.overlays.modifications
-        outputs.overlays.unstable-packages
-      ];
+      overlays = [outputs.overlays.modifications];
       config = {
         allowUnfree = true;
         permittedInsecurePackages = ["electron-39.8.10"];

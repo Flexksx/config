@@ -1,8 +1,17 @@
 {...}: {
-  flake.modules.homeManager.zed = {pkgs, ...}: {
+  flake.modules.homeManager.zed = {
+    pkgs,
+    inputs,
+    ...
+  }: let
+    unstable = import inputs.nixpkgs-unstable {
+      system = pkgs.stdenv.hostPlatform.system;
+      config.allowUnfree = true;
+    };
+  in {
     programs.zed-editor = {
       enable = true;
-      package = pkgs.zed-editor;
+      package = unstable.zed-editor;
     };
   };
 }

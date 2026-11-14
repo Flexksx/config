@@ -12,15 +12,7 @@
     };
 
     config = {
-      home.packages = [
-        (unstable.jetbrains.idea.overrideAttrs (_: rec {
-          version = "2026.2.3";
-          src = unstable.fetchurl {
-            url = "https://download.jetbrains.com/idea/ideaIU-${version}.tar.gz";
-            hash = "sha256-aHUciuTUlAclHNGX33lfvtkbb9yF0QxzxGSameSWqzc=";
-          };
-        }))
-      ];
+      home.packages = [unstable.jetbrains.idea];
       xdg.configFile."JetBrains/IntelliJIdea2026.2/idea64.vmoptions".text = ''
         -Xmx${config.jetbrains.maxHeap}
         ${builtins.readFile ../../dotfiles/jetbrains_ide/idea64.vmoptions}'';

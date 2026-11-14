@@ -8,11 +8,6 @@
       system = pkgs.stdenv.hostPlatform.system;
       config.allowUnfree = true;
     };
-
-    aiAgent = target: source: {
-      inherit target;
-      source = "ai_agents/${source}";
-    };
   in {
     config = {
       home.packages = [
