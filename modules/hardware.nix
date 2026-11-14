@@ -1,13 +1,11 @@
 {...}: {
   flake.modules.nixos.hardware = {
-    inputs,
     pkgs,
     lib,
     config,
     ...
   }: let
     plymouthThemeName = "hexagon_dots";
-    pkgsUnstable = inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system};
   in {
     boot = {
       loader = {
@@ -33,7 +31,6 @@
                 ! grep -q strncpy ddcci/ddcci.c
               '';
           });
-          nvidiaPackages = (pkgsUnstable.linuxPackagesFor prev.kernel).nvidiaPackages;
         }
       );
       extraModulePackages = with config.boot.kernelPackages; [ddcci-driver];

@@ -9,10 +9,6 @@
       };
     };
 
-    boot.extraModprobeConfig = ''
-      options nvidia NVreg_PreserveVideoMemoryAllocations=1 NVreg_TemporaryFilePath=/var/tmp
-    '';
-
     environment.systemPackages = [pkgs.supergfxctl];
     services.supergfxd.enable = true;
 
