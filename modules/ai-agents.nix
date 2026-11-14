@@ -16,19 +16,11 @@
   in {
     config = {
       home.packages = [
-        inputs.codex-cli-nix.packages.${pkgs.stdenv.hostPlatform.system}.default
         unstable.github-copilot-cli
         inputs.opencode.packages.${pkgs.stdenv.hostPlatform.system}.opencode
         unstable.pi-coding-agent
-        inputs.claude-code.packages.${pkgs.stdenv.hostPlatform.system}.default
-        inputs.ponte.packages.${pkgs.stdenv.hostPlatform.system}.default
         pkgs.nodejs
         unstable.bun
-      ];
-      dotfiles.configFiles = [
-        (aiAgent "ponte/config.toml" "ponte.toml")
-        (aiAgent "ponte/AGENTS.md" "AGENTS.md")
-        (aiAgent "ponte/skills" "skills")
       ];
     };
   };
