@@ -51,6 +51,7 @@
 [rerere]
     enabled = true
     autoupdate = true
-
+{{ if ne .chezmoi.os "darwin" }}
 [include]
     path = {{ .chezmoi.homeDir }}/.config/git/nix.gitconfig
+{{- end }}

@@ -9,11 +9,12 @@
         "supportsDeveloperRole": false,
         "supportsReasoningEffort": false
       },
+{{- $device := index . "device" | default (index .deviceNames .chezmoi.os) }}
       "models": [
-        { "id": "llama3.1" },
-        { "id": "qwen3.5:4b" },
-        { "id": "gemma4:12b" },
-        { "id": "qwen3:8b" }
+{{- range $i, $m := (index .ollama.models $device) }}
+{{- if $i }},{{ end }}
+        {{ $m | toJson }}
+{{- end }}
       ]
     },
     "openrouter": {

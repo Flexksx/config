@@ -1,0 +1,12 @@
+deviceNames:
+  darwin: mac
+  linux: rog
+ollama:
+  models:
+    mac:
+      - id: gemma4:12b
+      - id: qwen3.5:4b
+      - id: qwen3:8b
+    rog:
+      - id: qwen3.5:4b
+      - id: qwen3:8b

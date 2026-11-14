@@ -12,6 +12,7 @@
       (builtins.attrValues config.flake.modules.nixos)
       ++ (builtins.attrValues config.flake.modules.nixos-rog)
       ++ [config.flake.modules.nixos-optional.nvidia]
+      ++ [config.flake.modules.nixos-optional.ollama]
       ++ [
         ({pkgs, ...}: {
           environment.systemPackages = with pkgs; [

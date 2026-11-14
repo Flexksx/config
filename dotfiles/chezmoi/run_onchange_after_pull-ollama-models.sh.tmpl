@@ -1,0 +1,16 @@
+#!/bin/sh
+set -eu
+{{- $device := index . "device" | default (index .deviceNames .chezmoi.os) }}
+
+ollama_bin="$(command -v ollama || true)"
+if [ -z "$ollama_bin" ] && [ -x /Applications/Ollama.app/Contents/Resources/ollama ]; then
+  ollama_bin=/Applications/Ollama.app/Contents/Resources/ollama
+fi
+if [ -z "$ollama_bin" ]; then
+  echo "ollama not found, skipping model pull" >&2
+  exit 0
+fi
+
+{{ range $m := (index .ollama.models $device) -}}
+"$ollama_bin" pull {{ $m.id }}
+{{ end -}}

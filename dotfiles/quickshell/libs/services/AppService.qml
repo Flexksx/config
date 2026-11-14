@@ -36,14 +36,18 @@ Singleton {
 
     function open(id) {
         const entry = DesktopEntries.byId(id);
-        if (id in ScratchpadService.owners)
-            ScratchpadService.toggle(ScratchpadService.owners[id]);
-        else if (id in windows)
+        if (id in ScratchpadService.owners) {
+            if (id in windows)
+                ScratchpadService.toggle(ScratchpadService.owners[id]);
+            else
+                entry.execute();
+        } else if (id in windows) {
             windows[id].activate();
-        else if (entry.runInTerminal)
+        } else if (entry.runInTerminal) {
             Quickshell.execDetached(["ghostty", "-e"].concat(entry.command));
-        else
+        } else {
             entry.execute();
+        }
         history.record(id);
     }
 

@@ -4,7 +4,7 @@ const sum = values => values.reduce((total, value) => total + value, 0);
 
 const coordinateCount = 2;
 
-const placed = client => client.at?.length === coordinateCount && client.size?.length === coordinateCount && !client.hidden;
+const placed = client => client && client.at?.length === coordinateCount && client.size?.length === coordinateCount && !client.hidden;
 
 const frameOf = (client, origin) => ({
     x: client.at[0] - origin.x,

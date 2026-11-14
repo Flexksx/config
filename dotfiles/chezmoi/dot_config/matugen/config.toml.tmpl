@@ -6,7 +6,11 @@ output_path = "~/.config/ghostty/themes/matugen"
 {{- if ne .chezmoi.os "darwin" }}
 post_hook = "pkill -SIGUSR2 ghostty || true"
 {{ end }}
+[templates.pi]
+input_path = "~/.config/matugen/templates/pi-theme.json"
+output_path = "~/.pi/agent/themes/matugen.json"
 {{- if ne .chezmoi.os "darwin" }}
+
 [templates.btop]
 input_path = "~/.config/matugen/templates/matugen.theme"
 output_path = "~/.config/btop/themes/matugen.theme"

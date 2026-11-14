@@ -1,5 +1,5 @@
 {
-  "theme": "noctalia",
+  "theme": "matugen",
   "defaultProvider": "openrouter",
   "defaultModel": "deepseek/deepseek-v4.1-flash",
   "defaultThinkingLevel": "medium",

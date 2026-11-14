@@ -93,7 +93,10 @@ QtObject {
     }
 
     function frameOf(window) {
-        return Overview.frameOf(WorkspaceService.clientOf(window), monitor);
+        const client = WorkspaceService.clientOf(window);
+        if (!client || !monitor)
+            return { x: 0, y: 0, width: 0, height: 0 };
+        return Overview.frameOf(client, monitor);
     }
 
     function slotOf(window, area, gaps, maxScale) {

@@ -13,11 +13,7 @@ function M.push_current()
 		return
 	end
 	hl.dispatch(
-		hl.dsp.window.move({
-			workspace = "special:" .. target .. " silent",
-			window = "address:" .. win.address,
-			follow = false,
-		})
+		hl.dsp.window.move({ workspace = "special:" .. target, window = "address:" .. win.address, follow = false })
 	)
 end
 
@@ -31,6 +27,10 @@ function M.pull(address)
 		return
 	end
 	if ws.name:find("^special:") then
+		hl.dispatch(hl.dsp.workspace.toggle_special(ws.name:gsub("^special:", "")))
+		ws = hl.get_active_workspace()
+	end
+	if not ws or ws.name:find("^special:") then
 		return
 	end
 	hl.dispatch(hl.dsp.window.move({ workspace = ws.id, window = "address:" .. address, follow = true }))
@@ -116,11 +116,11 @@ function M.create(opts)
 	local function hide(win)
 		if mode == "workspace" then
 			if not is_hidden(win) then
+				hl.dispatch(hl.dsp.workspace.toggle_special(ws_name))
 				local mon = win.workspace and win.workspace.monitor
 				if mon then
 					hl.dispatch(hl.dsp.focus({ monitor = mon.name }))
 				end
-				hl.dispatch(hl.dsp.workspace.toggle_special(ws_name))
 			end
 		else
 			hl.dispatch(hl.dsp.window.move({ workspace = special, window = addr(win), follow = false }))
@@ -150,7 +150,10 @@ function M.create(opts)
 	end)
 
 	if mode == "workspace" then
-		hl.on("workspace.active", function(_, _)
+		hl.on("workspace.active", function(ws, _)
+			if ws and ws.name == special then
+				return
+			end
 			local win = get_win()
 			if win and not is_hidden(win) then
 				cancel()
