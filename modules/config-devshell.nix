@@ -14,6 +14,9 @@
         just
         lefthook
         alejandra
+        deadnix
+        statix
+        shellcheck
         stylua
         rumdl
         shfmt

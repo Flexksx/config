@@ -5,6 +5,14 @@ pre-commit:
       glob: "*.nix"
       run: alejandra -q {staged_files}
       stage_fixed: true
+    deadnix:
+      glob: "*.nix"
+      run: deadnix --edit {staged_files}
+      stage_fixed: true
+    statix:
+      glob: "*.nix"
+      run: echo {staged_files} | xargs -r -n1 statix fix
+      stage_fixed: true
     stylua:
       glob: "*.lua"
       run: stylua {staged_files}
@@ -13,7 +21,7 @@ pre-commit:
       glob: "*.lua"
       run: scripts/check-lua-comments.sh {staged_files}
     biome:
-      glob: "*.{ts,js,mjs}"
+      glob: "*.{ts,js,mjs,cjs,mts,cts,jsx,tsx}"
       run: bun x biome check --write --no-errors-on-unmatched {staged_files}
       stage_fixed: true
     rumdl:
@@ -24,6 +32,9 @@ pre-commit:
       glob: "*.sh"
       run: shfmt -w {staged_files}
       stage_fixed: true
+    shellcheck:
+      glob: "*.sh"
+      run: shellcheck {staged_files}
     taplo:
       glob: "*.toml"
       run: taplo fmt {staged_files}

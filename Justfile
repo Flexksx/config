@@ -7,10 +7,13 @@ mod format '.just/format/Justfile'
 
 ci:
     alejandra -c {{_root}}
+    deadnix --fail {{_root}}
+    statix check {{_root}}
     bun x biome check {{_root}}
     stylua --check {{_root}}
     scripts/check-lua-comments.sh
     rumdl fmt --check {{_root}}
+    find {{_root}} -type f -name '*.sh' -not -path '*/.git/*' -not -path '*/.direnv/*' -not -path '*/.cache/*' -not -path '*/node_modules/*' -print0 | xargs -0 -r shellcheck
     find {{_root}} -type f -name '*.sh' -not -path '*/.git/*' -not -path '*/.direnv/*' -not -path '*/.cache/*' -not -path '*/node_modules/*' -print0 | xargs -0 -r shfmt -d
     find {{_root}} -type f -name '*.toml' -not -path '*/.git/*' -not -path '*/.direnv/*' -not -path '*/.rumdl_cache/*' -not -path '*/.cache/*' -not -path '*/node_modules/*' -print0 | xargs -0 -r taplo fmt --check
     yamlfmt -gitignore_excludes -lint .

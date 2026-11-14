@@ -1,9 +1,22 @@
-{...}: {
+{...}: let
+  nix-cache = import ../_nix-cache.nix;
+in {
   flake.modules.nixos.hyprland = {
     pkgs,
     inputs,
     ...
   }: {
+    imports = [
+      (nix-cache {
+        url = "hyprland.cachix.org";
+        key = "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=";
+      })
+      (nix-cache {
+        url = "hyprland-community.cachix.org";
+        key = "hyprland-community.cachix.org-1:5dTHY+TjAJjnQs23X+vwMQG4va7j+zmvkTKoYuSXnmE=";
+      })
+    ];
+
     programs.hyprland = {
       enable = true;
       withUWSM = true;

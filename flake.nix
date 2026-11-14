@@ -6,7 +6,6 @@
     import-tree.url = "github:vic/import-tree";
 
     claude-code.url = "github:sadjow/claude-code-nix";
-    codex-cli-nix.url = "github:sadjow/codex-cli-nix";
     opencode.url = "github:anomalyco/opencode/v2.1.2";
     turb = {
       url = "github:flexksx/turb";
@@ -34,40 +33,9 @@
     yazi.url = "github:sxyazi/yazi";
 
     hyprland.url = "github:hyprwm/Hyprland/v0.56.1";
-    hyprland-plugins = {
-      url = "github:hyprwm/hyprland-plugins";
-      inputs.hyprland.follows = "hyprland";
-    };
-    pyprland.url = "github:hyprland-community/pyprland";
-    Hyprspace = {
-      url = "github:KZDKM/Hyprspace";
-      inputs.hyprland.follows = "hyprland";
-    };
-    hypr-dynamic-cursors = {
-      url = "github:VirtCode/hypr-dynamic-cursors";
-      inputs.hyprland.follows = "hyprland";
-    };
-
-    treefmt-nix.url = "github:numtide/treefmt-nix";
 
     noctaliav5.url = "github:noctalia-dev/noctalia";
     mcmojave-hyprcursor.url = "github:libadoxon/mcmojave-hyprcursor";
-
-    elephant.url = "github:abenz1267/elephant";
-    walker = {
-      url = "github:abenz1267/walker";
-      inputs.elephant.follows = "elephant";
-    };
-
-    voxtype = {
-      url = "github:peteonrails/voxtype/v1.1.1-rc4";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nvf = {
-      url = "github:notashelf/nvf";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake {inherit inputs;} (inputs.import-tree [./modules]);

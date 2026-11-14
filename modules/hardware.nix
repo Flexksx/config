@@ -29,7 +29,7 @@
           # in kernel-open/nvidia/os-interface.c. Linux 7.3 removed strncpy, so the
           # stable driver does not compile against linuxPackages_latest. Take the
           # driver from unstable instead.
-          nvidiaPackages = (pkgsUnstable.linuxPackagesFor prev.kernel).nvidiaPackages;
+          inherit (pkgsUnstable.linuxPackagesFor prev.kernel) nvidiaPackages;
         }
       );
       extraModulePackages = with config.boot.kernelPackages; [ddcci-driver];

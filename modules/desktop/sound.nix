@@ -1,5 +1,14 @@
-{...}: {
+{...}: let
+  nix-cache = import ../_nix-cache.nix;
+in {
   flake.modules.nixos.sound = {pkgs, ...}: {
+    imports = [
+      (nix-cache {
+        url = "sonora.cachix.org";
+        key = "sonora.cachix.org-1:qbPeDsvZPbwUWHpQS5Oe0bjz5oHAVscHem+MCzwrc9Q=";
+      })
+    ];
+
     security.rtkit.enable = true;
 
     security.pam.loginLimits = [

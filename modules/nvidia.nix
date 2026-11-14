@@ -1,4 +1,6 @@
-{...}: {
+{...}: let
+  nix-cache = import ./_nix-cache.nix;
+in {
   flake.modules.nixos-optional.nvidia = {
     config,
     lib,
@@ -92,6 +94,11 @@
               AQ_DRM_DEVICES = "/dev/dri/dgpu:/dev/dri/igpu";
             };
         };
+      })
+
+      (nix-cache {
+        url = "cache.nixos-cuda.org";
+        key = "cache.nixos-cuda.org-1:9xSBRNlRApLSKqRIEdHJPzXHAGLPPzqdlKUmGnbBODg=";
       })
     ];
   };

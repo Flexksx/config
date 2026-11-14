@@ -1,4 +1,11 @@
-{...}: {
+{...}: let
+  nix-cache = import ../_nix-cache.nix;
+in {
+  flake.modules.nixos.ghostty-cache = nix-cache {
+    url = "ghostty.cachix.org";
+    key = "ghostty.cachix.org-1:QB389yTa6gTyneehvqG58y0WnHjQOqgnA+wBnpWWxns=";
+  };
+
   flake.modules.homeManager.terminal = {
     config,
     lib,
@@ -26,6 +33,9 @@
       kubetui
       gping
       alejandra
+      deadnix
+      statix
+      shellcheck
       fzf
       xh
       chezmoi
@@ -62,6 +72,7 @@
       zoxide
       atuin
       neovim
+      zellij
     ];
 
     home.sessionVariables = {

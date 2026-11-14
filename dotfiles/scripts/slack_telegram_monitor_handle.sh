@@ -52,7 +52,7 @@ if ! command -v jq >/dev/null || ! command -v socat >/dev/null; then
 fi
 
 # Listen to the Hyprland socket
-socat -U - UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock | while read -r line; do
+socat -U - UNIX-CONNECT:"$XDG_RUNTIME_DIR"/hypr/"$HYPRLAND_INSTANCE_SIGNATURE"/.socket2.sock | while read -r line; do
 	case $line in
 	monitoradded* | monitorremoved*) handle ;;
 	esac

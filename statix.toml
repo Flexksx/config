@@ -1,0 +1,3 @@
+# `{...}:` is the house style for module argument sets.
+# Setting `services.foo.bar` reads better than one nested attrset per file.
+disabled = ["empty_pattern", "repeated_keys"]

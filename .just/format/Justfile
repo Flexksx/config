@@ -4,12 +4,14 @@ all: nix lua ts md sh toml yaml
 
 nix:
     alejandra {{_root}}
+    deadnix --edit {{_root}}
+    statix fix {{_root}}
 
 lua:
     stylua {{_root}}
 
 ts:
-    biome check --write {{_root}}
+    bun x biome check --write {{_root}}
 
 md:
     rumdl fmt {{_root}}

@@ -26,7 +26,6 @@ local noctalia_binds = {
 	},
 	{ "I", ipc("sessionMenu toggle", "panel-toggle session") },
 	{ "M", ipc("lockScreen lock", "session lock") },
-	{ "Y", "walker -m clipboard" },
 	{ "grave", ipc("plugin:workspace-overview toggle", nil) },
 }
 for _, bind in ipairs(noctalia_binds) do

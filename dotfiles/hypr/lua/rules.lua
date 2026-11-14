@@ -49,14 +49,3 @@ hl.layer_rule({
 	blur = true,
 	blur_popups = true,
 })
-
-hl.layer_rule({
-	name = "walker",
-	match = {
-		namespace = "^walker$",
-	},
-	animation = "popin 80%",
-	blur = true,
-	blur_popups = true,
-	ignore_alpha = 0.3,
-})
