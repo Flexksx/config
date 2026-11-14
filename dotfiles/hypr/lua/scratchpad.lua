@@ -1,5 +1,41 @@
 local M = {}
 
+M.owners = M.owners or {}
+
+function M.push_current()
+	local win = hl.get_active_window()
+	if not win then
+		return
+	end
+	local cls = (win.class or win.initial_class or ""):lower()
+	local target = M.owners[cls]
+	if not target then
+		return
+	end
+	hl.dispatch(
+		hl.dsp.window.move({
+			workspace = "special:" .. target .. " silent",
+			window = "address:" .. win.address,
+			follow = false,
+		})
+	)
+end
+
+function M.pull(address)
+	local win = hl.get_window("address:" .. address)
+	if not win then
+		return
+	end
+	local ws = hl.get_active_workspace()
+	if not ws then
+		return
+	end
+	if ws.name:find("^special:") then
+		return
+	end
+	hl.dispatch(hl.dsp.window.move({ workspace = ws.id, window = "address:" .. address, follow = true }))
+end
+
 function M.create(opts)
 	local apps = opts.apps
 	local ws_name = opts.special_ws or apps[1].class:lower()
@@ -11,6 +47,7 @@ function M.create(opts)
 	local before_show = opts.before_show
 
 	for _, app in ipairs(apps) do
+		M.owners[app.class:lower()] = ws_name
 		if should_float then
 			hl.window_rule({ match = { initial_class = "^" .. app.class .. "$" }, float = true })
 		end

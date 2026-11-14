@@ -1,6 +1,9 @@
 local d = os.getenv("HOME") .. "/config/dotfiles/hypr/lua/"
 local scratchpad = dofile(d .. "scratchpad.lua")
 
+scratchpad_pull = scratchpad.pull
+scratchpad_push = scratchpad.push_current
+
 hl.animation({
 	leaf = "specialWorkspace",
 	enabled = true,
@@ -15,8 +18,7 @@ scratchpad.create({
 	special_ws = "sonora-scratchpad",
 	show_mode = "workspace",
 	launch_at_startup = false,
-	enable_timer = true,
-	unfocus_timeout = 1000,
+	enable_timer = false,
 	close_on_escape_key = true,
 })
 
@@ -37,6 +39,9 @@ local function apply_layout()
 	local gaps = vertical and GAPS_VERTICAL or GAPS_HORIZONTAL
 	hl.workspace_rule({ workspace = SPECIAL, layout_opts = { direction = direction }, gaps_out = gaps })
 end
+
+hl.bind("SUPER + SHIFT + bracketright", scratchpad.push_current)
+hl.bind("SUPER + SHIFT + P", scratchpad.push_current)
 
 scratchpad.create({
 	key_bind = "SUPER + bracketright",

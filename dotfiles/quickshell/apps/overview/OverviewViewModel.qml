@@ -6,14 +6,21 @@ QtObject {
     property var monitor: null
     property var shown: null
     property var previous: null
+    property var shownSpecial: null
+    property var previousSelection: null
 
     readonly property string monitorName: monitor?.name ?? ""
     readonly property string wallpaperSource: WallpaperService.displayedPath ? "file://" + WallpaperService.displayedPath : ""
     readonly property var workspaces: monitor ? WorkspaceService.workspacesOn(monitor) : []
-    readonly property var windows: ordered(windowsIn(shown))
-    readonly property var leaving: ordered(windowsIn(previous))
+    readonly property var specialWorkspaces: ScratchpadService.scratchpads.map(s => ({
+            name: s.label,
+            workspace: s.workspace,
+            id: 1000 + ScratchpadService.scratchpads.indexOf(s)
+        }))
+    readonly property var windows: ordered(windowsIn(shown, shownSpecial))
+    readonly property var leaving: ordered(windowsIn(previous, null))
     readonly property var displayed: leaving.concat(windows)
-    readonly property int direction: previous && shown ? Math.sign(shown.id - previous.id) : 0
+    readonly property int direction: previousSelection && (shown || shownSpecial) ? Math.sign((shown || shownSpecial).id - previousSelection.id) : 0
 
     signal closeRequested
     signal switched
@@ -28,14 +35,28 @@ QtObject {
     function release() {
         previous = null;
         shown = null;
+        shownSpecial = null;
+        previousSelection = null;
         monitor = null;
     }
 
     function show(workspace) {
         if (workspace === shown)
             return;
-        previous = shown;
+        previousSelection = shownSpecial || shown;
+        previous = shownSpecial ? null : shown;
         shown = workspace;
+        shownSpecial = null;
+        switched();
+    }
+
+    function showSpecial(scratchpad) {
+        if (scratchpad === shownSpecial)
+            return;
+        previousSelection = shown || shownSpecial;
+        previous = shown;
+        shown = null;
+        shownSpecial = scratchpad;
         switched();
     }
 
@@ -44,18 +65,27 @@ QtObject {
     }
 
     function pick(window) {
+        if (shownSpecial) {
+            ScratchpadService.pull(WorkspaceService.clientAddress(window));
+            closeRequested();
+            return;
+        }
         WorkspaceService.focus(window);
         closeRequested();
     }
 
     function dismiss() {
-        if (shown !== monitor.activeWorkspace)
+        if (shown && shown !== monitor.activeWorkspace)
             WorkspaceService.activate(shown);
         closeRequested();
     }
 
-    function windowsIn(workspace) {
-        return WorkspaceService.windows.filter(window => window.workspace === workspace && Overview.placed(WorkspaceService.clientOf(window)));
+    function windowsIn(workspace, special) {
+        if (special)
+            return WorkspaceService.windows.filter(window => WorkspaceService.workspaceOf(window) === special.workspace && Overview.placed(WorkspaceService.clientOf(window)));
+        if (workspace)
+            return WorkspaceService.windows.filter(window => window.workspace === workspace && Overview.placed(WorkspaceService.clientOf(window)));
+        return [];
     }
 
     function ordered(list) {
@@ -91,7 +121,14 @@ QtObject {
     }
 
     function miniaturesIn(workspace) {
-        return windowsIn(workspace).map(window => ({
+        return windowsIn(workspace, null).map(window => ({
+                    source: window.wayland,
+                    frame: frameOf(window)
+                }));
+    }
+
+    function specialMiniaturesIn(scratchpad) {
+        return windowsIn(null, scratchpad).map(window => ({
                     source: window.wayland,
                     frame: frameOf(window)
                 }));
@@ -99,5 +136,9 @@ QtObject {
 
     function strip(area, aspect, gap) {
         return Overview.strip(workspaces.length, area, aspect, gap);
+    }
+
+    function specialStrip(area, aspect, gap) {
+        return Overview.strip(specialWorkspaces.length, area, aspect, gap);
     }
 }

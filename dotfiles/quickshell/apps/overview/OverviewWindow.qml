@@ -9,6 +9,8 @@ PanelWindow {
     readonly property real stripTop: Theme.spacing4
     readonly property real stripHeight: 96
     readonly property real stripGap: Theme.spacing4
+    readonly property real specialStripHeight: 64
+    readonly property real specialStripGap: Theme.spacing4
     readonly property real sidePadding: Theme.spacing8
     readonly property real captionRoom: Theme.spacing10
     readonly property real bottomPadding: Theme.spacing6
@@ -17,7 +19,8 @@ PanelWindow {
     readonly property real maxScale: 1
     readonly property real backdropOpacity: 0.2
     readonly property real progress: motion.progress
-    readonly property real previewTop: stripTop + stripHeight + captionRoom
+    readonly property real specialStripTop: stripTop + stripHeight + stripGap
+    readonly property real previewTop: specialStripTop + specialStripHeight + specialStripGap + captionRoom
     readonly property var previewArea: ({
             x: sidePadding,
             y: previewTop,
@@ -34,6 +37,12 @@ PanelWindow {
         width: width - sidePadding * 2,
         height: stripHeight
     }, width / height, stripGap)
+    readonly property var specialStripSlots: viewModel.specialStrip({
+        x: sidePadding,
+        y: specialStripTop,
+        width: width - sidePadding * 2,
+        height: specialStripHeight
+    }, width / height, specialStripGap)
     readonly property bool capturesReady: Array.from({
         length: previews.count
     }, (unused, index) => previews.itemAt(index)).every(item => item !== null && item.ready)
@@ -179,6 +188,29 @@ PanelWindow {
                 miniatures: viewModel.miniaturesIn(modelData)
                 factor: width / window.width
                 onClicked: viewModel.show(modelData)
+            }
+        }
+
+        Repeater {
+            model: ScriptModel {
+                values: viewModel.specialWorkspaces
+            }
+
+            WorkspaceCard {
+                required property var modelData
+                required property int index
+                readonly property var slot: window.specialStripSlots[index] ?? null
+
+                x: slot?.x ?? 0
+                y: (slot?.y ?? 0) - (1 - window.progress) * window.stripTravel
+                width: slot?.width ?? 0
+                height: slot?.height ?? 0
+                opacity: window.progress
+                label: modelData.name
+                selected: modelData === viewModel.shownSpecial
+                miniatures: viewModel.specialMiniaturesIn(modelData)
+                factor: width / window.width
+                onClicked: viewModel.showSpecial(modelData)
             }
         }
 

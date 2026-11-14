@@ -68,9 +68,15 @@ QtObject {
     function focus(window) {
         const scratchpad = Dock.scratchpadAt(ScratchpadService.scratchpads, WorkspaceService.workspaceOf(window));
         if (scratchpad)
-            ScratchpadService.toggle(scratchpad.name);
+            ScratchpadService.pull(WorkspaceService.clientAddress(window));
         else
             WorkspaceService.focus(window);
+    }
+
+    function toggleScratchpad(window) {
+        const scratchpad = Dock.scratchpadAt(ScratchpadService.scratchpads, WorkspaceService.workspaceOf(window));
+        if (scratchpad)
+            ScratchpadService.toggle(scratchpad.name);
     }
 
     function previous() {

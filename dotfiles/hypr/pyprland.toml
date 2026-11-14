@@ -1,11 +1,2 @@
 [pyprland]
-plugins = ["scratchpads"]
-
-[scratchpads.sonora]
-animation = "fromBottom"
-command = "sonora"
-class = "sonora"
-size = "50% 50%"
-unfocus = "hide"
-process_tracking = false
-lazy = true
+plugins = []

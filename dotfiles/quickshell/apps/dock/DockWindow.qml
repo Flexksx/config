@@ -174,9 +174,13 @@ PanelWindow {
             if (!containsMouse)
                 linger.restart();
         }
-        onClicked: {
-            if (window.pointedIndex >= 0)
-                viewModel.focus(viewModel.pointed);
+        onClicked: mouse => {
+            if (window.pointedIndex >= 0) {
+                if (mouse.button === Qt.MiddleButton)
+                    viewModel.toggleScratchpad(viewModel.pointed);
+                else
+                    viewModel.focus(viewModel.pointed);
+            }
         }
     }
 

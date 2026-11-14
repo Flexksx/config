@@ -5,11 +5,108 @@
       "baseUrl": "http://127.0.0.1:11434/v1",
       "api": "openai-completions",
       "apiKey": "ollama",
+      "compat": {
+        "supportsDeveloperRole": false,
+        "supportsReasoningEffort": false
+      },
       "models": [
         { "id": "llama3.1" },
         { "id": "qwen3.5:4b" },
-        { "id": "gemma4:12b" }
+        { "id": "gemma4:12b" },
+        { "id": "qwen3:8b" }
       ]
+    },
+    "openrouter": {
+      "modelOverrides": {
+        "~deepseek/deepseek-flash-latest": {
+          "compat": {
+            "openRouterRouting": {
+              "only": ["DeepSeek"],
+              "allow_fallbacks": false
+            }
+          }
+        },
+        "~deepseek/deepseek-pro-latest": {
+          "compat": {
+            "openRouterRouting": {
+              "only": ["DeepSeek"],
+              "allow_fallbacks": false
+            }
+          }
+        },
+        "~deepseek/deepseek-v4-flash-latest": {
+          "compat": {
+            "openRouterRouting": {
+              "only": ["DeepSeek"],
+              "allow_fallbacks": false
+            }
+          }
+        },
+        "deepseek/deepseek-v4-flash": {
+          "compat": {
+            "openRouterRouting": {
+              "only": ["DeepSeek"],
+              "allow_fallbacks": false
+            }
+          }
+        },
+        "deepseek/deepseek-v4-flash-0731": {
+          "compat": {
+            "openRouterRouting": {
+              "only": ["DeepSeek"],
+              "allow_fallbacks": false
+            }
+          }
+        },
+        "deepseek/deepseek-v4-flash-vision-exp": {
+          "compat": {
+            "openRouterRouting": {
+              "only": ["DeepSeek"],
+              "allow_fallbacks": false
+            }
+          }
+        },
+        "deepseek/deepseek-v4-pro": {
+          "compat": {
+            "openRouterRouting": {
+              "only": ["DeepSeek"],
+              "allow_fallbacks": false
+            }
+          }
+        },
+        "deepseek/deepseek-v4-pro-0423": {
+          "compat": {
+            "openRouterRouting": {
+              "only": ["DeepSeek"],
+              "allow_fallbacks": false
+            }
+          }
+        },
+        "deepseek/deepseek-v4-pro-0813": {
+          "compat": {
+            "openRouterRouting": {
+              "only": ["DeepSeek"],
+              "allow_fallbacks": false
+            }
+          }
+        },
+        "deepseek/deepseek-v4.1-flash": {
+          "compat": {
+            "openRouterRouting": {
+              "only": ["DeepSeek"],
+              "allow_fallbacks": false
+            }
+          }
+        },
+        "deepseek/deepseek-v4.1-flash-1017": {
+          "compat": {
+            "openRouterRouting": {
+              "only": ["DeepSeek"],
+              "allow_fallbacks": false
+            }
+          }
+        }
+      }
     }
   }
 }

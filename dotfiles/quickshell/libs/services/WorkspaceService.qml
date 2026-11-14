@@ -26,6 +26,14 @@ Singleton {
         return Hyprland.workspaces.values.filter(workspace => workspace.monitor === monitor && !isSpecial(workspace.name)).sort((first, second) => first.id - second.id);
     }
 
+    function specialWorkspaces() {
+        return Hyprland.workspaces.values.filter(workspace => isSpecial(workspace.name));
+    }
+
+    function clientAddress(window) {
+        return window.lastIpcObject?.address ?? "";
+    }
+
     function appIdOf(window) {
         return window.wayland?.appId ?? window.lastIpcObject.class ?? "";
     }

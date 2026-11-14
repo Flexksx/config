@@ -40,4 +40,8 @@ Singleton {
     function toggle(name) {
         Quickshell.execDetached(["hyprctl", "eval", "scratchpads[\"" + name + "\"]()"]);
     }
+
+    function pull(address) {
+        Quickshell.execDetached(["hyprctl", "eval", "scratchpad_pull(\"" + address + "\")"]);
+    }
 }
