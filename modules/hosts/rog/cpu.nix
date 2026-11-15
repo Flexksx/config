@@ -14,12 +14,7 @@
     boot.kernelParams = ["amd_pstate=active"];
 
     services.power-profiles-daemon.enable = true;
-    services.asusd = {
-      enable = true;
-    };
-    services.tlp.enable = false;
-
-    environment.systemPackages = with pkgs; [asusctl];
+    services.asusd.enable = true;
 
     # asus-shutdown ignores SIGTERM indefinitely during service restarts (upstream bug in 6.3.7)
     systemd.services.asus-shutdown.serviceConfig.SendSIGKILL = "yes";

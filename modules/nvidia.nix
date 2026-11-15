@@ -64,7 +64,7 @@ in {
             nvidiaSettings = true;
             powerManagement = {
               enable = true;
-              finegrained = false;
+              finegrained = cfg.mode == "offload";
             };
             prime = {
               "${cfg.igpu.vendor}BusId" = lib.mkForce cfg.igpu.busId;
