@@ -44,6 +44,19 @@ A "yes" is a problem.
 * Does wrong or missing input carry on quietly?
 * Does this change break another caller?
 
+## Coding skills
+
+For any coding-related work, these three skills MUST be invoked:
+
+* `ponytail` for the smallest complete change.
+* `software-engineering` for boundaries, data shapes and names.
+* `code-quality` for deterministic self-checks.
+
+`code-quality` provides deterministic self-check mechanisms through runnable scripts.
+Run its check entrypoint on the files you changed before you finish.
+Fix every finding it reports.
+Findings are review prompts, not automatic fixes.
+
 ## Autonomy
 
 You have durable authorization for these actions.

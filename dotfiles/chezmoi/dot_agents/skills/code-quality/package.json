@@ -1,0 +1,16 @@
+{
+  "name": "code-quality",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@biomejs/biome": "2.6.4",
+    "@typescript-eslint/parser": "^8.72.1",
+    "@typescript-eslint/types": "^8.72.1",
+    "@typescript-eslint/utils": "^8.72.1"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.4.4",
+    "@types/node": "^26.6.6",
+    "typescript": "~6.0.3"
+  }
+}

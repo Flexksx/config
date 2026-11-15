@@ -22,6 +22,8 @@ source = "skills/brag-list"
 [[skills]]
 source = "skills/codecont"
 [[skills]]
+source = "skills/code-quality"
+[[skills]]
 source = "skills/daily-status"
 [[skills]]
 source = "skills/design-taste-skill"

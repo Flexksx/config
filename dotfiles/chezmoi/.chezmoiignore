@@ -8,3 +8,9 @@
 {{- if ne .chezmoi.os "darwin" }}
 /run_after_start-matugen-wallpaper.sh.tmpl
 {{- end }}
+/.agents/skills/code-quality/.venv/
+/.agents/skills/code-quality/node_modules/
+/.agents/skills/code-quality/.cache/
+/.agents/skills/code-quality/viqui/**/__pycache__/
+/.agents/skills/code-quality/viqui/**/.pytest_cache/
+/.agents/skills/code-quality/viqui/**/.ruff_cache/

@@ -29,7 +29,7 @@ are correct before applying them.
 
 Do that only for nix-related changes, not for other configuration changes.
 
-## Viqui
+## Code quality
 
-`viqui` is a CLI to enforce some personal coding preferences as deterministic checks.
-It can be ran both as a standalone CLI as well as set up as a hook for coding agents.
+The deterministic self-checks live in the `code-quality` agent skill.
+Invoke it for any coding work in this repo.
