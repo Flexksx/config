@@ -12,7 +12,6 @@
       (builtins.attrValues config.flake.modules.nixos)
       ++ (builtins.attrValues config.flake.modules.nixos-rog)
       ++ [config.flake.modules.nixos-optional.nvidia]
-      ++ [config.flake.modules.nixos-optional.ollama]
       ++ [
         ({pkgs, ...}: {
           environment.systemPackages = with pkgs; [
@@ -94,6 +93,11 @@
             stateVersion = "24.11";
           };
           programs.home-manager.enable = true;
+
+          ollama = {
+            enable = true;
+            cuda = true;
+          };
 
           services.drivesync.mounts.gdrive = {
             enable = true;
