@@ -10,3 +10,19 @@
   type: "file"
   url: "https://raw.githubusercontent.com/DietrichGebert/ponytail/main/skills/ponytail/SKILL.md"
   refreshPeriod: "168h"
+.agents/skills/ast-grep:
+  type: "archive"
+  url: "https://codeload.github.com/ast-grep/agent-skill/tar.gz/refs/heads/main"
+  stripComponents: 4
+  include:
+    - "*/*/skills/ast-grep/**"
+  exact: true
+  refreshPeriod: "168h"
+.agents/skills/ast-grep-outline:
+  type: "archive"
+  url: "https://codeload.github.com/ast-grep/agent-skill/tar.gz/refs/heads/main"
+  stripComponents: 4
+  include:
+    - "*/*/skills/outline/**"
+  exact: true
+  refreshPeriod: "168h"

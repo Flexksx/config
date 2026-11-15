@@ -1,10 +1,13 @@
 ---
 name: software-engineering
 description: >
-  Design judgment for code structure: architecture, boundaries, sharing,
-  types, data and naming.
-  Always load before writing, designing, restructuring or reviewing code
-  in any language, together with the language skill for the stack.
+  Design judgment for code structure: detect the architecture (hexagonal, layered, event-sourced,
+  MVVM, modular monorepo, microservices), set module boundaries, choose types, data shapes and
+  names.
+  Use before scaffolding or restructuring code in any language, when the repo records conventions
+  in `AGENTS.md`, or when a module needs a public API from `index.ts` or `__init__.py`.
+  Use it even for one new file, because names and boundaries are where models drift.
+  Do not use for language syntax or tooling; use `python-dev`, `java-dev` or `svelte-dev`.
 ---
 
 # Software Engineering

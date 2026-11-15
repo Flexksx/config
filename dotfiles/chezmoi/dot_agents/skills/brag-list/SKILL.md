@@ -1,13 +1,13 @@
 ---
 name: brag-list
 description: >
-  Update an existing brag list with evidence-backed impact statements.
-  Mines merged GitHub PRs via `gh` as the primary source, then asks what else
-  is worth bragging about since the last update.
-  Enforces a 3-part impact contract (action → result → evidence).
-  Trigger for: "update my brag list", "add to my brag list", "what have I shipped since last time",
-  "log recent work", "what did I do since [date]", "backfill my brag list",
-  or any request to add recent accomplishments to an existing work log.
+  Append evidence-backed impact entries to an existing brag list: mine merged PRs with
+  `gh pr list`, ask what the PR list misses, then write action → result → evidence per entry.
+  Use when the user says update my brag list, add to my brag list, what have I shipped since last
+  time, log recent work, what did I do since a date, or backfill my brag list.
+  Use it even when they only name a date range and no file.
+  Do not use for today's Slack status post or a standup note; use `daily-status` instead.
+  Do not use to create a brag list from nothing.
 license: MIT
 compatibility: 'Cross-platform (Windows, macOS, Linux). Requires git and gh CLI.'
 metadata:

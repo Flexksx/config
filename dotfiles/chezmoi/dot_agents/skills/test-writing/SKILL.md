@@ -1,10 +1,11 @@
 ---
 name: test-writing
 description: >
-  Test design techniques for black-box and white-box testing, plus rules for
-  non-redundant tests and clean test code.
-  Load whenever asked to add, tweak, or review tests in a codebase, or when
-  asked whether something is tested well enough.
+  Test design: black-box and white-box techniques, invariants written before edge cases,
+  red-before-green, and rules for deleting tests that cannot fail.
+  Use when adding, changing or reviewing tests, in `.test.ts` or `_test.py` files, or when asked
+  whether something is tested well enough.
+  Do not use for fixtures, mocks, CI wiring or build tooling.
 ---
 
 # Test Writing

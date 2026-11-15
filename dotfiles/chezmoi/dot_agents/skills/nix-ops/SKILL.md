@@ -1,8 +1,12 @@
 ---
 name: nix-ops
 description: >
-  Use when working with Nix, NixOS configuration, home-manager, flakes, or any .nix files.
-  Covers the dendritic pattern, module system, and decision rules for where configuration belongs.
+  Nix knowledge: which module owns a setting (NixOS, home-manager, overlay, `pkgs/`), module
+  structure with options and config, flake inputs, and the dendritic pattern.
+  Use when editing any `.nix` file or a `flake.nix`, or when `nix build` fails on the config.
+  Use it even for a one-line change, because the option path and the owning module are conventions
+  of this repo, not facts the model knows.
+  Do not use for nixpkgs upstream work or packaging a new upstream project.
 ---
 
 # Nix Operations

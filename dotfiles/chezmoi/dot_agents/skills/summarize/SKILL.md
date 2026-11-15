@@ -1,12 +1,12 @@
 ---
 name: summarize
 description: >
-  Instructions on how to summarize content
-  in a way that is clearly and concisely presented
-  while maintaining the original meaning and context.
-  Use whenever the user asks for a summary of content,
-  whether a youtube video, blog post, article,
-  work message thread, or any other type of content.
+  Condense long content: keep the author's own ideas in their original order, cut the metaphors,
+  anecdotes and tangents around them, and keep the language plain.
+  Use when the user says `summarize` or `tl;dr`, or shares a video, article, transcript, thread or
+  document to condense.
+  Use it even when the content is pasted inline with no link.
+  Do not use to rewrite prose for tone or length; that is editing, not summarizing.
 ---
 
 # Content Summarization Guideline

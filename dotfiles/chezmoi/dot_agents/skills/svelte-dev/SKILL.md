@@ -1,6 +1,12 @@
 ---
 name: svelte-dev
-description: Always load this skill when working with Svelte or SvelteKit
+description: >
+  Svelte 5 and SvelteKit reference: runes, props and bindable props, snippets instead of slots,
+  and every Svelte 4 to 5 migration gotcha.
+  Use when editing `.svelte` files or a `+page.svelte`, when the code mixes `$state` with `$:`
+  statements, or when the user asks for Svelte runes or SvelteKit routing.
+  Do not use for Vue or framework-agnostic reactivity; use `frontend-dev` instead.
+  Do not use for visual design or layout choices.
 ---
 
 # Svelte Development Skill

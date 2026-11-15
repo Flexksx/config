@@ -1,8 +1,12 @@
 ---
 name: codecont
 description: >
-  Use when asked about a new feature, asked about the current codebase,
-  or asked to change something in an existing codebase.
+  Read an unfamiliar codebase before answering: quick scan, one narrow `code-investigator`
+  subagent per unresolved hypothesis, then a grounded recommendation with pitfalls and unknowns.
+  Use when asked whether a feature is feasible, where something lives, why a behaviour happens,
+  or how a change would land in a repo, especially when no file is named.
+  Do not use to write or refactor the change itself; use `software-engineering` for design and the
+  language skill for code.
 ---
 
 # Code Context

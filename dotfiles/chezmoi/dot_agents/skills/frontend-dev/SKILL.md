@@ -1,8 +1,13 @@
 ---
 name: frontend-dev
 description: >
-  Always use when doing any web frontend development work.
-  Covers reactivity principles and framework-specific patterns for Svelte and Vue.
+  Framework-agnostic frontend rules: derive state instead of syncing it, keep effects for external
+  side effects only, and the Vue form of each mistake.
+  Use when editing `.vue` components, or when a bug smells like duplicated state, a watcher
+  writing state, or a computed value that goes stale.
+  Use it even for a one-line fix inside a component.
+  Do not use for Svelte 5 runes, snippets or SvelteKit routing; use `svelte-dev` instead.
+  Do not use for visual design or layout choices.
 ---
 
 # Web Frontend Development

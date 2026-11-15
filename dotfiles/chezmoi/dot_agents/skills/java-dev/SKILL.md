@@ -1,8 +1,11 @@
 ---
 name: java-dev
 description: >
-  Mandatory standards and patterns to adhere to when developing Java,
-  Spring MVC and Spring Boot applications.
+  Java and Spring standards: records with compact constructors, var and final rules, Optional as a
+  return type only, named constants, streams over loops, and MVC or Boot layering.
+  Use when editing `.java` files, a `pom.xml` or `build.gradle.kts`, a `@RestController`, or when
+  the user asks for a DTO, an entity or a service in Java or Spring.
+  Do not use for design decisions that outlive the language; use `software-engineering` instead.
 ---
 
 # Java Development

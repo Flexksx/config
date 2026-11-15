@@ -1,8 +1,13 @@
 ---
 name: python-dev
 description: >
-  Always load when developing, writing, reviewing, or refactoring Python code.
-  Python development best practices, tooling, project structure, and code quality standards.
+  Python standards: uv and ruff tooling, modules as namespaces instead of stateless classes,
+  dependencies passed as arguments, no comments, pytest conventions.
+  Use when editing `.py` files or a `pyproject.toml`, or when the user asks for a script, a
+  package, or a refactor in Python.
+  Use it even for a one-line change, because the module-versus-class choice is where Python models
+  go wrong.
+  Do not use for design decisions that outlive the language; use `software-engineering` instead.
 ---
 
 # Python Development

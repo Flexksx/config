@@ -1,13 +1,12 @@
 ---
 name: project-bootstrap
 description: >
-  How to use the project-bootstrap-template monorepo: clone it, run ./init,
-  scaffold units with `just new`, run every task through `just`, and add a
-  toolchain through nix. Also covers monorepo scope, contract libraries, and
-  OpenAPI as the source of truth. Load when you create a repo, add an app or a
-  lib, add a language, wire a build/format/lint/test task, or debug the
-  just/moon/nix wiring. Combine with software-engineering and the
-  language-specific skill.
+  Project-bootstrap template wiring: clone and run `./init`, scaffold units with `just new`, run
+  every task through `just`, and add a language toolchain through nix.
+  Use when starting a repo from the template, adding an app or lib, adding a language, or
+  debugging a `justfile` or `moon.yml`.
+  Do not use for a repo that does not use this template; use `software-engineering` for layout
+  decisions and the language skill for code.
 ---
 
 # Project bootstrap

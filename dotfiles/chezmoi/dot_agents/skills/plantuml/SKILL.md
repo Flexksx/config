@@ -1,9 +1,11 @@
 ---
 name: plantuml
 description: >
-  Generate PlantUML diagrams from text descriptions and convert them to PNG/SVG images.
-  Use when asked to "create a diagram", "generate PlantUML", "convert puml to image", "extract diagrams from markdown", or "prepare markdown for Confluence".
-  Supports all PlantUML diagram types including UML (sequence, class, activity, state, component, deployment, use case, object, timing) and non-UML (ER diagrams, Gantt charts, JSON/YAML visualization, mindmaps, WBS, network diagrams, wireframes, and more).
+  Write and render PlantUML: pick the diagram type, produce `.puml` source, render to PNG or SVG,
+  and swap diagram blocks in markdown for image links before publishing.
+  Use when asked to create a diagram, draw a sequence, class or architecture diagram, convert a
+  puml file to an image, or prepare a document for Confluence.
+  Do not use for Mermaid, draw.io or Excalidraw output.
 ---
 
 # PlantUML Diagram Generation and Conversion

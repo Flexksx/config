@@ -1,15 +1,13 @@
 ---
 name: daily-status
-description: |
-  Generate a daily Slack status post from today's GitHub PRs, Jira updates,
-  Confluence edits, and conversation context. Structured as bullet points
-  with topics, resource URLs, and concrete achievements. Designed to make
-  engineering work visible, build trust, and show progress to leadership.
-  Trigger for: "daily status", "daily update", "standup post",
-  "what did I do today", "slack status", "EOD update", "end of day post",
-  "status post".
-  Do not use for: brag lists (use brag-list), sprint planning, retros,
-  weekly summaries, or status pages.
+description: >
+  Write today's Slack status post: what shipped, what is next, where you are blocked, as bullets
+  with a link per item, sourced from today's `jira` tickets and `confluence` edits.
+  Use when the user asks for a daily status, daily update, standup post, EOD update, end of day
+  post, or what did I do today.
+  Use it even when they only say post my status.
+  Do not use for a dated, evidence-backed work log; use `brag-list` instead.
+  Do not use for sprint planning, retros or weekly summaries.
 ---
 
 # Daily Status Post Generator
