@@ -7,8 +7,6 @@
   },
   "files": {
     "includes": [
-      "dotfiles/ai_agents/**/*.ts",
-      "dotfiles/ai_agents/**/*.js",
       "viqui/**/*.mjs",
       "viqui/rules/*/ts/no-*.ts",
       "viqui/rules/*/scan.ts",
