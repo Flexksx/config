@@ -120,3 +120,103 @@ Never swallow errors silently.
 
 Overall best practice to avoid inheritance unless there is clearly a is-a relationship.
 Favor composition over inheritance all time.
+
+## Decouple code from data
+
+In the case of scripts that perform some business logic or apply configuration, it is critical to separate the code from the data.
+
+The symptoms:
+
+- A case name, tier or country appears inside the code, not only in the data.
+- The same literal, date or threshold appears in more than one function.
+- An `if`/`elif` chain whose branches differ only in their values.
+- Adding a case edits a function instead of adding a row.
+- A parameter exists only to pick a group of preset values.
+- The rule cannot be tested without setting up the real case.
+
+```python
+# Bad - the thresholds are the rule, and they are written twice
+# A new tier edits both functions, and the message can drift from the routing
+def required_approver(amount_cents: int) -> Role:
+    if amount_cents < 100_000:
+        return Role.TEAM_LEAD
+    if amount_cents < 1_000_000:
+        return Role.FINANCE_MANAGER
+    if amount_cents < 10_000_000:
+        return Role.CONTROLLER
+    return Role.CFO
+
+def approval_message(amount_cents: int) -> str:
+    if amount_cents < 100_000:
+        return "Team lead approval"
+    if amount_cents < 1_000_000:
+        return "Finance review"
+    if amount_cents < 10_000_000:
+        return "Controller signature"
+    return "CFO signature"
+
+
+# Better - the tiers are data, and the code only selects one
+# A new tier adds a row, so routing and message cannot disagree
+@dataclass(frozen=True)
+class ApprovalTier:
+    max_amount_cents: int | None
+    approver: Role
+    message: str
+
+APPROVAL_TIERS = (
+    ApprovalTier(max_amount_cents=100_000, approver=Role.TEAM_LEAD, message="Team lead approval"),
+    ApprovalTier(max_amount_cents=1_000_000, approver=Role.FINANCE_MANAGER, message="Finance review"),
+    ApprovalTier(max_amount_cents=10_000_000, approver=Role.CONTROLLER, message="Controller signature"),
+    ApprovalTier(max_amount_cents=None, approver=Role.CFO, message="CFO signature"),
+)
+
+def tier_for(amount_cents: int) -> ApprovalTier:
+    return next(
+        tier
+        for tier in APPROVAL_TIERS
+        if tier.max_amount_cents is None or amount_cents < tier.max_amount_cents
+    )
+
+def approval_message(amount_cents: int) -> str:
+    return tier_for(amount_cents).message
+```
+
+The example above is a common use case, whereas some use cases may not be that obvious.
+
+```python
+# Bad - the rate history lives in the code, and every reader repeats the dates
+def vat_cents(order: Order) -> int:
+    if order.placed_on < date(2024, 1, 1):
+        return order.net_cents * 19 // 100
+    return order.net_cents * 21 // 100
+
+def invoice_note(order: Order) -> str:
+    if order.placed_on < date(2024, 1, 1):
+        return "VAT 19%"
+    return "VAT 21%"
+
+
+# Better - the rate history is data, newest first, and the code reads it once
+@dataclass(frozen=True)
+class VatPeriod:
+    valid_from: date
+    rate_percent: int
+
+VAT_PERIODS = (
+    VatPeriod(valid_from=date(2024, 1, 1), rate_percent=21),
+    VatPeriod(valid_from=date(2023, 1, 1), rate_percent=19),
+)
+
+def vat_period(placed_on: date) -> VatPeriod:
+    for period in VAT_PERIODS:
+        if period.valid_from <= placed_on:
+            return period
+    raise UnknownPeriod(placed_on)
+
+def vat_cents(order: Order) -> int:
+    return order.net_cents * vat_period(order.placed_on).rate_percent // 100
+
+def invoice_note(order: Order) -> str:
+    return f"VAT {vat_period(order.placed_on).rate_percent}%"
+```

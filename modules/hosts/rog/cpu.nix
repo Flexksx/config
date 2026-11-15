@@ -6,7 +6,6 @@
         asusctl
         power-profiles-daemon
         dbus
-        gnugrep
       ];
       text = builtins.readFile ../../../dotfiles/scripts/rog_powerprofilesctl_fan_curves.sh;
     };
