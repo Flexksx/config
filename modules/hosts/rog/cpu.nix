@@ -15,6 +15,10 @@
 
     services.power-profiles-daemon.enable = true;
     services.asusd.enable = true;
+    services.scx = {
+      enable = true;
+      scheduler = "scx_bpfland";
+    };
 
     # asus-shutdown ignores SIGTERM indefinitely during service restarts (upstream bug in 6.3.7)
     systemd.services.asus-shutdown.serviceConfig.SendSIGKILL = "yes";
