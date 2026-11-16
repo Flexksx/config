@@ -45,7 +45,7 @@ in {
       {
         services.xserver.videoDrivers = lib.optional (cfg.igpu.vendor == "amdgpu") "amdgpu" ++ ["nvidia"];
 
-        boot.kernelParams = ["nvidia_drm.modeset=1"];
+        boot.kernelParams = ["nvidia_drm.modeset=1" "nvidia_drm.fbdev=0"];
 
         services.udev.extraRules = ''
           SUBSYSTEM=="drm", KERNEL=="card*", KERNELS=="${sysfsAddress cfg.igpu.busId}", SYMLINK+="dri/igpu"

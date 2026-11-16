@@ -1,7 +1,7 @@
 {...}: {
   flake.modules.nixos-rog.nvidia = {
     gpu.nvidia = {
-      mode = "sync";
+      mode = "offload";
       busId = "PCI:1:0:0";
       igpu = {
         vendor = "amdgpu";
@@ -11,7 +11,6 @@
 
     environment.variables = {
       __GL_VRR_ALLOWED = "1";
-      AQ_DRM_DEVICES = "/dev/dri/dgpu:/dev/dri/igpu";
     };
   };
 }
