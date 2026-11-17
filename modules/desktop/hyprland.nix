@@ -50,28 +50,11 @@ in {
     environment.sessionVariables.NIXOS_OZONE_WL = "1";
   };
 
-  flake.modules.homeManager.hyprland = {
-    pkgs,
-    inputs,
-    ...
-  }: {
+  flake.modules.homeManager.hyprland = {pkgs, ...}: {
     home.packages = with pkgs; [
       satty
       hyprshot
     ];
-
-    wayland.windowManager.hyprland = {
-      enable = true;
-      configType = "lua";
-      systemd.enable = false;
-      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.default;
-      portalPackage =
-        inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
-    };
-
-    xdg.configFile."hypr/hyprland.lua".source = "${inputs.self}/dotfiles/hypr/lua/init.lua";
-
-    dotfiles.configFiles = ["hypr/.luarc.json"];
 
     home.sessionVariables = {
       ELECTRON_OZONE_PLATFORM_HINT = "auto";

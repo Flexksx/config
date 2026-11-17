@@ -8,6 +8,9 @@
 {{- if ne .chezmoi.os "darwin" }}
 /run_after_start-matugen-wallpaper.sh.tmpl
 {{- end }}
+{{- if ne .chezmoi.os "linux" }}
+/.config/hypr
+{{- end }}
 /.agents/skills/code-quality/.venv/
 /.agents/skills/code-quality/node_modules/
 /.agents/skills/code-quality/.cache/

@@ -31,7 +31,7 @@
     apple-fonts.url = "github:Lyndeno/apple-fonts.nix";
     yazi.url = "github:sxyazi/yazi";
 
-    hyprland.url = "github:hyprwm/Hyprland/v0.56.1";
+    hyprland.url = "github:hyprwm/Hyprland/v0.57.0";
 
     noctaliav5.url = "github:noctalia-dev/noctalia";
     mcmojave-hyprcursor.url = "github:libadoxon/mcmojave-hyprcursor";
