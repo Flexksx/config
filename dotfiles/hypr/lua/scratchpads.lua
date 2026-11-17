@@ -14,8 +14,8 @@ hl.animation({
 
 scratchpad.create({
 	key_bind = "SUPER + P",
-	apps = { { class = "sonora", command = "sonora" } },
-	special_ws = "sonora-scratchpad",
+	apps = { { class = "spotify", command = "spotify" } },
+	special_ws = "spotify-scratchpad",
 	show_mode = "workspace",
 	launch_at_startup = false,
 	enable_timer = false,

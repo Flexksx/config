@@ -11,16 +11,17 @@ PanelWindow {
     readonly property real peakIcon: 72
     readonly property real reach: 3
     readonly property real cardWidth: 320
-    readonly property real cardRoom: 140
+    readonly property real popupRoom: Math.max(card.height, menu.height) + Theme.spacing2
     readonly property real dividerRatio: 0.6
     readonly property real detailThreshold: 0.5
+    property bool menuOpen: false
     readonly property real grow: Math.min(1, motion.progress)
     readonly property real iconSize: restIcon + (baseIcon - restIcon) * grow
     readonly property real gap: Theme.spacing1 * (1 + grow)
     readonly property real pad: Theme.spacing1 * (1 + grow)
     readonly property real divider: Theme.spacing2 * (1 + grow)
     readonly property real lift: (peakIcon - baseIcon) * grow
-    readonly property bool pointing: strip.containsMouse || cardHover.hovered || linger.running
+    readonly property bool pointing: strip.containsMouse || cardHover.hovered || menuHover.hovered || linger.running
     property real focusX: 0
     property real magnify: pointing ? 1 : 0
     readonly property var items: viewModel.layout(iconSize + gap, divider, width / 2, focusX, (peakIcon - baseIcon) * magnify * grow, (baseIcon + Theme.spacing2) * reach)
@@ -29,12 +30,13 @@ PanelWindow {
     onPointedIndexChanged: {
         if (pointedIndex >= 0)
             viewModel.point(viewModel.entries[pointedIndex]);
+        window.menuOpen = false;
     }
 
     anchors.left: true
     anchors.right: true
     anchors.bottom: true
-    implicitHeight: peakIcon + Theme.spacing2 * 2 + Theme.spacing1 + cardRoom
+    implicitHeight: peakIcon + Theme.spacing2 * 2 + Theme.spacing1 + popupRoom
     color: "transparent"
     exclusionMode: ExclusionMode.Ignore
     WlrLayershell.layer: WlrLayer.Top
@@ -44,6 +46,10 @@ PanelWindow {
 
         Region {
             item: cardZone
+        }
+
+        Region {
+            item: menuZone
         }
     }
 
@@ -61,7 +67,10 @@ PanelWindow {
     Reveal {
         id: motion
 
-        onHidden: viewModel.release()
+        onHidden: {
+            viewModel.release();
+            window.menuOpen = false;
+        }
     }
 
     Timer {
@@ -163,6 +172,7 @@ PanelWindow {
     MouseArea {
         id: strip
 
+        acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton
         x: shelf.x
         y: shelf.y - window.lift
         width: shelf.width
@@ -175,9 +185,12 @@ PanelWindow {
                 linger.restart();
         }
         onClicked: mouse => {
+            window.menuOpen = false;
             if (window.pointedIndex >= 0) {
                 if (mouse.button === Qt.MiddleButton)
                     viewModel.toggleScratchpad(viewModel.pointed);
+                else if (mouse.button === Qt.RightButton)
+                    window.menuOpen = true;
                 else
                     viewModel.focus(viewModel.pointed);
             }
@@ -187,7 +200,7 @@ PanelWindow {
     Item {
         id: cardZone
 
-        readonly property bool shown: window.pointedIndex >= 0 && window.grow === 1 && !motion.hiding
+        readonly property bool shown: window.pointedIndex >= 0 && window.grow === 1 && !motion.hiding && !window.menuOpen
         readonly property var place: window.items[viewModel.pointedSlot] ?? null
 
         x: Math.max(Theme.spacing2, Math.min(window.width - card.width - Theme.spacing2, (place ? place.x + place.size / 2 : window.width / 2) - card.width / 2))
@@ -214,6 +227,49 @@ PanelWindow {
             title: viewModel.pointedTitle
             media: viewModel.pointedMedia
             onClicked: viewModel.focus(viewModel.pointed)
+            onRightClicked: window.menuOpen = true
+            onPrevious: viewModel.previous()
+            onToggle: viewModel.toggle()
+            onNext: viewModel.next()
+
+            Behavior on opacity {
+                NumberAnimation {
+                    duration: Theme.durationFast
+                }
+            }
+        }
+    }
+
+    Item {
+        id: menuZone
+
+        readonly property bool shown: window.menuOpen && window.grow === 1 && !motion.hiding && viewModel.pointed !== null
+        readonly property var place: window.items[viewModel.pointedSlot] ?? null
+
+        x: Math.max(Theme.spacing2, Math.min(window.width - menu.width - Theme.spacing2, (place ? place.x + place.size / 2 : window.width / 2) - menu.width / 2))
+        y: strip.y - height
+        width: shown ? menu.width : 0
+        height: menu.height + Theme.spacing2
+
+        HoverHandler {
+            id: menuHover
+        }
+
+        DockMenu {
+            id: menu
+
+            name: viewModel.pointedName
+            targets: viewModel.pointedTargets
+            media: viewModel.pointedMedia
+            opacity: menuZone.shown ? 1 : 0
+            onCloseRequested: {
+                viewModel.closeWindow(viewModel.pointed);
+                window.menuOpen = false;
+            }
+            onMoved: bay => {
+                viewModel.moveTo(viewModel.pointed, bay);
+                window.menuOpen = false;
+            }
             onPrevious: viewModel.previous()
             onToggle: viewModel.toggle()
             onNext: viewModel.next()

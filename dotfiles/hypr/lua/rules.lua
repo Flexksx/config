@@ -15,7 +15,7 @@ local window_rules = {
 	{ match = { class = "^(jetbrains-studio)$" }, opacity = "0.95 0.95" },
 	{ match = { class = "^(jetbrains-idea)$" }, opacity = "0.95 0.95" },
 	{ match = { class = "^(jetbrains-pycharm)$" }, opacity = "0.95 0.95" },
-	{ match = { class = "^(sonora)$" }, opacity = "0.95 0.85" },
+	{ match = { class = "^(spotify)$" }, opacity = "0.95 0.85" },
 	{ match = { class = "^(org\\.gnome\\.Nautilus)$" }, opacity = "0.85 0.85" },
 	{ match = { class = "^(dev\\.zed\\.Zed)$" }, opacity = "0.95 0.95" },
 	{ match = { class = "^(org\\.telegram\\.desktop)$", title = "^(Media viewer)$" }, float = true },

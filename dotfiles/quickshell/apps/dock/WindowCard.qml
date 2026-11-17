@@ -11,6 +11,7 @@ Rectangle {
     readonly property real secondaryOpacity: 0.7
 
     signal clicked
+    signal rightClicked
     signal previous
     signal toggle
     signal next
@@ -21,7 +22,12 @@ Rectangle {
 
     MouseArea {
         anchors.fill: parent
-        onClicked: card.clicked()
+        onClicked: mouse => {
+            if (mouse.button === Qt.RightButton)
+                card.rightClicked();
+            else
+                card.clicked();
+        }
     }
 
     Column {

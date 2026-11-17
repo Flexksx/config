@@ -1,4 +1,5 @@
 import QtQuick
+import Quickshell
 import qs.libs.services
 import "dock.js" as Dock
 
@@ -16,6 +17,7 @@ QtObject {
     readonly property string pointedTitle: pointed?.title ?? ""
     readonly property var pointedPlayer: pointed ? playerOf(pointed) : null
     readonly property var pointedMedia: Dock.mediaOf(pointedPlayer)
+    readonly property var pointedTargets: pointed ? moveTargetsOf(pointed) : []
 
     function point(window) {
         pointed = window;
@@ -71,6 +73,28 @@ QtObject {
             ScratchpadService.pull(WorkspaceService.clientAddress(window));
         else
             WorkspaceService.focus(window);
+    }
+
+    function moveTargetsOf(window) {
+        const current = WorkspaceService.workspaceOf(window);
+        const bays = WorkspaceService.workspacesOn(window.monitor).map(workspace => workspace.name).concat(ScratchpadService.scratchpads.map(scratchpad => scratchpad.workspace));
+        return bays.filter(bay => bay !== current).map(bay => ({
+                    bay: bay,
+                    label: labelOf(bay)
+                }));
+    }
+
+    function closeWindow(window) {
+        Quickshell.execDetached(["hyprctl", "eval", "hl.dispatch(hl.dsp.window.close({ window = " + selectorOf(window) + " }))"]);
+    }
+
+    function moveTo(window, bay) {
+        const workspace = /^[0-9]+$/.test(bay) ? bay : JSON.stringify(bay);
+        Quickshell.execDetached(["hyprctl", "eval", "hl.dispatch(hl.dsp.window.move({ workspace = " + workspace + ", window = " + selectorOf(window) + ", follow = false }))"]);
+    }
+
+    function selectorOf(window) {
+        return '"address:' + WorkspaceService.clientAddress(window) + '"';
     }
 
     function toggleScratchpad(window) {

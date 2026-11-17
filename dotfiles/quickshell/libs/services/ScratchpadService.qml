@@ -12,12 +12,12 @@ Singleton {
         {
             name: "comms",
             label: "comms",
-            classes: ["slack", "org.telegram.desktop"]
+            classes: ["org.telegram.desktop", "discord"]
         },
         {
-            name: "sonora-scratchpad",
+            name: "spotify-scratchpad",
             label: "music",
-            classes: ["sonora"],
+            classes: ["spotify"],
             media: true
         }
     ]
