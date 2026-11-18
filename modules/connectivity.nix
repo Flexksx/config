@@ -3,6 +3,11 @@
     networking.networkmanager.enable = true;
     services.openssh.enable = true;
 
+    services.tailscale = {
+      enable = true;
+      openFirewall = true;
+    };
+
     users = {
       groups.autossh = {};
       users.autossh = {

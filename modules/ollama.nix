@@ -1,6 +1,4 @@
-{...}: let
-  nix-cache = import ./_nix-cache.nix;
-in {
+{...}: {
   flake.modules.homeManager.ollama = {
     config,
     lib,
@@ -23,12 +21,6 @@ in {
           package = lib.mkIf cfg.cuda pkgs.ollama-cuda;
         };
       })
-
-      (lib.mkIf (cfg.enable && cfg.cuda)
-        (nix-cache {
-          url = "cache.nixos-cuda.org";
-          key = "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M=";
-        }))
     ];
   };
 }
