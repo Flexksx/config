@@ -31,6 +31,9 @@ fi
 
 # starship.
 if command -v starship >/dev/null && [[ $TERM != "dumb" ]]; then
+  if [[ -n $SSH_CONNECTION ]]; then
+    export STARSHIP_CONFIG="$HOME/.config/starship-ssh.toml"
+  fi
   eval "$(starship init zsh)"
 fi
 
