@@ -25,7 +25,6 @@
 /.config/matugen
 /.config/nvim
 /.config/starship-ssh.toml
-/.config/starship.toml
 /.config/zed
 /.ideavimrc
 /.local

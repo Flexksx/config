@@ -20,6 +20,7 @@ pkg install -y \
 	procs \
 	python-yt-dlp \
 	ripgrep \
+	starship \
 	tree \
 	xh \
 	zellij \
