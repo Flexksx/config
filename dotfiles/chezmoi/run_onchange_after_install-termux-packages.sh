@@ -9,6 +9,7 @@ pkg install -y \
 	fastfetch \
 	fd \
 	fzf \
+	git-delta \
 	gitui \
 	glow \
 	gping \
@@ -16,6 +17,7 @@ pkg install -y \
 	just \
 	lnav \
 	procs \
+	python-yt-dlp \
 	ripgrep \
 	tree \
 	xh \
