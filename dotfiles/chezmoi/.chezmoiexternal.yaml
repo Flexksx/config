@@ -30,3 +30,7 @@
   type: "file"
   url: "https://github.com/dj95/zjstatus/releases/download/v0.25.0/zjstatus.wasm"
   refreshPeriod: "168h"
+.local/share/zellij/plugins/zjstatus-hints.wasm:
+  type: "file"
+  url: "https://github.com/b0o/zjstatus-hints/releases/download/v0.1.4/zjstatus-hints.wasm"
+  refreshPeriod: "168h"

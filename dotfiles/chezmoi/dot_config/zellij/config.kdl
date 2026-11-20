@@ -277,16 +277,51 @@ plugins {
     plugin-manager location="zellij:plugin-manager"
     session-manager location="zellij:session-manager"
     status-bar location="file:/home/flexksx/.local/share/zellij/plugins/zjstatus.wasm" {
-        format_left "{mode} {session}"
+        color_bg     "#181825"
+        color_fg     "#CDD6F4"
+        color_dim    "#6C7086"
+        color_blue   "#89B4FA"
+        color_orange "#FFC387"
+        color_green  "#A6E3A1"
+        color_red    "#F38BA8"
+
+        format_left  "#[fg=$bg,bg=$blue,bold] {mode} #[fg=$fg,bold]{session} "
         format_center "{tabs}"
-        format_right "{datetime}"
-        datetime_format "%H:%M"
+        format_right "#[fg=$dim]{datetime} "
+        format_space "#[bg=$bg]"
+
+        datetime          "#[fg=$dim] {format} "
+        datetime_format   "%a %d %b %H:%M"
+        datetime_timezone "Europe/Chisinau"
+
+        mode_normal        "#[fg=$bg,bg=$blue,bold] {name} "
+        mode_pane          "#[fg=$bg,bg=$green,bold] {name} "
+        mode_tab           "#[fg=$bg,bg=$green,bold] {name} "
+        mode_resize        "#[fg=$bg,bg=$green,bold] {name} "
+        mode_move          "#[fg=$bg,bg=$green,bold] {name} "
+        mode_scroll        "#[fg=$bg,bg=$orange,bold] {name} "
+        mode_enter_search  "#[fg=$bg,bg=$orange,bold] {name} "
+        mode_search        "#[fg=$bg,bg=$orange,bold] {name} "
+        mode_session       "#[fg=$bg,bg=$orange,bold] {name} "
+        mode_tmux          "#[fg=$bg,bg=$red,bold] {name} "
+        mode_locked        "#[fg=$bg,bg=$red,bold] {name} "
+        mode_rename_tab    "#[fg=$bg,bg=$blue,bold] {name} "
+        mode_rename_pane   "#[fg=$bg,bg=$blue,bold] {name} "
+        mode_default_to_mode "normal"
+
+        tab_normal     "#[fg=$dim] {index}:{name}{floating_indicator} "
+        tab_active     "#[fg=$fg,bold] {index}:{name}{floating_indicator} "
+        tab_separator  "#[fg=$dim] │ "
+        tab_sync_indicator       "<> "
+        tab_fullscreen_indicator "[] "
+        tab_floating_indicator   " ⬚"
     }
     strider location="zellij:strider"
     tab-bar location="zellij:tab-bar"
     welcome-screen location="zellij:session-manager" {
         welcome_screen true
     }
+    zjstatus-hints location="file:/home/flexksx/.local/share/zellij/plugins/zjstatus-hints.wasm"
 }
 
 // Plugins to load in the background when a new session starts
