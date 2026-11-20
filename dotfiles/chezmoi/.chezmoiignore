@@ -30,7 +30,6 @@
 /.ideavimrc
 /.local
 /.pi
-/.zshrc
 /Library
 /pull-ollama-models.sh
 /start-matugen-wallpaper.sh

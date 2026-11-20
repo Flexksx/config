@@ -15,6 +15,7 @@ pkg install -y \
 	gping \
 	jq \
 	just \
+	lazygit \
 	lnav \
 	procs \
 	python-yt-dlp \
@@ -22,4 +23,7 @@ pkg install -y \
 	tree \
 	xh \
 	zellij \
-	zoxide
+	zoxide \
+	zsh
+
+chsh -s zsh
