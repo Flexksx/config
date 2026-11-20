@@ -11,6 +11,34 @@
 {{- if ne .chezmoi.os "linux" }}
 /.config/hypr
 {{- end }}
+{{- if eq .chezmoi.os "android" }}
+/.agents
+/.claude
+/.codex
+/.config/atuin
+/.config/bat
+/.config/gh
+/.config/ghostty
+/.config/JetBrains
+/.config/k9s
+/.config/lazygit
+/.config/matugen
+/.config/nvim
+/.config/starship-ssh.toml
+/.config/starship.toml
+/.config/zed
+/.ideavimrc
+/.local
+/.pi
+/.zshrc
+/Library
+/pull-ollama-models.sh
+/start-matugen-wallpaper.sh
+{{- end }}
+{{- if ne .chezmoi.os "android" }}
+/.ssh
+/fetch-termux-font.sh
+{{- end }}
 /.agents/skills/code-quality/.venv/
 /.agents/skills/code-quality/node_modules/
 /.agents/skills/code-quality/.cache/

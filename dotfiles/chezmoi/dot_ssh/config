@@ -1,0 +1,4 @@
+Host nixos
+  HostName 100.82.30.116
+  User flexksx
+  IdentityFile ~/.ssh/id_ed25519

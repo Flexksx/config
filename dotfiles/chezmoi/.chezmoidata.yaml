@@ -1,4 +1,5 @@
 deviceNames:
+  android: pixel
   darwin: mac
   linux: rog
 ollama:

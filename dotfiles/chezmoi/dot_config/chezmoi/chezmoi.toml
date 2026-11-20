@@ -1,0 +1,5 @@
+sourceDir = "~/config/dotfiles/chezmoi"
+mode = "symlink"
+
+[data]
+email = "cristian.cretu2808@gmail.com"
