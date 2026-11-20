@@ -69,6 +69,10 @@
                 "openrazer"
                 "i2c"
               ];
+              openssh.authorizedKeys.keys = [
+                "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJAQibXPJ9EU0W8NiQSIHFlzUw6hBQ86WTuZ09YD72UP pixel"
+                "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB0iAxnap5RQsqWG1QwECUOwROJHoXRlThTYOt5esnOF ipad"
+              ];
             };
           };
 
