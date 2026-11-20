@@ -38,6 +38,7 @@
 {{- if ne .chezmoi.os "android" }}
 /.ssh
 /fetch-termux-font.sh
+/install-termux-packages.sh
 {{- end }}
 /.agents/skills/code-quality/.venv/
 /.agents/skills/code-quality/node_modules/
