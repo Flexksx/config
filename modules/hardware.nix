@@ -50,6 +50,8 @@
     # Without the daemon there is no device object, so the battery widget renders nothing.
     services.upower.enable = true;
 
+    services.logind.settings.Login.HandleLidSwitchExternalPower = "ignore";
+
     hardware = {
       i2c.enable = true;
       enableAllFirmware = true;
