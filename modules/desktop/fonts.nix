@@ -3,19 +3,18 @@
     pkgs,
     inputs,
     ...
-  }: {
+  }: let
+    pkgs-unstable = inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+  in {
     fonts = {
       enableDefaultPackages = true;
 
       packages = with pkgs; [
         noto-fonts
         noto-fonts-cjk-sans
-        jetbrains-mono
-        nerd-fonts.fira-code
-        nerd-fonts.droid-sans-mono
+        pkgs-unstable.nerd-fonts.jetbrains-mono
         fira
         noto-fonts-color-emoji
-        meslo-lgs-nf
         font-awesome
         material-icons
         material-symbols
@@ -41,7 +40,7 @@
         };
         defaultFonts = {
           sansSerif = ["IBM Plex Sans" "SF Pro Display" "SF Pro Text" "Noto Sans"];
-          monospace = ["JetBrains Mono" "SF Mono" "IBM Plex Mono"];
+          monospace = ["JetBrainsMono Nerd Font Mono" "SF Mono" "IBM Plex Mono"];
           emoji = ["Noto Color Emoji"];
         };
       };

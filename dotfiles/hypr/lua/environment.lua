@@ -11,6 +11,7 @@ local env_vars = {
 	NIXOS_OZONE_WL = "1",
 	_JAVA_AWT_WM_NONREPARENTING = "1",
 	EDITOR = "nvim",
+	VISUAL = "nvim",
 }
 
 for key, value in pairs(env_vars) do

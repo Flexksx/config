@@ -12,6 +12,7 @@ ci:
     bun x biome check {{_root}}
     stylua --check {{_root}}
     scripts/check-lua-comments.sh
+    scripts/check-shell-comments.sh
     rumdl fmt --check {{_root}}
     find {{_root}} -type f -name '*.sh' -not -path '*/.git/*' -not -path '*/.direnv/*' -not -path '*/.cache/*' -not -path '*/node_modules/*' -print0 | xargs -0 -r shellcheck
     find {{_root}} -type f -name '*.sh' -not -path '*/.git/*' -not -path '*/.direnv/*' -not -path '*/.cache/*' -not -path '*/node_modules/*' -print0 | xargs -0 -r shfmt -d

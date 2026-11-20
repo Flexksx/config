@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
-# Theme switcher: darkman + matugen, using the current wallpaper if none given.
 
 set -euo pipefail
 
-# ---- deps ----
 for cmd in darkman matugen noctalia dconf; do
 	command -v "$cmd" >/dev/null 2>&1 || {
 		echo "Error: missing dependency '$cmd' in PATH" >&2
@@ -11,7 +9,6 @@ for cmd in darkman matugen noctalia dconf; do
 	}
 done
 
-# ---- args ----
 MODE="${1:-}"
 REQ_WALL="${2:-}"
 

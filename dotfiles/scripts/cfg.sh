@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Default flake path, but allow override via environment variable
 FLAKE_PATH="${FLAKE:-$HOME/config}"
 
 sync_config() {

@@ -1,5 +1,8 @@
 export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
 
+export EDITOR=nvim
+export VISUAL=nvim
+
 # Vi keymap.
 bindkey -v
 

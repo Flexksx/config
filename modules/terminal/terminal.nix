@@ -23,7 +23,6 @@ in {
       nh
       nvd
       nix-output-monitor
-      nerd-fonts.jetbrains-mono
       cmatrix
       cbonsai
       gitui

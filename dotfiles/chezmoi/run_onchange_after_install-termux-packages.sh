@@ -17,6 +17,7 @@ pkg install -y \
 	just \
 	lazygit \
 	lnav \
+	neovim \
 	procs \
 	python-yt-dlp \
 	ripgrep \
