@@ -33,3 +33,8 @@ Do that only for nix-related changes, not for other configuration changes.
 
 The deterministic self-checks live in the `code-quality` agent skill.
 Invoke it for any coding work in this repo.
+
+## Source of truth for configuration
+
+The configs are managed only in this repo and are applied from this repo using chezmoi.
+No config files must be added directly into ~/.config or ~/.local, it must be configuration that's comming from here and applied using chezmoi.
