@@ -26,4 +26,4 @@ pkg install -y \
 	zoxide \
 	zsh
 
-chsh -s zsh
+chsh -s "$(command -v zsh)"
