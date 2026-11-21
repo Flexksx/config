@@ -7,7 +7,7 @@ in {
   };
   flake.modules.nixos.codex-cache = nix-cache {
     url = "https://codex-cli.cachix.org";
-    key = "codex-cli.cachix.org-1:YOUR_PUBLIC_KEY_HERE";
+    key = "codex-cli.cachix.org-1:1Br3H1hHoRYG22n//cGKJOk3cQXgYobUel6O8DgSing=";
   };
 
   flake.modules.homeManager.ai-agents = {
@@ -23,7 +23,7 @@ in {
     config = {
       home.packages = [
         inputs.claude-code.packages.${pkgs.stdenv.hostPlatform.system}.claude-code
-        inputs.codex-cli-nix.packages.${pkgs.system}.default
+        inputs.codex-cli-nix.packages.${pkgs.stdenv.hostPlatform.system}.default
         unstable.github-copilot-cli
         inputs.opencode.packages.${pkgs.stdenv.hostPlatform.system}.opencode
         unstable.pi-coding-agent
