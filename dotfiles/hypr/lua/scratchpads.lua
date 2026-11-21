@@ -47,7 +47,6 @@ scratchpad.create({
 	key_bind = "SUPER + bracketright",
 	apps = {
 		{ class = "org.telegram.desktop", command = "Telegram" },
-		{ class = "discord", command = "discord" },
 	},
 	special_ws = "comms",
 	show_mode = "workspace",
