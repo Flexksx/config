@@ -1,4 +1,5 @@
 {
+  "cli_default_open_behavior": "new_window",
   "vim_mode": true,
   "buffer_font_family": ".ZedMono",
   "buffer_font_weight": 500,

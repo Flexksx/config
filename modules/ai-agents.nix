@@ -6,7 +6,7 @@ in {
     key = "claude-code.cachix.org-1:YeXf2aNu7UTX8Vwrze0za1WEDS+4DuI2kVeWEE4fsRk=";
   };
   flake.modules.nixos.codex-cache = nix-cache {
-    url = "https://codex-cli.cachix.org";
+    url = "codex-cli.cachix.org";
     key = "codex-cli.cachix.org-1:1Br3H1hHoRYG22n//cGKJOk3cQXgYobUel6O8DgSing=";
   };
 
