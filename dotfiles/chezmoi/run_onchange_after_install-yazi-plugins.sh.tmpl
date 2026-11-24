@@ -1,0 +1,10 @@
+#!/bin/sh
+set -eu
+
+: {{ include "dot_config/yazi/package.toml" | sha256sum | quote }}
+
+{{ if lookPath "ya" -}}
+ya pkg install
+{{- else -}}
+echo "ya not found, skipping Yazi plugin installation" >&2
+{{- end }}

@@ -9,6 +9,7 @@ description: >
   Use it even for a one-line change, because these checks fail quietly when skipped.
   Do not use for design decisions or module boundaries; use `software-engineering`
   instead, or `ponytail` for the smallest complete change.
+  Supports Python, TypeScript and Java.
 ---
 
 # Code quality
