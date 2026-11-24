@@ -1,5 +1,5 @@
 sourceDir = "~/config/dotfiles/chezmoi"
-mode = "symlink"
+mode = "{{ if eq .chezmoi.os "windows" }}file{{ else }}symlink{{ end }}"
 
 [data]
 email = "cristian.cretu2808@gmail.com"
