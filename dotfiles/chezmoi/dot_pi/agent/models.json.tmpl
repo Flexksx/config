@@ -1,6 +1,9 @@
+{{- $device := index . "device" | default (index .deviceNames .chezmoi.os) | default "" }}
+{{- $models := index .ollama.models $device }}
 {
   "$schema": "https://pi.dev/schemas/models.schema.json",
   "providers": {
+{{- if $models }}
     "ollama": {
       "baseUrl": "http://127.0.0.1:11434/v1",
       "api": "openai-completions",
@@ -9,14 +12,14 @@
         "supportsDeveloperRole": false,
         "supportsReasoningEffort": false
       },
-{{- $device := index . "device" | default (index .deviceNames .chezmoi.os) }}
       "models": [
-{{- range $i, $m := (index .ollama.models $device) }}
+{{- range $i, $m := $models }}
 {{- if $i }},{{ end }}
         {{ $m | toJson }}
 {{- end }}
       ]
     },
+{{- end }}
     "openrouter": {
       "modelOverrides": {
         "~deepseek/deepseek-flash-latest": {

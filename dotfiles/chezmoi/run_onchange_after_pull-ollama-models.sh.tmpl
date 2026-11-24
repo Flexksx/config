@@ -1,6 +1,6 @@
 #!/bin/sh
 set -eu
-{{- $device := index . "device" | default (index .deviceNames .chezmoi.os) }}
+{{- $device := index . "device" | default (index .deviceNames .chezmoi.os) | default "" }}
 
 ollama_bin="$(command -v ollama || true)"
 if [ -z "$ollama_bin" ] && [ -x /Applications/Ollama.app/Contents/Resources/ollama ]; then
