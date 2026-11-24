@@ -6,10 +6,14 @@
 /Library/LaunchAgents/com.user.matugen-wallpaper.plist
 {{- end }}
 {{- if ne .chezmoi.os "darwin" }}
-/run_after_start-matugen-wallpaper.sh.tmpl
+/start-matugen-wallpaper.sh
 {{- end }}
 {{- if ne .chezmoi.os "linux" }}
 /.config/hypr
+{{- end }}
+{{- if eq .chezmoi.os "windows" }}
+/fetch-nerd-font.sh
+/pull-ollama-models.sh
 {{- end }}
 {{- if eq .chezmoi.os "android" }}
 /.agents
@@ -31,7 +35,6 @@
 /.pi
 /Library
 /pull-ollama-models.sh
-/start-matugen-wallpaper.sh
 {{- end }}
 {{- if ne .chezmoi.os "android" }}
 /.ssh
