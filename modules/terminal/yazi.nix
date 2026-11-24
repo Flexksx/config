@@ -20,10 +20,5 @@ in {
     home.packages = [
       pkgs.glow
     ];
-
-    dotfiles.configFiles = [
-      "yazi/yazi.toml"
-      "yazi/init.lua"
-    ];
   };
 }
