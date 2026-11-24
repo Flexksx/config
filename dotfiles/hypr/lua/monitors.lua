@@ -119,6 +119,19 @@ local function apply_profile()
 				end
 			end
 		end
+	else
+		for _, mon in ipairs(hl.get_monitors()) do
+			local spec = monitor_specs[mon.description]
+			if spec then
+				hl.monitor({
+					output = "desc:" .. mon.description,
+					mode = spec.mode,
+					scale = spec.scale,
+					transform = spec.transform,
+					position = "auto",
+				})
+			end
+		end
 	end
 
 	local edp_x = (profile and profile.edp_x) or 0
