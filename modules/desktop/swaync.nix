@@ -1,10 +1,6 @@
 {...}: {
-  flake.modules.homeManager.swaync = {...}: {
+  flake.modules.homeManager.swaync = {lib, ...}: {
     services.swaync.enable = true;
-
-    dotfiles.configFiles = [
-      "swaync/config.json"
-      "swaync/style.css"
-    ];
+    xdg.configFile."swaync/config.json".enable = lib.mkForce false;
   };
 }

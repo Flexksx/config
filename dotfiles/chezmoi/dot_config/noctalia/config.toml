@@ -41,7 +41,7 @@ enabled = false
 timeout = 1800
 
 [include]
-files = ["~/config/dotfiles/noctalia/index.toml"]
+files = ["~/.config/noctalia/index.toml"]
 
 [location]
 address = "Chisinau, Moldova"

@@ -15,8 +15,6 @@ in {
 
     programs.noctalia.enable = true;
 
-    dotfiles.configFiles = ["noctalia/config.toml"];
-
     xdg.configFile."noctalia/user-templates.toml" = lib.mkForce {text = "";};
   };
 }

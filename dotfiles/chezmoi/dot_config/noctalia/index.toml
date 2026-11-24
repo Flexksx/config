@@ -1,0 +1,5 @@
+[include]
+files = [
+  "~/.config/noctalia/bar.toml",
+  "~/.config/noctalia/desktop_widgets.toml",
+]
