@@ -24,6 +24,10 @@ When rules conflict, the higher one wins:
 
 ## Architecture style
 
+The personal default is a functional core with an imperative interface, including when using domain-driven design.
+Keep domain logic as pure and immutable as practical, and read `references/functional-core-imperative-interface.md` when designing domain logic or its boundary.
+Apply this preference within the existing architecture and the precedence above.
+
 Identify the architecture from the code and follow it idiomatically.
 Before you design anything, read the reference of every architecture whose signals match.
 
