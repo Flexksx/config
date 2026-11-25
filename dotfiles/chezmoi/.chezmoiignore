@@ -13,6 +13,7 @@
 {{- end }}
 {{- if eq .chezmoi.os "windows" }}
 /fetch-nerd-font.sh
+/install-yazi-plugins.sh
 /pull-ollama-models.sh
 {{- end }}
 {{- if eq .chezmoi.os "android" }}
