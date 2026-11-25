@@ -5,6 +5,12 @@ _root := justfile_directory()
 
 mod format '.just/format/Justfile'
 
+build:
+    nix build --no-link .#nixosConfigurations.nixos.config.system.build.toplevel
+
+eval:
+    nix eval --raw .#nixosConfigurations.nixos.config.system.build.toplevel.drvPath
+
 ci:
     alejandra -c {{_root}}
     deadnix --fail {{_root}}

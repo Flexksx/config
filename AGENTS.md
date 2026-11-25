@@ -24,8 +24,7 @@ Separate them with comments rather than adding a new code block.
 
 Never rebuild the system `nix` configuration.
 
-You should use `nix build` to verify that your changes
-are correct before applying them.
+Use `just build` to verify that Nix changes build correctly before applying them.
 
 Do that only for nix-related changes, not for other configuration changes.
 
