@@ -15,6 +15,21 @@ end
 local wallpaperPicker = quickshell_toggle("wallpaper")
 local overview = quickshell_toggle("overview")
 
+hl.gesture({
+	fingers = 4,
+	direction = "pinchout",
+	action = function()
+		hl.exec_cmd(overview)
+	end,
+})
+hl.gesture({
+	fingers = 4,
+	direction = "up",
+	action = function()
+		hl.exec_cmd(overview)
+	end,
+})
+
 local function bind_mod(key, action, opts)
 	hl.bind(mod .. " + " .. key, action, opts)
 end
