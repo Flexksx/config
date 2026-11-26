@@ -33,6 +33,10 @@
     yazi.url = "github:sxyazi/yazi";
 
     hyprland.url = "github:hyprwm/Hyprland/v0.57.0";
+    hymission = {
+      url = "github:gfhdhytghd/hymission";
+      inputs.hyprland.follows = "hyprland";
+    };
 
     noctaliav5.url = "github:noctalia-dev/noctalia";
     mcmojave-hyprcursor.url = "github:libadoxon/mcmojave-hyprcursor";

@@ -6,7 +6,6 @@ local layer_rules = {
 	{ match = { namespace = "selection" }, no_anim = true },
 	{ match = { namespace = "hyprexpo" }, no_anim = true },
 	{ match = { namespace = "wlogout" }, no_anim = true },
-	{ match = { namespace = "overview" }, no_anim = true },
 }
 
 local window_rules = {

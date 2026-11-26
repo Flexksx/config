@@ -365,6 +365,31 @@
         "type": "github"
       }
     },
+    "hymission": {
+      "inputs": {
+        "hyprland": [
+          "hyprland"
+        ],
+        "nixpkgs": [
+          "hymission",
+          "hyprland",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1795579466,
+        "narHash": "sha256-nA1e8OYeB3BgL3twQzzXk95fGwhKPTdG25Dt9OFPlWU=",
+        "owner": "gfhdhytghd",
+        "repo": "hymission",
+        "rev": "5dcbbe38c5dd107d1f8ad5befc60e496602adf83",
+        "type": "github"
+      },
+      "original": {
+        "owner": "gfhdhytghd",
+        "repo": "hymission",
+        "type": "github"
+      }
+    },
     "hyprcursor": {
       "inputs": {
         "hyprlang": [
@@ -1130,6 +1155,7 @@
         "codex-cli-nix": "codex-cli-nix",
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
+        "hymission": "hymission",
         "hyprland": "hyprland",
         "import-tree": "import-tree",
         "mcmojave-hyprcursor": "mcmojave-hyprcursor",

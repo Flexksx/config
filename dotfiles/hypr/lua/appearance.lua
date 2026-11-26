@@ -1,6 +1,23 @@
 local home = os.getenv("HOME")
 local colors = dofile(home .. "/config/dotfiles/matugen/out/hyprland_colors.lua")
 
+if hl.plugin.hymission then
+	hl.config({
+		plugin = {
+			hymission = {
+				workspace_strip_anchor = "top",
+				backdrop_color = "rgba(00000040)",
+				show_focus_indicator = true,
+				focus_hover_color = colors.col_active_border,
+				focus_selected_color = colors.tertiary,
+				focus_title_color = colors.on_surface,
+				selected_expand_scale = 1.1,
+				hover_relayout_duration = 200,
+			},
+		},
+	})
+end
+
 hl.config({
 	general = {
 		gaps_in = 6,

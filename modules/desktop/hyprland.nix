@@ -47,7 +47,10 @@ in {
       ];
     };
 
-    environment.sessionVariables.NIXOS_OZONE_WL = "1";
+    environment.sessionVariables = {
+      NIXOS_OZONE_WL = "1";
+      HYMISSION_PLUGIN = "${inputs.hymission.packages.${pkgs.stdenv.hostPlatform.system}.hymission}/lib/libhymission.so";
+    };
   };
 
   flake.modules.homeManager.hyprland = {pkgs, ...}: {

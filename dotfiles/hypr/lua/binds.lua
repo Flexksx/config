@@ -13,20 +13,26 @@ local function quickshell_toggle(target)
 end
 
 local wallpaperPicker = quickshell_toggle("wallpaper")
-local overview = quickshell_toggle("overview")
 
 hl.gesture({
 	fingers = 4,
 	direction = "pinchout",
 	action = function()
-		hl.exec_cmd(overview)
+		hl.plugin.hymission.toggle("onlycurrentworkspace")
+	end,
+})
+hl.gesture({
+	fingers = 4,
+	direction = "pinchin",
+	action = function()
+		hl.plugin.hymission.close()
 	end,
 })
 hl.gesture({
 	fingers = 4,
 	direction = "up",
 	action = function()
-		hl.exec_cmd(overview)
+		hl.plugin.hymission.toggle("onlycurrentworkspace")
 	end,
 })
 
@@ -67,11 +73,14 @@ local mod_key_commands = {
 	{ "S", screenshot },
 	{ "SHIFT + S", screenshotEdit },
 	{ "W", wallpaperPicker },
-	{ "TAB", overview },
 }
 for _, bind in ipairs(mod_key_commands) do
 	bind_mod_exec(bind[1], bind[2])
 end
+
+bind_mod("TAB", function()
+	hl.plugin.hymission.toggle("onlycurrentworkspace")
+end)
 
 hl.bind(mod .. " + XF86AudioRaiseVolume", hl.dsp.exec_cmd("wlrctl pointer scroll 0 -3"), { ["repeat"] = true })
 hl.bind(mod .. " + XF86AudioLowerVolume", hl.dsp.exec_cmd("wlrctl pointer scroll 0 3"), { ["repeat"] = true })

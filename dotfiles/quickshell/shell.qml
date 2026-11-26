@@ -3,7 +3,6 @@ import Quickshell
 import Quickshell.Io
 import qs.apps.dock
 import qs.apps.launcher
-import qs.apps.overview
 import qs.apps.wallpapers
 
 ShellRoot {
@@ -13,10 +12,6 @@ ShellRoot {
 
     WallpaperWindow {
         id: wallpapers
-    }
-
-    OverviewWindow {
-        id: overview
     }
 
     Variants {
@@ -44,16 +39,6 @@ ShellRoot {
         function toggle(): void {
             launcher.visible = false;
             wallpapers.toggle();
-        }
-    }
-
-    IpcHandler {
-        target: "overview"
-
-        function toggle(): void {
-            launcher.visible = false;
-            wallpapers.visible = false;
-            overview.toggle();
         }
     }
 }
