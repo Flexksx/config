@@ -35,6 +35,17 @@ require("lazy").setup({
 		opts = { ensure_installed = { "ruff", "ty", "tsc", "tree-sitter-cli" } },
 	},
 	{ "nvim-treesitter/nvim-treesitter", lazy = false, build = ":TSUpdate" },
+	{ "MeanderingProgrammer/render-markdown.nvim", ft = "markdown", opts = {} },
+	{
+		"obsidian-nvim/obsidian.nvim",
+		version = "*",
+		ft = "markdown",
+		cmd = "Obsidian",
+		opts = {
+			legacy_commands = false,
+			workspaces = { { name = "personal", path = vim.env.OBSIDIAN_VAULT or "~/Obsidian/obsidian-vault" } },
+		},
+	},
 }, { lockfile = vim.fn.stdpath("data") .. "/lazy-lock.json" })
 
 vim.lsp.enable({ "nixd", "lua_ls", "ruff", "ty", "tsc" })
@@ -42,13 +53,13 @@ vim.lsp.enable({ "nixd", "lua_ls", "ruff", "ty", "tsc" })
 do
 	require("nvim-treesitter").setup()
 	local installing = false
-	local function install_python_parser()
+	local function install_parsers()
 		if not installing and vim.fn.executable("tree-sitter") == 1 then
 			installing = true
-			require("nvim-treesitter").install({ "python" }):await(function(err, success)
+			require("nvim-treesitter").install({ "python", "markdown", "markdown_inline" }):await(function(err, success)
 				installing = false
 				if err then
-					vim.notify("Python parser installation failed: " .. tostring(err), vim.log.levels.ERROR)
+					vim.notify("Parser installation failed: " .. tostring(err), vim.log.levels.ERROR)
 				end
 				if success then
 					for _, buffer in ipairs(vim.api.nvim_list_bufs()) do
@@ -60,8 +71,8 @@ do
 			end)
 		end
 	end
-	vim.api.nvim_create_autocmd("User", { pattern = "MasonToolsUpdateCompleted", callback = install_python_parser })
-	install_python_parser()
+	vim.api.nvim_create_autocmd("User", { pattern = "MasonToolsUpdateCompleted", callback = install_parsers })
+	install_parsers()
 end
 
 vim.api.nvim_create_autocmd("LspAttach", {
