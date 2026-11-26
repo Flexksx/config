@@ -19,7 +19,14 @@ require("lazy").setup({
 		"nvim-tree/nvim-tree.lua",
 		cmd = { "NvimTreeToggle", "NvimTreeOpen", "NvimTreeFindFile" },
 		keys = { { "<leader>e", "<cmd>NvimTreeToggle<cr>", desc = "Toggle file tree" } },
-		opts = {},
+		opts = {
+			on_attach = function(buffer)
+				local api = require("nvim-tree.api")
+				api.map.on_attach.default(buffer)
+				vim.keymap.set("n", "l", api.node.open.edit, { buffer = buffer, desc = "Open" })
+				vim.keymap.set("n", "h", api.node.navigate.parent_close, { buffer = buffer, desc = "Close directory" })
+			end,
+		},
 	},
 	{
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
