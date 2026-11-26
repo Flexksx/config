@@ -15,39 +15,29 @@ description: >
 Rules for decisions that models get wrong when they scaffold code that must hold over time.
 Generic best practice is always mandatory: YAGNI, SOLID and KISS.
 
-When rules conflict, the higher one wins:
+## Abstractions
 
-1. Decisions recorded in the repo's `AGENTS.md`.
-2. The repo's existing conventions.
-3. This skill.
-4. General best practice.
+An abstraction can take many forms, including a function, type or module.
+Review it with these checks:
 
-## Architecture style
+- **Adding a sibling:** Count existing files that must change; callers should not need changes.
+- **Implementation leaks:** Search callers for checks against implementation names or types.
+- **Contract compliance:** Run the same contract tests against every implementation; check for skipped or unsupported operations.
+- **Invalid combinations:** Check whether public inputs allow combinations that no implementation accepts.
+- **Forwarding:** Check whether removing a pass-through operation changes behavior or a boundary.
+- **Unused variation:** Count implementations and callers of extension points; question variation with no current need.
 
-The personal default is a functional core with an imperative interface, including when using domain-driven design.
-Keep domain logic as pure and immutable as practical, and read `references/functional-core-imperative-interface.md` when designing domain logic or its boundary.
-Apply this preference within the existing architecture and the precedence above.
+Treat findings as prompts for judgment, not automatic verdicts.
 
-Identify the architecture from the code and follow it idiomatically.
-Before you design anything, read the reference of every architecture whose signals match.
+### Module boundaries
 
-- **Hexagonal:** `*UseCase` or `*Port` types, `port` or `adapter` folders, `ports.py` or `*.ports.ts` files.
-  Reference: `references/hexagonal-architecture.md`.
-- **Event-sourced:** an event store, `decide` and `evolve` functions.
-  Reference: `references/event-sourcing.md`.
-- **Layered (n-tier):** controllers call services, and services call repositories.
-  Reference: `references/layered-architecture.md`.
-- **Modular monorepo:** several apps and libraries in one repo.
-  Reference: `references/monolith-architecture.md`.
-- **Microservices:** separately deployed services that call each other over a network.
-  Reference: `references/microservices-architecture.md`.
-- **MVVM:** views bound to view models or UI state classes.
-  Reference: `references/mvvm-architecture.md`.
+Treat modules, packages and classes as boundaries that expose abstractions.
+Review their accessible names with these checks:
 
-If no architecture matches, present two options with their trade-offs, recommend one, and wait for the user to choose, even after "just build it".
-Propose one line for the repo's `AGENTS.md` that records the choice, and let the user write it.
-
-## Module boundaries
+- **Implementation independence:** Can an internal implementation change without changing callers or the public contract?
+- **Invariant protection:** Can callers bypass a rule by changing internal state or calling an internal operation?
+- **Dependency direction:** Can callers use the boundary without importing internal types or files?
+- **Contract exposure:** Does the public interface expose details that must change when an internal implementation changes?
 
 When a module or package needs a public boundary, expose a deliberate API through its entry point.
 In TypeScript, use explicit exports from `index.ts`.
@@ -129,7 +119,7 @@ Favor composition over inheritance all time.
 
 In the case of scripts that perform some business logic or apply configuration, it is critical to separate the code from the data.
 
-The symptoms:
+Symptoms:
 
 - A case name, tier or country appears inside the code, not only in the data.
 - The same literal, date or threshold appears in more than one function.
@@ -224,3 +214,47 @@ def vat_cents(order: Order) -> int:
 def invoice_note(order: Order) -> str:
     return f"VAT {vat_period(order.placed_on).rate_percent}%"
 ```
+
+## Software design
+
+Software design organizes the code that implements system behavior to improve maintainability and speed to market.
+Follow these guidelines within the system architecture.
+
+### Design patterns
+
+The personal default is a functional core with an imperative interface, including when using domain-driven design.
+Keep domain logic as pure and immutable as practical, and read `references/functional-core-imperative-interface.md` when designing domain logic or its boundary.
+Apply this preference within the existing architecture.
+
+Identify the patterns used in the code and follow them idiomatically.
+Read the reference for each pattern whose signals match.
+
+- **Domain-driven design:** domain models, bounded contexts or aggregates.
+  Reference: `references/domain-driven-design.md`.
+- **Hexagonal:** `*UseCase` or `*Port` types, `port` or `adapter` folders, `ports.py` or `*.ports.ts` files.
+  Reference: `references/hexagonal-architecture.md`.
+- **MVVM:** views bound to view models or UI state classes.
+  Reference: `references/mvvm-architecture.md`.
+- **Layered (n-tier):** controllers call services, and services call repositories.
+  Reference: `references/layered-architecture.md`.
+- **Modular monorepo:** several apps and libraries in one repo.
+  Reference: `references/monolith-architecture.md`.
+
+## Architecture
+
+Architecture defines the system’s major parts and their interactions to meet system-wide requirements such as availability, scalability and security.
+These decisions also constrain how the system implements its behavior.
+Some patterns affect both architecture and software design.
+
+### Architecture style
+
+Identify the architecture from the code and follow it idiomatically.
+Before you design anything, read the reference of every architecture whose signals match.
+
+- **Event-sourced:** an event store, `decide` and `evolve` functions.
+  Reference: `references/event-sourcing.md`.
+- **Microservices:** separately deployed services that call each other over a network.
+  Reference: `references/microservices-architecture.md`.
+
+If no architecture or design pattern matches, present two options with their trade-offs, recommend one, and wait for the user to choose, even after "just build it".
+Propose one line for the repo's `AGENTS.md` that records the choice, and let the user write it.
