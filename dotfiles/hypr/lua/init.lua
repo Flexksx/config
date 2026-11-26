@@ -1,5 +1,15 @@
 hl.plugin.load(os.getenv("HYMISSION_PLUGIN"))
 
+local dynamicCursors = os.getenv("HYPR_DYNAMIC_CURSORS_PLUGIN")
+if dynamicCursors then
+	hl.plugin.load(dynamicCursors)
+end
+
+local hyprbars = os.getenv("HYPRBARS_PLUGIN")
+if hyprbars then
+	hl.plugin.load(hyprbars)
+end
+
 hl.on("hyprland.start", function()
 	hl.exec_cmd(
 		"dbus-update-activation-environment --systemd DISPLAY HYPRLAND_INSTANCE_SIGNATURE WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE"

@@ -71,8 +71,15 @@ QtObject {
         const scratchpad = Dock.scratchpadAt(ScratchpadService.scratchpads, WorkspaceService.workspaceOf(window));
         if (scratchpad)
             ScratchpadService.pull(WorkspaceService.clientAddress(window));
-        else
-            WorkspaceService.focus(window);
+        else {
+            const address = WorkspaceService.clientAddress(window);
+            if (!address) {
+                WorkspaceService.focus(window);
+                return;
+            }
+            const selector = JSON.stringify("address:" + address);
+            Quickshell.execDetached(["hyprctl", "eval", "local w = hl.get_window(" + selector + "); if w and w.workspace and w.workspace.name == 'special:minimized' then scratchpad_pull(" + JSON.stringify(address) + ") else hl.dispatch(hl.dsp.focus({ window = " + selector + " })) end"]);
+        }
     }
 
     function moveTargetsOf(window) {

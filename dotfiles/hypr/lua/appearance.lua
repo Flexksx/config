@@ -1,6 +1,47 @@
 local home = os.getenv("HOME")
 local colors = dofile(home .. "/config/dotfiles/matugen/out/hyprland_colors.lua")
 
+if hl.plugin.hyprbars then
+	hl.config({
+		plugin = {
+			hyprbars = {
+				bar_height = 24,
+				bar_color = colors.surface_container,
+				col = { text = colors.on_surface },
+				bar_text_font = "Inter",
+				bar_buttons_alignment = "left",
+				icon_on_hover = true,
+			},
+		},
+	})
+	hl.plugin.hyprbars.add_button({
+		bg_color = "rgb(ff5f57)",
+		fg_color = "rgb(4d0000)",
+		size = 12,
+		icon = "×",
+		action = "hyprctl dispatch 'hl.dsp.window.close()'",
+	})
+	hl.plugin.hyprbars.add_button({
+		bg_color = "rgb(febc2e)",
+		fg_color = "rgb(664000)",
+		size = 12,
+		icon = "−",
+		action = [[hyprctl dispatch 'hl.dsp.window.move({ workspace = "special:minimized", follow = false })']],
+	})
+	hl.plugin.hyprbars.add_button({
+		bg_color = "rgb(28c840)",
+		fg_color = "rgb(004d00)",
+		size = 12,
+		icon = "+",
+		action = [[hyprctl dispatch 'hl.dsp.window.fullscreen({ mode = "maximized", action = "toggle" })']],
+	})
+	hl.window_rule({ match = { float = false }, ["hyprbars:no_bar"] = true })
+end
+
+if hl.plugin.dynamic_cursors then
+	hl.config({ plugin = { dynamic_cursors = { mode = "none", shake = { enabled = true } } } })
+end
+
 if hl.plugin.hymission then
 	hl.config({
 		plugin = {

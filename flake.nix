@@ -37,6 +37,14 @@
       url = "github:gfhdhytghd/hymission";
       inputs.hyprland.follows = "hyprland";
     };
+    hypr-dynamic-cursors = {
+      url = "github:VirtCode/hypr-dynamic-cursors";
+      inputs.hyprland.follows = "hyprland";
+    };
+    hyprland-plugins = {
+      url = "github:hyprwm/hyprland-plugins";
+      inputs.hyprland.follows = "hyprland";
+    };
 
     noctaliav5.url = "github:noctalia-dev/noctalia";
     mcmojave-hyprcursor.url = "github:libadoxon/mcmojave-hyprcursor";

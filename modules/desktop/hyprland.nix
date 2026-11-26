@@ -50,6 +50,8 @@ in {
     environment.sessionVariables = {
       NIXOS_OZONE_WL = "1";
       HYMISSION_PLUGIN = "${inputs.hymission.packages.${pkgs.stdenv.hostPlatform.system}.hymission}/lib/libhymission.so";
+      HYPR_DYNAMIC_CURSORS_PLUGIN = "${inputs.hypr-dynamic-cursors.packages.${pkgs.stdenv.hostPlatform.system}.default}/lib/libhypr-dynamic-cursors.so";
+      HYPRBARS_PLUGIN = "${inputs.hyprland-plugins.packages.${pkgs.stdenv.hostPlatform.system}.hyprbars}/lib/libhyprbars.so";
     };
   };
 

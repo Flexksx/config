@@ -1,10 +1,21 @@
 import QtQuick
 import Quickshell
 import Quickshell.Wayland
+import Quickshell.Hyprland
 import qs.libs
 
 PanelWindow {
     id: window
+
+    Connections {
+        target: Hyprland
+        function onRawEvent(event) {
+            if (event.name === "movewindowv2" || event.name === "openwindow") {
+                Hyprland.refreshWorkspaces();
+                Hyprland.refreshToplevels();
+            }
+        }
+    }
 
     readonly property real restIcon: 18
     readonly property real baseIcon: 40
