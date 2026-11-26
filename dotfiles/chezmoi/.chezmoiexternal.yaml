@@ -6,17 +6,9 @@
   type: "git-repo"
   url: "https://github.com/zsh-users/zsh-syntax-highlighting.git"
   refreshPeriod: "168h"
-.local/share/nvim/site/pack/plugins/start/nvim-lspconfig:
+.local/share/nvim/lazy/lazy.nvim:
   type: "git-repo"
-  url: "https://github.com/neovim/nvim-lspconfig.git"
-  refreshPeriod: "168h"
-.local/share/nvim/site/pack/plugins/start/mason.nvim:
-  type: "git-repo"
-  url: "https://github.com/mason-org/mason.nvim.git"
-  refreshPeriod: "168h"
-.local/share/nvim/site/pack/plugins/start/mason-tool-installer.nvim:
-  type: "git-repo"
-  url: "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim.git"
+  url: "https://github.com/folke/lazy.nvim.git"
   refreshPeriod: "168h"
 .agents/skills/ponytail/SKILL.md:
   type: "file"
