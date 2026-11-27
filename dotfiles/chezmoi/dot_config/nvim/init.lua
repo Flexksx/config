@@ -16,6 +16,57 @@ vim.opt.rtp:prepend(lazy_path)
 require("lazy").setup({
 	{ "neovim/nvim-lspconfig", lazy = false },
 	{
+		"nvim-telescope/telescope.nvim",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		keys = {
+			{ "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find files" },
+			{ "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Search project" },
+			{ "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Find buffers" },
+		},
+	},
+	{
+		"nvim-neotest/neotest",
+		dependencies = {
+			"nvim-neotest/neotest-python",
+			"nvim-lua/plenary.nvim",
+			"nvim-neotest/nvim-nio",
+			"nvim-treesitter/nvim-treesitter",
+		},
+		keys = {
+			{
+				"<leader>tn",
+				function()
+					require("neotest").run.run()
+				end,
+				desc = "Run nearest test",
+			},
+			{
+				"<leader>tf",
+				function()
+					require("neotest").run.run(vim.fn.expand("%"))
+				end,
+				desc = "Run test file",
+			},
+			{
+				"<leader>ts",
+				function()
+					require("neotest").summary.toggle()
+				end,
+				desc = "Toggle test summary",
+			},
+			{
+				"<leader>to",
+				function()
+					require("neotest").output.open({ enter = true })
+				end,
+				desc = "Open test output",
+			},
+		},
+		config = function()
+			require("neotest").setup({ adapters = { require("neotest-python") } })
+		end,
+	},
+	{
 		"nvim-tree/nvim-tree.lua",
 		cmd = { "NvimTreeToggle", "NvimTreeOpen", "NvimTreeFindFile" },
 		keys = { { "<leader>e", "<cmd>NvimTreeToggle<cr>", desc = "Toggle file tree" } },
