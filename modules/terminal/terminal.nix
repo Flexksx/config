@@ -15,9 +15,11 @@ in {
   }: let
     pkgs-unstable = inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system};
     cfg-script = pkgs.writeShellScriptBin "cfg" (builtins.readFile ../../dotfiles/scripts/cfg.sh);
+    power-script = pkgs.writeShellScriptBin "power" (builtins.readFile ../../dotfiles/scripts/power.sh);
   in {
     home.packages = with pkgs; [
       cfg-script
+      power-script
       inputs.turb.packages.${pkgs.stdenv.hostPlatform.system}.default
       inputs.slackcli.packages.${pkgs.stdenv.hostPlatform.system}.default
       nh
